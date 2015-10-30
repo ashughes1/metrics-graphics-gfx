@@ -1,72 +1,26 @@
 <div class='row trunk-section'>
-    <div class='col-lg-7 text-center' id='crashes_gfx'></div>
-    <div class='col-lg-7 text-center' id='crashes_daily_gfx_amd'></div>
-    <div class='col-lg-7 text-center' id='crashes_daily_gfx_intel'></div>
-    <div class='col-lg-7 text-center' id='crashes_daily_gfx_nvidia'></div>
+    <div class='col-lg-7 text-center' id='crashes_gfx_by_vendor'></div>
 </div>
 
 <script>
 MG._hooks = {};
-d3.json('data/crashes-gfx.json', function(data) {
-    data = MG.convert.date(data, 'date');
+d3.json('data/crashes-gfx-by-vendor.json', function(data) {
+    for (i=0; i<data.length; i++) {
+        data[i] = MG.convert.date(data[i], 'date');
+    }
+    
     MG.data_graphic({
         title: "GFX Crashes",
         data: data,
-        width: 400,
-        height: 300,
-        target: document.getElementById('crashes_gfx'),
+        width: 1200,
+        height: 400,
+        right: 40,
+        target: document.getElementById('crashes_gfx_by_vendor'),
         x_accessor: "date",
         y_accessor: "total",
         interpolate: "monotone",
+        legend: ['AMD', 'INTEL', 'NVIDIA'],
         chart_type: "line"
     });
-});
-
-MG._hooks = {};
-d3.json('data/crashes-gfx-amd.json', function(data) {
-    data = MG.convert.date(data, 'date');
-    MG.data_graphic({
-        title: "AMD GFX Crashes",
-        data: data,
-        width: 400,
-        height: 300,
-        target: document.getElementById('crashes_daily_gfx_amd'),
-        x_accessor: "date",
-        y_accessor: "total",
-        interpolate: "monotone",
-        chart_type: "line"
-    });
-});
-
-MG._hooks = {};
-d3.json('data/crashes-gfx-intel.json', function(data) {
-    data = MG.convert.date(data, 'date');
-    MG.data_graphic({
-        title: "Intel GFX Crashes",
-        data: data,
-        width: 400,
-        height: 300,
-        target: document.getElementById('crashes_daily_gfx_intel'),
-        x_accessor: "date",
-        y_accessor: "total",
-        interpolate: "monotone",
-        chart_type: "line"
-    });
-});
-
-MG._hooks = {};
-d3.json('data/crashes-gfx-nvidia.json', function(data) {
-    data = MG.convert.date(data, 'date');
-    MG.data_graphic({
-        title: "NVIDIA GFX Crashes",
-        data: data,
-        width: 400,
-        height: 300,
-        target: document.getElementById('crashes_daily_gfx_nvidia'),
-        x_accessor: "date",
-        y_accessor: "total",
-        interpolate: "monotone",
-        chart_type: "line"
-    });
-});
+});    
 </script>
