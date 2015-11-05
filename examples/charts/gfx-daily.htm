@@ -1,6 +1,7 @@
 <div class='row trunk-section'>
     <div class='col-lg-7 text-center' id='crashes_gfx_by_vendor'></div>
     <div class='col-lg-7 text-center' id='crashes_layers'></div>
+    <div class='col-lg-7 text-center' id='crashes_igd10umd'></div>
 </div>
 
 <script>
@@ -41,6 +42,26 @@ d3.json('data/crashes-layers.json', function(data) {
         y_accessor: "total",
         interpolate: "monotone",
         legend: ['AMD', 'INTEL', 'NVIDIA'],
+        chart_type: "line"
+    });
+});
+
+d3.json('data/crashes-igd10umd.json', function(data) {
+    for (i=0; i<data.length; i++) {
+        data[i] = MG.convert.date(data[i], 'date');
+    }
+    
+    MG.data_graphic({
+        title: "igd10umd*.dll Crashes",
+        data: data,
+        width: 1200,
+        height: 400,
+        right: 40,
+        target: document.getElementById('crashes_igd10umd'),
+        x_accessor: "date",
+        y_accessor: "total",
+        interpolate: "monotone",
+        legend: ['Nightly', 'Aurora', 'Beta', 'Release'],
         chart_type: "line"
     });
 });
