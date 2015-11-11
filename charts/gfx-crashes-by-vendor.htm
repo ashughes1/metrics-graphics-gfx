@@ -1,0 +1,25 @@
+<div class='row trunk-section'>
+    <div class='col-lg-12 text-left' id='gfx_crashes_by_vendor'></div>
+</div>
+
+<script>
+    MG._hooks = {};
+    d3.json('data/crashes-gfx-by-vendor.json', function(data) {
+        for (i=0; i<data.length; i++) {
+            data[i] = MG.convert.date(data[i], 'date');
+        }           
+        MG.data_graphic({
+            title: "Crashes in mozilla::gfx::*",
+            data: data,
+            width: 1140,
+            height: 300,
+            right: 40,
+            target: document.getElementById('gfx_crashes_by_vendor'),
+            x_accessor: "date",
+            y_accessor: "total",
+            interpolate: "monotone",
+            legend: ['AMD', 'INTEL', 'NVIDIA'],
+            chart_type: "line"
+        });
+    });
+</script>
