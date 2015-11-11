@@ -1,0 +1,45 @@
+<html lang="en">
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+    <title>Graphics Quality Metrics</title>
+
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,700' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+
+    <link href="css/metricsgraphics.css" rel="stylesheet" type="text/css" id="light">
+    <link href="" rel="stylesheet" type="text/css" id="dark">
+    <link href="css/gfx.css" rel="stylesheet" type="text/css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.11/d3.min.js" charset="utf-8"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src='js/metricsgraphics.min.js'></script>
+</head>
+
+<body>
+    <div class='container'>
+        <div id='content-body'>
+            <div id='head'>
+                <h3>Graphics Quality Metrics</h3>
+                <div id='footer'>
+                    Created by <a href="mailto:ahughes@mozilla.com">ashughes</a> (<a href='https://github.com/ashughes1/metrics-graphics-gfx'>source</a>)<br />
+                    Powered by <a href='http://metricsgraphicsjs.org'>MetricsGraphics.js 2.7</a> (<a href='https://github.com/mozilla/metrics-graphics'>source</a>)
+                </div>
+                <hr />
+                <div id='menu'>
+                    <a href='#' id='goto-gfx-crashes-by-vendor' class='pill'>GFX</a> | <a href="#" id="goto-layers-crashes-by-vendor" class='pill'>Layers</a> | <a href="#" id="goto-igd10umd-crashes" class='pill'>igd10umd*.dll</a>
+                </div>
+                <hr />
+            </div>
+
+        <div id='trunk'>
+        </div>
+
+        
+    </div> <!-- end container -->
+
+    <script src='js/main.js'></script>
+</body>
+</html>
