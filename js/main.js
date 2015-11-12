@@ -12,7 +12,7 @@ var theme = 'light';
         });
     });
 
-    $('.examples li a#goto-' + section).addClass('active');
+    $('.menu a#goto-' + section).addClass('active');
 
     //handle mouse clicks and so on
     assignEventListeners();
