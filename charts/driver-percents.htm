@@ -1,0 +1,108 @@
+<div class='row trunk-section'>
+  <table>
+    <tr>
+      <td colspan="3" style='width:100%' class='btn-group btn-group-sm text-center split-by-controls'>
+        <button type='button' class='btn btn-default active' data-x_accessor='release'>Release</button>
+        <button type='button' class='btn btn-default' data-x_accessor='beta'>Beta</button>
+        <button type='button' class='btn btn-default' data-x_accessor='aurora'>Aurora</button>
+        <button type='button' class='btn btn-default' data-x_accessor='nightly'>Nightly</button>
+      </td>
+    </tr>
+    <tr>
+      <td class='col-lg-12 text-left' style='float:left; width:33%' id='driver_percents_amd'></td>
+      <td class='col-lg-12 text-left' style='float:left; width:33%' id='driver_percents_intel'></td>
+      <td class='col-lg-12 text-left' style='float:left; width:33%' id='driver_percents_nvidia'></td>
+    </tr>
+  </table>
+</div>
+
+<script>
+var globals = {};
+
+var split_by_params_amd = {
+  title: "Top AMD Drivers",
+  width: 400,
+  height: 600,
+  right: 40,
+  target: document.getElementById('driver_percents_amd'),
+  y_accessor:"driver",
+  x_accessor:"release",
+  chart_type: "bar"
+};
+
+var split_by_params_intel = {
+  title: "Top Intel Drivers",
+  width: 400,
+  height: 600,
+  right: 40,
+  target: document.getElementById('driver_percents_intel'),
+  y_accessor:"driver",
+  x_accessor:"release",
+  chart_type: "bar"
+};
+
+var split_by_params_nvidia = {
+  title: "Top NVIDIA Drivers",
+  width: 400,
+  height: 600,
+  right: 40,
+  target: document.getElementById('driver_percents_nvidia'),
+  y_accessor:"driver",
+  x_accessor:"release",
+  chart_type: "bar"
+};
+
+$('.split-by-controls button').click(function() {
+    var new_x_accessor = $(this).data('x_accessor');
+    split_by_params_amd.x_accessor = setX(new_x_accessor);
+    split_by_params_intel.x_accessor = setX(new_x_accessor);
+    split_by_params_nvidia.x_accessor = setX(new_x_accessor);
+    // change button state
+    $(this).addClass('active').siblings().removeClass('active');
+
+    // update data
+    delete split_by_params_amd.xax_format;
+    delete split_by_params_intel.xax_format;
+    delete split_by_params_nvidia.xax_format;
+    MG.data_graphic(split_by_params_amd);
+    MG.data_graphic(split_by_params_intel);
+    MG.data_graphic(split_by_params_nvidia);
+});
+
+function setX(channel) {
+  if (channel == "nightly") {
+    x_accessor = 'nightly';
+  } else if (channel == "aurora") {
+    x_accessor = 'aurora';
+  } else if (channel == "beta") {
+    x_accessor = 'beta';
+  } else if (channel == "release") {
+    x_accessor = 'release';
+  } else {
+    x_accessor = 'release';
+  }
+  return x_accessor;
+}
+
+d3.json('data/driver-percents.json', function(data) {
+  for (i=0; i<data.length; i++) {
+    for (j=0; j<data[i].length; j++) {
+      data[i][j]['driver'] = data[i][j]['driver'].toString();
+    }
+  }
+
+  globals.data = data;
+
+  split_by_params_amd.data = data[0];
+  split_by_params_intel.data = data[1];
+  split_by_params_nvidia.data = data[2];
+
+  split_by_params_amd.x_accessor = setX();
+  split_by_params_intel.x_accessor = setX();
+  split_by_params_nvidia.x_accessor = setX();
+
+  MG.data_graphic(split_by_params_amd);
+  MG.data_graphic(split_by_params_intel);
+  MG.data_graphic(split_by_params_nvidia);
+});
+</script>
