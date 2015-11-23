@@ -1,19 +1,15 @@
 <div class='row trunk-section'>
-  <table>
-    <tr>
-      <td colspan="3" style='width:100%' class='btn-group btn-group-sm text-center split-by-controls'>
+  <h4 align="center">Most Commonly Reported Graphics Drivers</h4>
+  <small>The following illustrates the GPU driver population in each Firefox channel as reported by <a href="https://crash-stats.mozilla.com/">Socorro</a>. The y-axes represent the top 25 drivers for each vendor across <em><strong>all</strong></em> channels. The x-axes represent the percentage of <em><strong>all</strong></em> crashes reported using the specific driver version.</small>
+  <div align="center" colspan="3" style='float:right; width:100%; padding-left:40%;' class='btn-group btn-group-sm text-center split-by-controls'>
         <button type='button' class='btn btn-default active' data-x_accessor='release'>Release</button>
         <button type='button' class='btn btn-default' data-x_accessor='beta'>Beta</button>
         <button type='button' class='btn btn-default' data-x_accessor='aurora'>Aurora</button>
         <button type='button' class='btn btn-default' data-x_accessor='nightly'>Nightly</button>
-      </td>
-    </tr>
-    <tr>
-      <td class='col-lg-12 text-left' style='float:left; width:33%' id='driver_percents_amd'></td>
-      <td class='col-lg-12 text-left' style='float:left; width:33%' id='driver_percents_intel'></td>
-      <td class='col-lg-12 text-left' style='float:left; width:33%' id='driver_percents_nvidia'></td>
-    </tr>
-  </table>
+  </div>
+  <div class='col-lg-12 text-left' style='float:left; width:33%' id='driver_percents_amd'></div>
+  <div class='col-lg-12 text-left' style='float:left; width:33%' id='driver_percents_intel'></div>
+  <div class='col-lg-12 text-left' style='float:left; width:33%' id='driver_percents_nvidia'></div>
 </div>
 
 <script>
@@ -23,7 +19,7 @@ var split_by_params_amd = {
   title: "Top AMD Drivers",
   width: 400,
   height: 600,
-  right: 40,
+  left: 100,
   target: document.getElementById('driver_percents_amd'),
   y_accessor:"driver",
   x_accessor:"release",
@@ -34,7 +30,7 @@ var split_by_params_intel = {
   title: "Top Intel Drivers",
   width: 400,
   height: 600,
-  right: 40,
+  left: 100,
   target: document.getElementById('driver_percents_intel'),
   y_accessor:"driver",
   x_accessor:"release",
@@ -45,7 +41,7 @@ var split_by_params_nvidia = {
   title: "Top NVIDIA Drivers",
   width: 400,
   height: 600,
-  right: 40,
+  left: 100,
   target: document.getElementById('driver_percents_nvidia'),
   y_accessor:"driver",
   x_accessor:"release",
