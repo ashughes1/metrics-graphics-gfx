@@ -1,5 +1,5 @@
 <div class='row trunk-section'>
-    <div class='col-lg-12 text-left' id='startup_crashes_percent'></div>
+  <div class='col-lg-12 text-left' id='startup_crashes_percent'></div>
 </div>
 
 <script>
@@ -7,14 +7,17 @@
     d3.json('data/crashes-startup-percent.json', function(data) {
         data = MG.convert.date(data, 'date');
         MG.data_graphic({
-            title: "Percent of gfx/layers crashes within 8s of startup time",
             data: data,
+            title: "Startup crashes in gfx and layers (%)",
             width: 1140,
-            height: 300,
+            height: 390,
             right: 40,
+            left: 90,
+            bottom: 90,
             target: document.getElementById('startup_crashes_percent'),
             x_accessor: "date",
             y_accessor: "total",
+            x_label:"Percentage of crashes in gfx and layers that occur within 8 seconds of browser startup, as reported by crash-stats.mozilla.org",
             interpolate: "monotone",
             chart_type: "line"
         });
