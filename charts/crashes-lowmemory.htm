@@ -1,19 +1,21 @@
 <div class='row trunk-section'>
-    <div class='col-lg-12 text-left' id='crashes_gfx_percent'></div>
+  <div class='col-lg-12 text-left' id='crashes_lowmemory'></div>
 </div>
 
 <script>
     MG._hooks = {};
-    d3.json('data/crashes-gfx-percent.json', function(data) {
+    d3.json('data/crashes-lowmemory.json', function(data) {
         data = MG.convert.date(data, 'date');
         MG.data_graphic({
-            title: "Percentage of crashes in mozilla::gfx::*",
             data: data,
+            title: "Low memory crashes in gfx and layers (%)",
             width: 1140,
-            height: 300,
+            height: 390,
             right: 40,
+            left: 90,
+            bottom: 90,
             max_y: 100,
-            target: document.getElementById('crashes_gfx_percent'),
+            target: document.getElementById('crashes_lowmemory'),
             x_accessor: "date",
             y_accessor: "total",
             interpolate: "monotone",
