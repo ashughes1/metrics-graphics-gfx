@@ -1,0 +1,22 @@
+<div class='row trunk-section'>
+    <div class='col-lg-12 text-left' id='mozcrash_gfxcrash'></div>
+</div>
+
+<script>
+d3.json('data/mozcrash-gfx_crash-by-channel.json', function(data) {
+    data = MG.convert.date(data, 'date');
+    MG.data_graphic({
+        title: "Crashes where MOZ_CRASH reason is GFX_CRASH",
+        data: data,
+        width: 900,
+        height: 300,
+        right: 40,
+        target: document.getElementById('mozcrash_gfxcrash'),
+        x_accessor: "date",
+        y_accessor: ["nightly","aurora","beta","release"],
+        interpolate: "monotone",
+        legend: ['Nightly', 'Aurora', 'Beta', 'Release'],
+        chart_type: "line"
+    });
+});
+</script>

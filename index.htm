@@ -29,9 +29,16 @@
                 </div>
                 <hr />
                 <div id='menu'>
-                    <a href='#' id='goto-gfx-crashes-by-vendor' class='pill'>GFX</a> | <a href='#' id='goto-crashes-gfx-percent' class='pill'>GFX (%)</a> | <a href="#" id="goto-layers-crashes-by-vendor" class='pill'>Layers</a> | <a href="#" id="goto-igd10umd-crashes" class='pill'>igd10umd*.dll</a> | <a href="#" id="goto-startup-crashes-percent" class='pill'>Startup</a> | <a href="#" id="goto-shutdown-crashes" class='pill'>Shutdown</a> | <a href="#" id="goto-crashes-android" class='pill'>Android</a> | <a href='#' id='goto-webgl-percent' class='pill'>WebGL</a> | <a href='#' id='goto-devices-percent' class='pill'>Devices (%)</a> | <a href='#' id='goto-driver-percents' class='pill'>Drivers (%)</a>
+                    <a href='#' id='goto-gfx-crashes-by-vendor' class='pill'>GFX</a> | <a href='#' id='goto-crashes-gfx-percent' class='pill'>GFX (%)</a> | <a href="#" id="goto-layers-crashes-by-vendor" class='pill'>Layers</a> | <a href="#" id="goto-igd10umd-crashes" class='pill'>igd10umd*.dll</a> | <a href="#" id="goto-crashes-android" class='pill'>Android</a> | <a href='#' id='goto-webgl-percent' class='pill'>WebGL</a> | <a href='#' id='goto-devices-percent' class='pill'>Devices (%)</a> | <a href='#' id='goto-driver-percents' class='pill'>Drivers (%)</a>
                     <br />
-                    <a href='#' id='goto-gce-percent' class='pill'>GCE</a> | <a href='#' id='goto-crashes-percentage' class='pill'>Percentage</a> | <a href='#' id='goto-crashes-lowmemory' class='pill'>Low Memory</a>
+                    <a href='#' id='goto-crashes-percentage' class='pill'>Percentage</a> | <a href='#' id='goto-crashes-lowmemory' class='pill'>Low Memory</a>
+                    <br />
+                    <a href='#' id='goto-startup-crashes' class='pill' title='Startup crashes in mozilla::gfx and mozilla::layers'>Startup</a> |
+                    <a href='#' id='goto-shutdown-crashes' class='pill' title='Shutdown crashes in mozilla::gfx and mozilla::layers'>Shutdown</a> |
+                    <a href='#' id='goto-gce-crashes' class='pill' title='Crashes with a graphics critical error'>GCE</a> |
+                    <a href='#' id='goto-lowmem-crashes' class='pill' title='Crashes in mozilla::gfx and mozilla::layers with low system memory'>OOM</a> |
+                    <br />
+                    MOZ_CRASH: <a href='#' id='goto-mozcrash-gfx_crash-by-channel' class='pill' title='Crashes where MOZ_CRASH reason is GFX_CRASH'>GFX_CRASH by Channel (Filter)</a> | <a href='#' id='goto-mozcrash-gfx_crash-by-channel0' class='pill' title='Crashes where MOZ_CRASH reason is GFX_CRASH'>GFX_CRASH by Channel (Compare)</a> | <a href='#' id='goto-mozcrash-outin' class='pill' title='Crashes where MOZ_CRASH reason exists'>In/Out of Graphics</a> |
                 </div>
                 <hr />
             </div>
