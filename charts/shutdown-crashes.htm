@@ -1,22 +1,42 @@
 <div class='row trunk-section'>
-    <div class='col-lg-12 text-left' id='shutdown_crashes'></div>
+  <div class='col-lg-12 text-left' id='shutdown_crashes_percent'></div>
+  <div class='col-lg-12 text-left' id='shutdown_crashes_count'></div>
 </div>
 
 <script>
     MG._hooks = {};
-    d3.json('data/shutdown-crashes.json', function(data) {
+    d3.json('data/gfxcrashes-shutdown.json', function(data) {
         data = MG.convert.date(data, 'date');
         MG.data_graphic({
-            title: "Percent of gfx/layers crashes during shutdown",
             data: data,
-            width: 1140,
+            title: "Total daily crashes in gfx and layers during xpcom shutdown",
+            width: 900,
             height: 300,
             right: 40,
-            target: document.getElementById('shutdown_crashes'),
+            target: document.getElementById('shutdown_crashes_count'),
             x_accessor: "date",
-            y_accessor: "total",
+            y_accessor: "count",
             interpolate: "monotone",
-            chart_type: "line"
+            chart_type: "line",
+            linked: true
+        });
+    });
+
+    d3.json('data/gfxcrashes-shutdown.json', function(data) {
+        data = MG.convert.date(data, 'date');
+        MG.data_graphic({
+            data: data,
+            title: "Percentage daily crashes in gfx and layers during xpcom shutdown",
+            width: 900,
+            height: 300,
+            right: 40,
+            target: document.getElementById('shutdown_crashes_percent'),
+            x_accessor: "date",
+            y_accessor: "percent",
+            max_y:100,
+            interpolate: "monotone",
+            chart_type: "line",
+            linked: true
         });
     });
 </script>
