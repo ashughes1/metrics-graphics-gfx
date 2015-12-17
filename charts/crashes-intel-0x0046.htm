@@ -1,0 +1,43 @@
+<div class='row trunk-section'>
+  <div class='col-lg-12 text-left' id='intel_0x0046_count' style="text-align:center"></div>
+  <div class='col-lg-12 text-left' id='intel_0x0046_percent' style="text-align:center"></div>
+</div>
+
+<script>
+    MG._hooks = {};
+    d3.json('data/intel-0x0046.json', function(data) {
+        data = MG.convert.date(data, 'date');
+        MG.data_graphic({
+            data: data,
+            title: "Daily crashes on Intel 0x0046 (All drivers) vs Intel 0x0046 (8.15.10.2086 driver)",
+            width: 900,
+            height: 300,
+            right: 90,
+            target: document.getElementById('intel_0x0046_count'),
+            x_accessor: "date",
+            y_accessor: ["device_count","driver_count"],
+            legend: ["All","8.15.10.2086"],
+            interpolate: "monotone",
+            chart_type: "line",
+            linked: true
+        });
+    });
+
+    d3.json('data/intel-0x0046.json', function(data) {
+        data = MG.convert.date(data, 'date');
+        MG.data_graphic({
+            data: data,
+            title: "Percentage of Intel 0x0046 crashes where the 8.15.10.2086 driver is used",
+            width: 900,
+            height: 300,
+            target: document.getElementById('intel_0x0046_percent'),
+            x_accessor: "date",
+            y_accessor: "driver_percent",
+            interpolate: "monotone",
+            chart_type: "line",
+            linked: true,
+            area: false,
+            max_y:100
+        });
+    });
+</script>
