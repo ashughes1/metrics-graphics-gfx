@@ -1,0 +1,65 @@
+<div class='row trunk-section'>
+  <div class='col-lg-12 text-left' id='amd_count'></div>
+  <div class='col-lg-12 text-left' id='intel_count'></div>
+  <div class='col-lg-12 text-left' id='nvidia_count'></div>
+</div>
+
+<script>
+    MG._hooks = {};
+    d3.json('data/amd-latest-driver.json', function(data) {
+        data = MG.convert.date(data, 'date');
+        MG.data_graphic({
+            data: data,
+            title: "AMD graphics crashes in the latest AMD driver (15.* branch)",
+            width: 900,
+            height: 300,
+            right: 40,
+            left: 90,
+            bottom: 90,
+            target: document.getElementById('amd_count'),
+            x_accessor: "date",
+            y_accessor: "count",
+            interpolate: "monotone",
+            chart_type: "line",
+            linked: true
+        });
+    });
+
+    d3.json('data/intel-drivers.json', function(data) {
+        data = MG.convert.date(data, 'date');
+        MG.data_graphic({
+            data: data,
+            title: "Intel graphics crashes in the latest Intel driver (10.* branch)",
+            width: 900,
+            height: 300,
+            right: 40,
+            left: 90,
+            bottom: 90,
+            target: document.getElementById('intel_count'),
+            x_accessor: "date",
+            y_accessor: "count",
+            interpolate: "monotone",
+            chart_type: "line",
+            linked: true
+        });
+    });
+
+    d3.json('data/nvidia-latest-driver.json', function(data) {
+        data = MG.convert.date(data, 'date');
+        MG.data_graphic({
+            data: data,
+            title: "NVIDIA graphics crashes in the latest NVIDIA driver (10.* branch)",
+            width: 900,
+            height: 300,
+            right: 40,
+            left: 90,
+            bottom: 90,
+            target: document.getElementById('nvidia_count'),
+            x_accessor: "date",
+            y_accessor: "count",
+            interpolate: "monotone",
+            chart_type: "line",
+            linked: true
+        });
+    });
+</script>
