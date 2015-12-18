@@ -1,0 +1,46 @@
+<div class='row trunk-section'>
+  <div class='col-lg-12 text-left' id='crashes_count'></div>
+  <div class='col-lg-12 text-left' id='crashes_percent'></div>
+</div>
+
+<script>
+    MG._hooks = {};
+    d3.json('data/nvidia-latest-driver.json', function(data) {
+        data = MG.convert.date(data, 'date');
+        MG.data_graphic({
+            data: data,
+            title: "Graphics crashes in the latest NVIDIA driver (10.* branch)",
+            width: 900,
+            height: 300,
+            right: 40,
+            left: 90,
+            bottom: 90,
+            target: document.getElementById('crashes_count'),
+            x_accessor: "date",
+            y_accessor: "count",
+            interpolate: "monotone",
+            chart_type: "line",
+            linked: true
+        });
+    });
+
+    d3.json('data/nvidia-latest-driver.json', function(data) {
+        data = MG.convert.date(data, 'date');
+        MG.data_graphic({
+            data: data,
+            title: "Percent of NVIDIA graphics crashes in the latest NVIDIA driver (10.* branch)",
+            width: 900,
+            height: 300,
+            right: 40,
+            left: 90,
+            bottom: 90,
+            max_y:100,
+            target: document.getElementById('crashes_percent'),
+            x_accessor: "date",
+            y_accessor: "percent",
+            interpolate: "monotone",
+            chart_type: "line",
+            linked: true
+        });
+    });
+</script>
