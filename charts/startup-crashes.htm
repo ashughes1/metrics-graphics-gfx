@@ -1,6 +1,7 @@
 <div class='row trunk-section'>
   <div class='col-lg-12 text-left' id='startup_crashes_percent'></div>
   <div class='col-lg-12 text-left' id='startup_crashes_count'></div>
+  <div class='col-lg-12 text-left' id='startup_crashes_average'></div>
 </div>
 
 <script>
@@ -39,4 +40,38 @@
             linked: true
         });
     });
+
+    d3.json('data/gfxcrashes-startup.json', function(data) {
+        data = MG.convert.date(data, 'date');
+        for (i=0; i<data.length; i++) {
+          if (i < 7) {
+            sum = 0
+            for (j=0; j<=i; j++) {
+              sum = sum + data[j]['count'];
+            }
+            data[i]['average'] = sum/(i+1);
+          }
+          else {
+            sum = 0
+            for (j=0; j<7; j++) {
+              sum = sum + data[i-j]['count'];
+            }
+            data[i]['average'] = sum/7;
+          }
+        }
+        MG.data_graphic({
+            data: data,
+            title: "Rolling 7-day average crashes in gfx and layers within 8s of startup",
+            width: 900,
+            height: 300,
+            right: 40,
+            target: document.getElementById('startup_crashes_average'),
+            x_accessor: "date",
+            y_accessor: "average",
+            interpolate: "monotone",
+            chart_type: "line",
+            linked: true
+        });
+    });
+
 </script>
