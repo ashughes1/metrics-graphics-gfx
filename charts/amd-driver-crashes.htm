@@ -1,0 +1,174 @@
+<script src='js/addons/mg_line_brushing.js'></script>
+<link rel='stylesheet' href='css/addons/mg_line_brushing.css' />
+
+<div class='row trunk-section'>
+  <div class='col-lg-7 text-center'>
+    <div class='col-lg-12' id='crashes_amd'></div>
+    <div class='btn-group btn-group-sm text-center split-by-controls'>
+      <button type='button' class='btn btn-default active' data-y_accessor='all'>All</button>
+      <button type='button' class='btn btn-default' data-y_accessor='release'>Release</button>
+      <button type='button' class='btn btn-default' data-y_accessor='beta'>Beta</button>
+      <button type='button' class='btn btn-default' data-y_accessor='aurora'>Aurora</button>
+      <button type='button' class='btn btn-default' data-y_accessor='nightly'>Nightly</button>
+    </div>
+    <div class='legend text-center'></div>
+  </div>
+</div>
+
+<script>
+var globals = {};
+
+var split_by_params = {
+  title: "Crashes in AMD driver DLLs",
+  width: 1100,
+  height: 300,
+  right: 40,
+  xax_count: 4,
+  target: document.getElementById('crashes_amd'),
+  x_accessor: 'date',
+  missing_is_hidden: true,
+  linked: true
+};
+
+$('.split-by-controls button').click(function() {
+    var new_y_accessor = $(this).data('y_accessor');
+    split_by_params.y_accessor = setY(new_y_accessor);
+    split_by_params.markers = setMarkers(new_y_accessor);
+    split_by_params.legend = setLegend(new_y_accessor);
+
+    // change button state
+    $(this).addClass('active').siblings().removeClass('active');
+
+    // update data
+    delete split_by_params.xax_format;
+    MG.data_graphic(split_by_params);
+});
+
+function setLegend(channel) {
+  if (channel == "nightly") {
+    legend = ['nightly'];
+  } else if (channel == "aurora") {
+    legend = ['aurora'];
+  } else if (channel == "beta") {
+    legend = ['beta'];
+  } else if (channel == "release") {
+    legend = ['release'];
+  } else {
+    legend = ['nightly', 'aurora', 'beta', 'release'];
+  }
+  return legend;
+}
+
+function setY(channel) {
+  if (channel == "nightly") {
+    y_accessor = ['nightly'];
+  } else if (channel == "aurora") {
+    y_accessor = ['aurora'];
+  } else if (channel == "beta") {
+    y_accessor = ['beta'];
+  } else if (channel == "release") {
+    y_accessor = ['release'];
+  } else {
+    y_accessor = ['nightly', 'aurora', 'beta', 'release'];
+  }
+  return y_accessor;
+}
+
+function setMarkers(channel) {
+  if (channel == "nightly") {
+    markers = [{
+      'date': new Date('2015-12-14T00:00:00.000Z'),
+      'label': '46.0a1'
+    },{
+      'date': new Date('2015-10-29T00:00:00.000Z'),
+      'label': '45.0a1'
+    },{
+      'date': new Date('2015-09-21T00:00:00.000Z'),
+      'label': '44.0a1'
+    }, {
+      'date': new Date('2015-08-10T00:00:00.000Z'),
+      'label': '43.0a1'
+    }, {
+      'date': new Date('2015-06-29T00:00:00.000Z'),
+      'label': '42.0a1'
+    }, {
+      'date': new Date('2015-05-11T00:00:00.000Z'),
+      'label': '41.0a1'
+    }];
+  } else if (channel == "aurora") {
+    markers = [{
+      'date': new Date('2015-12-14T00:00:00.000Z'),
+      'label': '45.0a2'
+    },{
+      'date': new Date('2015-10-29T00:00:00.000Z'),
+      'label': '44.0a2'
+    },{
+      'date': new Date('2015-09-21T00:00:00.000Z'),
+      'label': '43.0a2'
+    }, {
+      'date': new Date('2015-08-10T00:00:00.000Z'),
+      'label': '42.0a2'
+    }, {
+      'date': new Date('2015-06-29T00:00:00.000Z'),
+      'label': '41.0a2'
+    }, {
+      'date': new Date('2015-05-11T00:00:00.000Z'),
+      'label': '40.0a2'
+    }];
+  } else if (channel == "beta") {
+    markers = [{
+      'date': new Date('2015-12-14T00:00:00.000Z'),
+      'label': '44.0b'
+    },{
+      'date': new Date('2015-10-29T00:00:00.000Z'),
+      'label': '43.0b'
+    },{
+      'date': new Date('2015-09-21T00:00:00.000Z'),
+      'label': '42.0b'
+    }, {
+      'date': new Date('2015-08-10T00:00:00.000Z'),
+      'label': '41.0b'
+    }, {
+      'date': new Date('2015-06-29T00:00:00.000Z'),
+      'label': '40.0b'
+    }, {
+      'date': new Date('2015-05-11T00:00:00.000Z'),
+      'label': '39.0b'
+    }];
+  } else {
+    markers = [{
+      'date': new Date('2015-12-15T00:00:00.000Z'),
+      'label': '43.0'
+    },{
+      'date': new Date('2015-11-03T00:00:00.000Z'),
+      'label': '42.0'
+    },{
+      'date': new Date('2015-09-22T00:00:00.000Z'),
+      'label': '41.0'
+    }, {
+      'date': new Date('2015-08-11T00:00:00.000Z'),
+      'label': '40.0'
+    }, {
+      'date': new Date('2015-06-30T00:00:00.000Z'),
+      'label': '39.0'
+    }, {
+      'date': new Date('2015-06-02T00:00:00.000Z'),
+      'label': '38.0.5'
+    }, {
+      'date': new Date('2015-05-12T00:00:00.000Z'),
+      'label': '38.0'
+    }];
+  }
+  return markers;
+}
+
+d3.json('data/amd-driver.json', function(data) {
+  data = MG.convert.date(data, 'date');
+  globals.data = data;
+  split_by_params.data = data;
+  split_by_params.legend = setLegend();
+  split_by_params.y_accessor = setY();
+  split_by_params.markers = setMarkers();
+  MG.data_graphic(split_by_params);
+});
+</script>
