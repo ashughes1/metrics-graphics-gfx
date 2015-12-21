@@ -1,0 +1,40 @@
+<div class='row trunk-section'>
+  <div class='col-lg-12 text-left' id='safemode_crashes'></div>
+</div>
+
+<script>
+    MG._hooks = {};
+    d3.json('data/safemode-crashes.json', function(data) {
+        data = MG.convert.date(data, 'date');
+        MG.data_graphic({
+            data: data,
+            title: "Daily safemode crashes in mozilla::gfx and mozilla::layers",
+            width: 900,
+            height: 300,
+            right: 50,
+            target: document.getElementById('safemode_crashes'),
+            x_accessor: "date",
+            y_accessor: ["oom","gfx"],
+            legend: ["OOM","Non-OOM"],
+            interpolate: "monotone",
+            chart_type: "line",
+            linked: true,
+            markers: [{
+              'date': new Date('2015-12-14T00:00:00.000Z'),
+              'label': '43/44/45/46'
+            },{
+              'date': new Date('2015-11-03T00:00:00.000Z'),
+              'label': '42/43/44/45'
+            },{
+              'date': new Date('2015-09-22T00:00:00.000Z'),
+              'label': '41/42/43/44'
+            },{
+              'date': new Date('2015-08-11T00:00:00.000Z'),
+              'label': '40/41/42/43'
+            },{
+              'date': new Date('2015-06-30T00:00:00.000Z'),
+              'label': '39/40/41/42'
+            }]
+        });
+    });
+</script>
