@@ -1,0 +1,44 @@
+<div class='row trunk-section'>
+  <div class='col-lg-4 text-left' id='bugzilla_postrelease_reported'></div>
+  <div class='col-lg-4 text-left' id='bugzilla_postrelease_resolved'></div>
+</div>
+
+<script>
+    MG._hooks = {};
+    d3.json('data//bugzilla/bugzilla-postrelease.json', function(data) {
+        for (i=0; i<data.length; i++) {
+          data[i]['release'] = data[i]['release'].toString()
+        }
+        MG.data_graphic({
+            data: data,
+            title: "Graphics Bugs Found After Release",
+            width: 450,
+            height: 600,
+            right: 40,
+            target: document.getElementById('bugzilla_postrelease_reported'),
+            x_accessor:"reported",
+            y_accessor:"release",
+            interpolate: "monotone",
+            chart_type: "bar"
+        });
+    });
+
+    d3.json('data//bugzilla/bugzilla-postrelease.json', function(data) {
+        for (i=0; i<data.length; i++) {
+          data[i]['release'] = data[i]['release'].toString()
+        }
+        MG.data_graphic({
+            data: data,
+            title: "Graphics Bugs Fixed After Release",
+            width: 450,
+            height: 600,
+            right: 40,
+            target: document.getElementById('bugzilla_postrelease_resolved'),
+            x_accessor:"resolved",
+            y_accessor:"release",
+            interpolate: "monotone",
+            chart_type: "bar"
+        });
+    });
+
+</script>
