@@ -1,0 +1,62 @@
+<div class='row trunk-section'>
+  <div class='col-lg-12 text-left' id='bugzilla_crashes_by_date'></div>
+  <div class='col-lg-4 text-left' id='bugzilla_crashes_by_version_reported'></div>
+  <div class='col-lg-4 text-left' id='bugzilla_crashes_by_version_resolved'></div>
+</div>
+
+<script>
+    MG._hooks = {};
+    d3.json('data//bugzilla/bugzilla-crashes.json', function(data) {
+        data = MG.convert.date(data, 'date');
+        MG.data_graphic({
+            data: data,
+            title: "30-day trend in Graphics crash bug reports",
+            width: 800,
+            height: 300,
+            right: 50,
+            target: document.getElementById('bugzilla_crashes_by_date'),
+            x_accessor: "date",
+            y_accessor: ["reported","resolved"],
+            legend:["Reported","Resolved"],
+            interpolate: "monotone",
+            chart_type: "line"
+        });
+    });
+
+    d3.json('data//bugzilla/bugzilla-crashes-by-version.json', function(data) {
+      for (i=0; i<data.length; i++) {
+        data[i]['release'] = data[i]['release'].toString()
+      }
+        MG.data_graphic({
+            data: data,
+            title: "Graphics crash bug reports by version",
+            width: 400,
+            height: 600,
+            right: 40,
+            target: document.getElementById('bugzilla_crashes_by_version_reported'),
+            y_accessor: "release",
+            x_accessor: "reported",
+            interpolate: "monotone",
+            chart_type: "bar"
+        });
+    });
+
+    d3.json('data//bugzilla/bugzilla-crashes-by-version.json', function(data) {
+      for (i=0; i<data.length; i++) {
+        data[i]['release'] = data[i]['release'].toString()
+      }
+        MG.data_graphic({
+            data: data,
+            title: "Graphics crash bug fixes by version",
+            width: 400,
+            height: 600,
+            right: 40,
+            target: document.getElementById('bugzilla_crashes_by_version_resolved'),
+            y_accessor: "release",
+            x_accessor: "resolved",
+            interpolate: "monotone",
+            chart_type: "bar"
+        });
+    });
+
+</script>

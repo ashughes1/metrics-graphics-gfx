@@ -6,11 +6,19 @@ var theme = 'light';
     //set the active pill and section on first load
     var section = (document.location.hash) ? document.location.hash.slice(1) : 'gfx-crashes-by-vendor';
 
-    $('#trunk').load('charts/' + section + '.htm', function() {
+    if (section.indexOf("bugzilla") != -1) {
+      $('#trunk').load('charts/bugzilla/' + section + '.htm', function() {
         $('pre code').each(function(i, block) {
             hljs.highlightBlock(block);
         });
-    });
+      });
+    } else {
+      $('#trunk').load('charts/' + section + '.htm', function() {
+        $('pre code').each(function(i, block) {
+            hljs.highlightBlock(block);
+        });
+      });
+    }
 
     $('.menu a#goto-' + section).addClass('active');
 
@@ -24,17 +32,25 @@ var theme = 'light';
             $(this).addClass('active');
 
             var section = $(this).attr('id').slice(5);
-            $('#trunk').load('charts/' + section + '.htm', function() {
+            if (section.indexOf("bugzilla") != -1) {
+              $('#trunk').load('charts/bugzilla/' + section + '.htm', function() {
                 $('pre code').each(function(i, block) {
-                    hljs.highlightBlock(block);
+                  hljs.highlightBlock(block);
                 });
-            });
+              });
+            } else {
+              $('#trunk').load('charts/' + section + '.htm', function() {
+                $('pre code').each(function(i, block) {
+                  hljs.highlightBlock(block);
+                });
+              });
+            }
 
             document.location.hash = section;
 
             return false;
         })
-    
+
         $('#dark-css').on('click', function () {
             theme = 'dark';
 

@@ -1,0 +1,49 @@
+<div class='row trunk-section'>
+  <div class='col-lg-12 text-left' id='bugzilla_uplifts'></div>
+</div>
+
+<script>
+    MG._hooks = {};
+    d3.json('data/bugzilla/bugzilla-uplifts.json', function(data) {
+        data = MG.convert.date(data, 'date');
+        MG.data_graphic({
+            data: data,
+            title: "30-day trend in Uplift Approvals",
+            width: 900,
+            height: 300,
+            right: 50,
+            target: document.getElementById('bugzilla_uplifts'),
+            x_accessor: "date",
+            y_accessor: ["release","beta","aurora"],
+            legend:["Release","Beta","Aurora"],
+            interpolate: "monotone",
+            chart_type: "line",
+            markers: [{
+              'date': new Date('2015-01-12T00:00:00.000Z'),
+              'label': '38/37/36/35'
+            },{
+              'date': new Date('2015-02-23T00:00:00.000Z'),
+              'label': '39/38/37/36'
+            },{
+              'date': new Date('2015-03-30T00:00:00.000Z'),
+              'label': '40/39/38/37'
+            },{
+              'date': new Date('2015-05-11T00:00:00.000Z'),
+              'label': '41/40/39/38'
+            },{
+              'date': new Date('2015-06-29T00:00:00.000Z'),
+              'label': '42/40/39/38'
+            },{
+              'date': new Date('2015-08-10T00:00:00.000Z'),
+              'label': '43/42/41/40'
+            },{
+              'date': new Date('2015-09-21T00:00:00.000Z'),
+              'label': '44/43/42/41'
+            },{
+              'date': new Date('2015-10-29T00:00:00.000Z'),
+              'label': '45/44/43/42'
+            }]
+        });
+    });
+
+</script>
