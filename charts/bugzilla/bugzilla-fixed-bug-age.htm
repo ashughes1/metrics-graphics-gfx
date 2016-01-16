@@ -1,0 +1,38 @@
+<div class='row trunk-section'>
+  <div class='col-lg-12 text-left' id='bugzilla_fixed_total'></div>
+  <div class='col-lg-12 text-left' id='bugzilla_fixed_average'></div>
+</div>
+
+<script>
+    MG._hooks = {};
+    d3.json('data/bugzilla/fixed_bug_age.json', function(data) {
+        MG.data_graphic({
+            data: data,
+            title: "Total days to fix bugs",
+            width: 900,
+            height: 300,
+            right: 50,
+            target: document.getElementById('bugzilla_fixed_total'),
+            x_accessor: "date",
+            y_accessor: "days_total",
+            interpolate: "monotone",
+            chart_type: "line"
+        });
+    });
+
+    d3.json('data/bugzilla/fixed_bug_age.json', function(data) {
+        MG.data_graphic({
+            data: data,
+            title: "Average days to fix bugs",
+            width: 900,
+            height: 300,
+            right: 50,
+            target: document.getElementById('bugzilla_fixed_average'),
+            x_accessor: "date",
+            y_accessor: "days_avg",
+            interpolate: "monotone",
+            chart_type: "line"
+        });
+    });
+
+</script>
