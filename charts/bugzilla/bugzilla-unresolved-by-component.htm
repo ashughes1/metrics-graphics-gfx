@@ -6,6 +6,7 @@
         <button type='button' class='btn btn-default' data-y_accessor='Canvas: 2D'>Canvas: 2D</button>
         <button type='button' class='btn btn-default' data-y_accessor='Canvas: WebGL'>Canvas: WebGL</button>
         <button type='button' class='btn btn-default' data-y_accessor='GFX: Color Management'>GFX: Color Management</button>
+        <button type='button' class='btn btn-default' data-y_accessor='Graphics'>Graphics</button>
         <button type='button' class='btn btn-default' data-y_accessor='Graphics: Layers'>Graphics: Layers</button>
         <button type='button' class='btn btn-default' data-y_accessor='Graphics: Text'>Graphics: Text</button>
         <button type='button' class='btn btn-default' data-y_accessor='Image Blocking'>Image Blocking</button>
@@ -23,7 +24,6 @@
 var globals = {};
 
 var split_by_params = {
-  title: "Total Unresolved Graphics Bugs",
   width: 1170,
   height: 400,
   right: 90,
@@ -35,6 +35,7 @@ var split_by_params = {
 $('.split-by-controls button').click(function() {
     var new_y_accessor = $(this).data('y_accessor');
     split_by_params.y_accessor = new_y_accessor;
+    split_by_params.title = 'Unresolved Bugs (' + new_y_accessor + ')'
 
     // change button state
     $(this).addClass('active').siblings().removeClass('active');
@@ -49,6 +50,7 @@ d3.json('data/bugzilla/bugzilla-unresolved-by-component.json', function(data) {
   globals.data = data;
   split_by_params.data = data;
   split_by_params.y_accessor = 'Total';
+  split_by_params.title = 'Unresolved Bugs (All)'
   MG.data_graphic(split_by_params);
 });
 </script>
