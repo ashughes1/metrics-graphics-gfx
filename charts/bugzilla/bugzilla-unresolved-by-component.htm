@@ -1,23 +1,18 @@
-<div class='row trunk-section'>
-  <table>
-    <tr>
-      <td style='width:100%;' class='btn-group btn-group-sm text-center split-by-controls'>
-        <button type='button' class='btn btn-default active' data-y_accessor='Total'>All</button>
-        <button type='button' class='btn btn-default' data-y_accessor='Canvas: 2D'>Canvas: 2D</button>
-        <button type='button' class='btn btn-default' data-y_accessor='Canvas: WebGL'>Canvas: WebGL</button>
-        <button type='button' class='btn btn-default' data-y_accessor='GFX: Color Management'>GFX: Color Management</button>
-        <button type='button' class='btn btn-default' data-y_accessor='Graphics'>Graphics</button>
-        <button type='button' class='btn btn-default' data-y_accessor='Graphics: Layers'>Graphics: Layers</button>
-        <button type='button' class='btn btn-default' data-y_accessor='Graphics: Text'>Graphics: Text</button>
-        <button type='button' class='btn btn-default' data-y_accessor='Image Blocking'>Image Blocking</button>
-        <button type='button' class='btn btn-default' data-y_accessor='ImageLib'>ImageLib</button>
-        <button type='button' class='btn btn-default' data-y_accessor='Panning and Zooming'>Panning and Zooming</button>
-      </td>
-    </tr>
-    <tr>
-      <td class='col-lg-12 text-left' id='chart'></td>
-    </tr>
-  </table>
+<div class='row trunk-section' style='text-align:center'>
+
+  <div class='col-lg-12 text-center' id='chart'></div>
+  <div class='btn-group btn-group-sm text-center split-by-controls'>
+    <button type='button' class='btn btn-default active' data-y_accessor='Total'>All</button>
+    <button type='button' class='btn btn-default' data-y_accessor='Canvas: 2D'>Canvas: 2D</button>
+    <button type='button' class='btn btn-default' data-y_accessor='Canvas: WebGL'>Canvas: WebGL</button>
+    <button type='button' class='btn btn-default' data-y_accessor='GFX: Color Management'>GFX: Color Management</button>
+    <button type='button' class='btn btn-default' data-y_accessor='Graphics'>Graphics</button>
+    <button type='button' class='btn btn-default' data-y_accessor='Graphics: Layers'>Graphics: Layers</button>
+    <button type='button' class='btn btn-default' data-y_accessor='Graphics: Text'>Graphics: Text</button>
+    <button type='button' class='btn btn-default' data-y_accessor='Image Blocking'>Image Blocking</button>
+    <button type='button' class='btn btn-default' data-y_accessor='ImageLib'>ImageLib</button>
+    <button type='button' class='btn btn-default' data-y_accessor='Panning and Zooming'>Panning and Zooming</button>
+  </div>
 </div>
 
 <script>
@@ -29,7 +24,29 @@ var split_by_params = {
   right: 90,
   target: document.getElementById('chart'),
   x_accessor:"date",
-  chart_type: "line"
+  chart_type: "line",
+  markers: [{
+    'date': new Date('2014-07-22T00:00:00.000Z'),
+    'label': '34/33/32/31'
+  },{
+    'date': new Date('2014-10-14T00:00:00.000Z'),
+    'label': '36/35/34/33'
+  },{
+    'date': new Date('2015-01-12T00:00:00.000Z'),
+    'label': '38/37/36/35'
+  },{
+    'date': new Date('2015-03-30T00:00:00.000Z'),
+    'label': '40/39/38/37'
+  },{
+    'date': new Date('2015-06-29T00:00:00.000Z'),
+    'label': '42/40/39/38'
+  },{
+    'date': new Date('2015-09-21T00:00:00.000Z'),
+    'label': '44/43/42/41'
+  },{
+    'date': new Date('2015-12-15T00:00:00.000Z'),
+    'label': '46/45/44/43'
+  }]
 };
 
 $('.split-by-controls button').click(function() {
