@@ -1,0 +1,24 @@
+<div class='row trunk-section'>
+  <h4 style="text-align:center; margin-top:-20px">Bug reports representing crashes</h4>
+  <h5 style="text-align:center"><i>30 day aggregate</i></h4>
+  <div class='col-lg-12 text-center' id='bugzilla_crashes_by_date' style="margin-top:-80px"></div>
+</div>
+
+<script>
+    MG._hooks = {};
+    d3.json('data//bugzilla/bugzilla-crashes.json', function(data) {
+        data = MG.convert.date(data, 'date');
+        MG.data_graphic({
+            data: data,
+            width: 1170,
+            height: 400,
+            right: 50,
+            target: document.getElementById('bugzilla_crashes_by_date'),
+            x_accessor: "date",
+            y_accessor: ["reported","resolved"],
+            legend:["Reported","Resolved"],
+            interpolate: "monotone",
+            chart_type: "line"
+        });
+    });
+</script>

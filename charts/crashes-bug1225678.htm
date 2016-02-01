@@ -1,0 +1,24 @@
+<div class='row trunk-section'>
+  <div class='col-lg-12 text-left' id='crashes_bug1225678'></div>
+</div>
+
+<script>
+    MG._hooks = {};
+    d3.json('data/bug1225678.json', function(data) {
+        data = MG.convert.date(data, 'date');
+        MG.data_graphic({
+            data: data,
+            title: "Bug 1225678",
+            width: 1140,
+            height: 390,
+            right: 40,
+            left: 90,
+            bottom: 90,
+            target: document.getElementById('crashes_bug1225678'),
+            x_accessor: "date",
+            y_accessor: "total",
+            interpolate: "monotone",
+            chart_type: "line"
+        });
+    });
+</script>
