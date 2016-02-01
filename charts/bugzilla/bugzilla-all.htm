@@ -1,18 +1,19 @@
-<div class='row trunk-section'>
+<div class='row trunk-section' style='margin-top:-60px'>
   <div class='col-lg-12 text-left'>
-    <div class='col-lg-4 text-left' id='bugzilla_all'></div>
-    <div class='col-lg-4 text-left' id='bugzilla_crashes_by_date'></div>
-    <div class='col-lg-4 text-left' id='bugzilla_uplifts'></div>
+    <div class='col-lg-4 text-left' id='bugzilla_reports' title='Bugs reported by date (click to enlarge)' onclick='focus_chart("bugzilla-reports")'></div>
+    <div class='col-lg-4 text-left' id='bugzilla_crashes_by_date' title='Bugs reported representing crashes (click to enlarge)' onclick='focus_chart("bugzilla-crashes-by-date")'></div>
+    <div class='col-lg-4 text-left' id='bugzilla_uplifts' title='Uplift Approvals (click to enlarge)' onclick='focus_chart("bugzilla-uplifts")'></div>
   </div>
   <div class='col-lg-12 text-left'>
-    <div class='col-lg-6 text-left' id='bugzilla_fixed_total'></div>
-    <div class='col-lg-6 text-left' id='bugzilla_fixed_average'></div>
+    <div class='col-lg-4 text-left' id='bugzilla_unresolved' title='Unresolved Bugs Over Time (click to enlarge)' onclick='focus_chart("bugzilla-unresolved-by-component")'></div>
+    <div class='col-lg-4 text-left' id='bugzilla_fixed_total' title='Total time to fix bugs (click to enlarge)' onclick='focus_chart("bugzilla-fixed-bug-age")'></div>
+    <div class='col-lg-4 text-left' id='bugzilla_fixed_average' title='Average time to fix bugs (click to enlarge)' onclick='focus_chart("bugzilla-fixed-bug-age")'></div>
   </div>
   <div class='col-lg-12 text-left'>
-    <div class='col-lg-3 text-left' id='bugzilla_postrelease_reported'></div>
-    <div class='col-lg-3 text-left' id='bugzilla_postrelease_resolved'></div>
-    <div class='col-lg-3 text-left' id='bugzilla_crashes_by_version_reported'></div>
-    <div class='col-lg-3 text-left' id='bugzilla_crashes_by_version_resolved'></div>
+    <div class='col-lg-3 text-left' id='bugzilla_postrelease_reported' title='Bugs reported post-release (click to enlarge)' onclick='focus_chart("bugzilla-postrelease")'></div>
+    <div class='col-lg-3 text-left' id='bugzilla_postrelease_resolved' title='Bugs resolved post-release (click to enlarge)' onclick='focus_chart("bugzilla-postrelease")'></div>
+    <div class='col-lg-3 text-left' id='bugzilla_crashes_by_version_reported' title='Bugs reported representing crashes (click to enlarge)' onclick='focus_chart("bugzilla-crashes-reported-by-version")'></div>
+    <div class='col-lg-3 text-left' id='bugzilla_crashes_by_version_resolved' title='Bugs resolved representing crashes (click to enlarge)' onclick='focus_chart("bugzilla-crashes-resolved-by-version")'></div>
   </div>
 </div>
 
@@ -26,7 +27,7 @@
             width: 390,
             height: 220,
             right: 50,
-            target: document.getElementById('bugzilla_all'),
+            target: document.getElementById('bugzilla_reports'),
             x_accessor: "date",
             y_accessor: ["reported","resolved","duped","reopened"],
             legend:["Reported","Resolved","Duped","Reopened"],
@@ -115,13 +116,32 @@ d3.json('data/bugzilla/bugzilla-uplifts.json', function(data) {
 });
 </script>
 
+<!-- Fixed Bug Age -->
 <script>
     MG._hooks = {};
+
+    d3.json('data/bugzilla/bugzilla-unresolved-by-component.json', function(data) {
+      data = MG.convert.date(data, 'date');
+      MG.data_graphic({
+        data: data,
+        title: "Unresolved Bugs",
+        width: 390,
+        height: 220,
+        right: 50,
+        target: document.getElementById('bugzilla_unresolved'),
+        x_accessor: "date",
+        xax_count:4,
+        y_accessor: "Total",
+        interpolate: "monotone",
+        chart_type: "line"
+      });
+    });
+
     d3.json('data/bugzilla/fixed_bug_age.json', function(data) {
         MG.data_graphic({
             data: data,
             title: "Days to Fix (Total)",
-            width: 585,
+            width: 390,
             height: 220,
             right: 50,
             target: document.getElementById('bugzilla_fixed_total'),
@@ -133,7 +153,7 @@ d3.json('data/bugzilla/bugzilla-uplifts.json', function(data) {
         MG.data_graphic({
             data: data,
             title: "Days to Fix (Average)",
-            width: 585,
+            width: 390,
             height: 220,
             right: 50,
             target: document.getElementById('bugzilla_fixed_average'),
@@ -148,7 +168,7 @@ d3.json('data/bugzilla/bugzilla-uplifts.json', function(data) {
 <!-- POST-RELEASE BUGS -->
 <script>
     MG._hooks = {};
-    d3.json('data//bugzilla/bugzilla-postrelease.json', function(data) {
+    d3.json('data/bugzilla/bugzilla-postrelease.json', function(data) {
       var summary_data = []
       for (i=0; i<(data.length/4); i++) {
         summary_data[i] = data[i]
@@ -214,4 +234,12 @@ d3.json('data//bugzilla/bugzilla-crashes-by-version.json', function(data) {
       chart_type: "bar"
   });
 });
+</script>
+
+
+<script>
+function focus_chart(chart) {
+  document.location.href="index.htm#" + chart
+  document.location.reload()
+}
 </script>
