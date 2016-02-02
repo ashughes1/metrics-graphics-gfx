@@ -1,0 +1,38 @@
+<div class='row trunk-section'>
+  <h4 style="text-align:center; margin-top:-20px">Bugzilla Reports</h4>
+  <h5 style="text-align:center"><i>30 day aggregate</i></h4>
+  <div class='col-lg-12 text-left' id='bugzilla_reports'></div>
+</div>
+
+<script>
+MG._hooks = {};
+d3.json('data/bugzilla/bugzilla-gfx-by-date.json', function(data) {
+    data = MG.convert.date(data, 'date');
+    MG.data_graphic({
+        data: data,
+        width: 1170,
+        height: 400,
+        right: 50,
+        target: document.getElementById('bugzilla_reports'),
+        x_accessor: "date",
+        y_accessor: ["reported","resolved","duped","reopened"],
+        legend:["Reported","Resolved","Duped","Reopened"],
+        interpolate: "monotone",
+        chart_type: "line",
+        animate_on_load:true,
+        markers: [{
+          'date': new Date('2015-01-12T00:00:00.000Z'),
+          'label': '38/37/36/35'
+        },{
+          'date': new Date('2015-03-30T00:00:00.000Z'),
+          'label': '40/39/38/37'
+        },{
+          'date': new Date('2015-06-29T00:00:00.000Z'),
+          'label': '42/40/39/38'
+        },{
+          'date': new Date('2015-09-21T00:00:00.000Z'),
+          'label': '44/43/42/41'
+        }]
+    });
+});
+</script>
