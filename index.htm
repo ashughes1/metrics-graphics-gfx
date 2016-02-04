@@ -28,50 +28,45 @@
                     Powered by <a href='http://metricsgraphicsjs.org'>MetricsGraphics.js 2.7</a> (<a href='https://github.com/mozilla/metrics-graphics'>source</a>)
                 </div>
                 <hr />
+                <div id='trunk'></div>
                 <div id='menu' style="text-align:left">
-                  <u>Crashes</u>
-                  <ul>
-                    <li><a href='index.htm#' id='goto-gfx-crashes-by-vendor' class='pill'>GFX</a></li>
-                    <li><a href='index.htm#' id='goto-crashes-gfx-percent' class='pill'>GFX (%)</a></li>
-                    <li><a href='index.htm#' id="goto-layers-crashes-by-vendor" class='pill'>Layers</a></li>
-                    <li><a href='index.htm#' id="goto-igd10umd-crashes" class='pill'>igd10umd*.dll</a></li>
-                    <li><a href='index.htm#' id="goto-crashes-android" class='pill'>Android</a></li>
-                    <li><a href='index.htm#' id='goto-webgl-percent' class='pill'>WebGL</a></li>
-                    <li><a href='index.htm#' id='goto-devices-percent' class='pill'>Devices (%)</a></li>
-                    <li><a href='index.htm#' id='goto-driver-percents' class='pill'>Drivers (%)</a></li>
-                    <li><a href='index.htm#' id='goto-startup-crashes' class='pill' title='Startup crashes in mozilla::gfx and mozilla::layers'>Startup</a></li>
-                    <li><a href='index.htm#' id='goto-shutdown-crashes' class='pill' title='Shutdown crashes in mozilla::gfx and mozilla::layers'>Shutdown</a></li>
-                    <li><a href='index.htm#' id='goto-crashes-percentage' class='pill' title='Startup vs Shutdown crashes in mozilla::gfx and mozilla::layers'>Startup vs Shutdown</a></li>
-                    <li><a href='index.htm#' id='goto-gce-crashes' class='pill' title='Crashes with a graphics critical error'>GCE</a></li>
-                    <li><a href='index.htm#' id='goto-lowmem-crashes' class='pill' title='Crashes in mozilla::gfx and mozilla::layers with low system memory'>OOM</a></li>
-                    <li><a href='index.htm#' id='goto-mozcrash-gfx_crash-by-channel' class='pill' title='Crashes where MOZ_CRASH reason is GFX_CRASH'>MOZ_CRASH(GFX_CRASH) by Channel (Filtered)</a></li>
-                    <li><a href='index.htm#' id='goto-mozcrash-gfx_crash-by-channel0' class='pill' title='Crashes where MOZ_CRASH reason is GFX_CRASH'>MOZ_CRASH(GFX_CRASH) by Channel (All)</a></li>
-                    <li><a href='index.htm#' id='goto-mozcrash-outin' class='pill' title='Crashes where MOZ_CRASH reason exists'>MOZ_CRASH Graphics vs Other</a></li>
-                    <li><a href='index.htm#' id='goto-crashes-intel-0x0046' class='pill' title='Crashes reported by users with an Intel 0x0046 card'>Intel 0x0046</a></li>
-                    <li><a href='index.htm#' id='goto-intel-latest-driver' class='pill' title='Crashes in mozilla::gfx and mozilla::layers using the latest Intel driver branch'>Latest Intel</a></li>
-                    <li><a href='index.htm#' id='goto-amd-latest-driver' class='pill' title='Crashes in mozilla::gfx and mozilla::layers using the latest AMD driver branch'>Latest AMD</a></li>
-                    <li><a href='index.htm#' id='goto-nvidia-latest-driver' class='pill' title='Crashes in mozilla::gfx and mozilla::layers using the latest NVIDIA driver branch'>Latest NVIDIA</a></li>
-                    <li><a href='index.htm#' id='goto-all-latest-driver' class='pill' title='Crashes in mozilla::gfx and mozilla::layers using the latest driver branch'>Latest ALL (%)</a></li>
-                    <li><a href='index.htm#' id='goto-all-latest-driver-count' class='pill' title='Crashes in mozilla::gfx and mozilla::layers using the latest driver branch'>Latest ALL (Count)</a></li>
-                    <li><a href='index.htm#' id='goto-nvidia-driver-crashes' class='pill' title='Crashes in the NVIDIA graphics driver'>NVIDIA driver crashes</a></li>
-                    <li><a href='index.htm#' id='goto-amd-driver-crashes' class='pill' title='Crashes in the AMD graphics driver'>AMD driver crashes</a></li>
-                    <li><a href='index.htm#' id='goto-intel-driver-crashes' class='pill' title='Crashes in the Intel graphics driver'>Intel driver crashes</a></li>
-                    <li><a href='index.htm#' id='goto-safemode-crashes' class='pill' title='Safemode crashes in tmozilla::gfx and mozilla::layers'>Safemode crashes</a></li>
-                  </ul>
-                  <a href='index.htm#' id='goto-crashes-bug1225678' class='pill' title=''>BUG 1225678</a> |
-                  <a href='index.htm#' id='goto-bugzilla-unresolved-by-component' class='pill' title=''>Unresolved by Component</a>
-                  <h2 style="text-align:center;">
-                    <a href='index.htm#' id='goto-bugzilla-all' class='pill' title='Graphics Bugzilla Dashboard (click to return to dashboard)'>
-                      Bugzilla
-                    </a>
-                  </h2>
+                  Socorro: <a href="#" id="goto-igd10umd-crashes" class='pill'>igd10umd*.dll</a>
+                  <br />
+                  Bugzilla: <a href='#' id='goto-bugzilla-all' class='pill' title='Graphics Bugzilla Dashboard (click to return to dashboard)'>Dashboard</a>
                   <hr />
+                  <u>Prototypes</u>
+                  <ul>
+                    <li><a href='#' id='goto-gfx-crashes-by-vendor' class='pill'>GFX</a></li>
+                    <li><a href='#' id='goto-crashes-gfx-percent' class='pill'>GFX (%)</a></li>
+                    <li><a href="#" id="goto-layers-crashes-by-vendor" class='pill'>Layers</a></li>
+                    <li><a href="#" id="goto-crashes-android" class='pill'>Android</a></li>
+                    <li><a href='#' id='goto-webgl-percent' class='pill'>WebGL</a></li>
+                    <li><a href='#' id='goto-devices-percent' class='pill'>Devices (%)</a></li>
+                    <li><a href='#' id='goto-driver-percents' class='pill'>Drivers (%)</a></li>
+                    <li><a href='#' id='goto-startup-crashes' class='pill' title='Startup crashes in mozilla::gfx and mozilla::layers'>Startup</a></li>
+                    <li><a href='#' id='goto-shutdown-crashes' class='pill' title='Shutdown crashes in mozilla::gfx and mozilla::layers'>Shutdown</a></li>
+                    <li><a href='#' id='goto-crashes-percentage' class='pill' title='Startup vs Shutdown crashes in mozilla::gfx and mozilla::layers'>Startup vs Shutdown</a></li>
+                    <li><a href='#' id='goto-gce-crashes' class='pill' title='Crashes with a graphics critical error'>GCE</a></li>
+                    <li><a href='#' id='goto-lowmem-crashes' class='pill' title='Crashes in mozilla::gfx and mozilla::layers with low system memory'>OOM</a></li>
+                    <li><a href='#' id='goto-mozcrash-gfx_crash-by-channel' class='pill' title='Crashes where MOZ_CRASH reason is GFX_CRASH'>MOZ_CRASH(GFX_CRASH) by Channel (Filtered)</a></li>
+                    <li><a href='#' id='goto-mozcrash-gfx_crash-by-channel0' class='pill' title='Crashes where MOZ_CRASH reason is GFX_CRASH'>MOZ_CRASH(GFX_CRASH) by Channel (All)</a></li>
+                    <li><a href='#' id='goto-mozcrash-outin' class='pill' title='Crashes where MOZ_CRASH reason exists'>MOZ_CRASH Graphics vs Other</a></li>
+                    <li><a href='#' id='goto-crashes-intel-0x0046' class='pill' title='Crashes reported by users with an Intel 0x0046 card'>Intel 0x0046</a></li>
+                    <li><a href='#' id='goto-intel-latest-driver' class='pill' title='Crashes in mozilla::gfx and mozilla::layers using the latest Intel driver branch'>Latest Intel</a></li>
+                    <li><a href='#' id='goto-amd-latest-driver' class='pill' title='Crashes in mozilla::gfx and mozilla::layers using the latest AMD driver branch'>Latest AMD</a></li>
+                    <li><a href='#' id='goto-nvidia-latest-driver' class='pill' title='Crashes in mozilla::gfx and mozilla::layers using the latest NVIDIA driver branch'>Latest NVIDIA</a></li>
+                    <li><a href='#' id='goto-all-latest-driver' class='pill' title='Crashes in mozilla::gfx and mozilla::layers using the latest driver branch'>Latest ALL (%)</a></li>
+                    <li><a href='#' id='goto-all-latest-driver-count' class='pill' title='Crashes in mozilla::gfx and mozilla::layers using the latest driver branch'>Latest ALL (Count)</a></li>
+                    <li><a href='#' id='goto-nvidia-driver-crashes' class='pill' title='Crashes in the NVIDIA graphics driver'>NVIDIA driver crashes</a></li>
+                    <li><a href='#' id='goto-amd-driver-crashes' class='pill' title='Crashes in the AMD graphics driver'>AMD driver crashes</a></li>
+                    <li><a href='#' id='goto-intel-driver-crashes' class='pill' title='Crashes in the Intel graphics driver'>Intel driver crashes</a></li>
+                    <li><a href='#' id='goto-safemode-crashes' class='pill' title='Safemode crashes in tmozilla::gfx and mozilla::layers'>Safemode crashes</a></li>
+                  </ul>
                 </div>
 
             </div>
 
-        <div id='trunk'>
-        </div>
+
 
 
     </div> <!-- end container -->
