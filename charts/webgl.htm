@@ -1,0 +1,23 @@
+<div class='row trunk-section'>
+    <div class='col-lg-12 text-left' id='chart'></div>
+</div>
+<script>
+    MG._hooks = {};
+    d3.json('data/webgl.json', function(data) {
+      data = MG.convert.date(data, 'date');
+      MG.data_graphic({
+          title: "Crash sessions where WebGL is attempted",
+          data: data,
+          width: 1140,
+          height: 300,
+          right: 40,
+          target: document.getElementById('chart'),
+          x_accessor: 'date',
+          y_accessor: ['webgl?','webgl+','webgl-'],
+          interpolate: "monotone",
+          chart_type: "line",
+          linked: true,
+          legend: ['webgl?','webgl+','webgl-']
+      });
+    });
+</script>
