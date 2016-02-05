@@ -1,0 +1,107 @@
+<div class='row trunk-section' style='text-align:center; margin-top:-40px'>
+    <h4 style="width:100%; text-align:center;">Crashes in Graphics Drivers by GPU Vendor</h4>
+    <br />
+    <div class='btn-group btn-group-sm text-center split-by-controls'>
+      <button type='button' class='btn btn-default active' data-y_accessor='all'>All</button>
+      <button type='button' class='btn btn-default' data-y_accessor='release'>Release</button>
+      <button type='button' class='btn btn-default' data-y_accessor='beta'>Beta</button>
+      <button type='button' class='btn btn-default' data-y_accessor='aurora'>Aurora</button>
+      <button type='button' class='btn btn-default' data-y_accessor='nightly'>Nightly</button>
+    </div>
+    <div class='col-lg-12 text-center'>
+      <div class='col-lg-4 text-left' id='amd'></div>
+      <div class='col-lg-4 text-left' id='intel'></div>
+      <div class='col-lg-4 text-left' id='nvidia'></div>
+      <div id='legend' style="width:100%; text-align:center; font-size:small"></div>
+    </div>
+</div>
+
+<script>
+  var globals = {};
+
+  var split_by_params = {
+    'amd': {
+      title: "AMD",
+      width: 390,
+      height: 220,
+      target: document.getElementById('amd'),
+      x_accessor: "date",
+      interpolate: "monotone",
+      chart_type: "line",
+      linked:true
+    },
+    'intel': {
+      title: "Intel",
+      width: 390,
+      height: 220,
+      target: document.getElementById('intel'),
+      x_accessor: "date",
+      interpolate: "monotone",
+      chart_type: "line",
+      linked:true,
+    },
+    'nvidia': {
+      title: "NVIDIA",
+      width: 390,
+      height: 220,
+      target: document.getElementById('nvidia'),
+      x_accessor: "date",
+      interpolate: "monotone",
+      chart_type: "line",
+      linked:true,
+    }
+  };
+
+  $('.split-by-controls button').click(function() {
+      var new_y_accessor = $(this).data('y_accessor');
+
+      if (new_y_accessor == 'all') {
+        split_by_params['amd'].y_accessor = ["release","beta","aurora","nightly"];
+        split_by_params['intel'].y_accessor = ["release","beta","aurora","nightly"];
+        split_by_params['nvidia'].y_accessor = ["release","beta","aurora","nightly"];
+        split_by_params['amd'].legend = ["release","beta","aurora","nightly"];
+        split_by_params['amd'].legend_target = document.getElementById('legend');
+      } else {
+        split_by_params['amd'].y_accessor = new_y_accessor;
+        split_by_params['intel'].y_accessor = new_y_accessor;
+        split_by_params['nvidia'].y_accessor = new_y_accessor;
+        split_by_params['amd'].legend = "";
+      }
+
+      // change button state
+      $(this).addClass('active').siblings().removeClass('active');
+
+      // update data
+      delete split_by_params['amd'].yay_format;
+      delete split_by_params['intel'].yay_format;
+      delete split_by_params['nvidia'].yay_format;
+      MG.data_graphic(split_by_params['amd']);
+      MG.data_graphic(split_by_params['intel']);
+      MG.data_graphic(split_by_params['nvidia']);
+  });
+
+  MG._hooks = {};
+  d3.json('data/driver-crashes.json', function(data) {
+    data['amd'] = MG.convert.date(data['amd'], 'date');
+    data['intel'] = MG.convert.date(data['intel'], 'date');
+    data['nvidia'] = MG.convert.date(data['nvidia'], 'date');
+
+    globals.data = data;
+
+    split_by_params['amd'].data = data['amd'];
+    split_by_params['intel'].data = data['intel'];
+    split_by_params['nvidia'].data = data['nvidia'];
+
+    split_by_params['amd'].y_accessor = ["release","beta","aurora","nightly"];
+    split_by_params['intel'].y_accessor = ["release","beta","aurora","nightly"];
+    split_by_params['nvidia'].y_accessor = ["release","beta","aurora","nightly"];
+
+    split_by_params['amd'].legend = ["release","beta","aurora","nightly"];
+    split_by_params['amd'].legend_target = document.getElementById('legend');
+
+    MG.data_graphic(split_by_params['amd']);
+    MG.data_graphic(split_by_params['intel']);
+    MG.data_graphic(split_by_params['nvidia']);
+  });
+
+</script>
