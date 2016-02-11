@@ -1,0 +1,90 @@
+<div class='row trunk-section' style='text-align:center; margin-top:-40px'>
+    <h4 style="width:100%; text-align:center;">Android Crashes in Graphics</h4>
+    <br />
+    <div class='btn-group btn-group-sm text-center split-by-controls'>
+      <button type='button' class='btn btn-default active' data-y_accessor='all'>All</button>
+      <button type='button' class='btn btn-default' data-y_accessor='klte'>klte</button>
+      <button type='button' class='btn btn-default' data-y_accessor='hlte'>hlte</button>
+      <button type='button' class='btn btn-default' data-y_accessor='trlte'>trlte</button>
+      <button type='button' class='btn btn-default' data-y_accessor='espresso10wifi'>espresso10wifi</button>
+      <button type='button' class='btn btn-default' data-y_accessor='santos10wifi'>santos10wifi</button>
+    </div>
+    <div class='col-lg-12 text-center' id='chart'></div>
+</div>
+
+<script>
+  var globals = {};
+
+  var split_by_params = {
+      width: 1190,
+      height: 300,
+      right:40,
+      target: document.getElementById('chart'),
+      x_accessor: "date",
+      interpolate: "monotone",
+      chart_type: "line",
+      linked:true,
+      markers: [{
+        'date': new Date('2015-08-10T00:00:00.000Z'),
+        'label': '41.0'
+      },{
+        'date': new Date('2015-09-21T00:00:00.000Z'),
+        'label': '42.0'
+      },{
+        'date': new Date('2015-10-29T00:00:00.000Z'),
+        'label': '43.0'
+      },{
+        'date': new Date('2015-12-14T00:00:00.000Z'),
+        'label': '44.0'
+      },{
+        'date': new Date('2016-01-25T00:00:00.000Z'),
+        'label': '45.0'
+      }]
+  };
+
+  $('.split-by-controls button').click(function() {
+      var new_y_accessor = $(this).data('y_accessor');
+
+      if (new_y_accessor == 'all') {
+        split_by_params.y_accessor = ["klte","hlte","trlte","espresso10wifi","santos10wifi"];
+        split_by_params.legend = ["klte","hlte","trlte","espresso10wifi","santos10wifi"];
+      } else {
+        split_by_params.y_accessor = new_y_accessor;
+        split_by_params.legend = new_y_accessor;
+      }
+
+      // change button state
+      $(this).addClass('active').siblings().removeClass('active');
+
+      // update data
+      delete split_by_params.yay_format;
+      MG.data_graphic(split_by_params);
+  });
+
+  MG._hooks = {};
+  d3.json('data/crashes-android-by-device.json', function(data) {
+    data = MG.convert.date(data, 'date');
+    globals.data = data;
+    split_by_params.data = data;
+    split_by_params.y_accessor = ["klte","hlte","trlte","espresso10wifi","santos10wifi"];
+    split_by_params.legend = ["klte","hlte","trlte","espresso10wifi","santos10wifi"];
+    split_by_params.markers = [{
+      'date': new Date('2015-08-10T00:00:00.000Z'),
+      'label': '41.0'
+    },{
+      'date': new Date('2015-09-21T00:00:00.000Z'),
+      'label': '42.0'
+    },{
+      'date': new Date('2015-10-29T00:00:00.000Z'),
+      'label': '43.0'
+    },{
+      'date': new Date('2015-12-14T00:00:00.000Z'),
+      'label': '44.0'
+    },{
+      'date': new Date('2016-01-25T00:00:00.000Z'),
+      'label': '45.0'
+    }];
+    MG.data_graphic(split_by_params);
+  });
+
+</script>
