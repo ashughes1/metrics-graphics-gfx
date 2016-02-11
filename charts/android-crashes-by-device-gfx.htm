@@ -1,13 +1,13 @@
 <div class='row trunk-section' style='text-align:center; margin-top:-40px'>
-    <h4 style="width:100%; text-align:center;">Android Crashes for the Top-5 Devices</h4>
+    <h4 style="width:100%; text-align:center;">Android Graphics crashes for the Top-5 Devices</h4>
     <br />
     <div class='btn-group btn-group-sm text-center split-by-controls'>
       <button type='button' class='btn btn-default active' data-y_accessor='all'>All</button>
+      <button type='button' class='btn btn-default' data-y_accessor='x86'>Android x86</button>
+      <button type='button' class='btn btn-default' data-y_accessor='ja3g'>Samsung Galaxy S4</button>
       <button type='button' class='btn btn-default' data-y_accessor='klte'>Samsung Galaxy S5</button>
-      <button type='button' class='btn btn-default' data-y_accessor='hlte'>Samsung Galaxy Note 3</button>
-      <button type='button' class='btn btn-default' data-y_accessor='trlte'>Samsung Galaxy Note 4</button>
       <button type='button' class='btn btn-default' data-y_accessor='espresso10wifi'>Samsung Galaxy Tab 2</button>
-      <button type='button' class='btn btn-default' data-y_accessor='santos10wifi'>Samsung Galaxy Tab 3</button>
+      <button type='button' class='btn btn-default' data-y_accessor='trlte'>Samsung Galaxy Note 4</button>
     </div>
     <div class='col-lg-12 text-center' id='chart'></div>
 </div>
@@ -46,8 +46,8 @@
       var new_y_accessor = $(this).data('y_accessor');
 
       if (new_y_accessor == 'all') {
-        split_by_params.y_accessor = ["klte","hlte","trlte","espresso10wifi","santos10wifi"];
-        split_by_params.legend = ["klte","hlte","trlte","espresso10wifi","santos10wifi"];
+        split_by_params.y_accessor = ["x86","ja3g","klte","espresso10wifi","trlte"];
+        split_by_params.legend = ["x86","ja3g","klte","espresso10wifi","trlte"];
       } else {
         split_by_params.y_accessor = new_y_accessor;
         split_by_params.legend = new_y_accessor;
@@ -62,12 +62,12 @@
   });
 
   MG._hooks = {};
-  d3.json('data/crashes-android-by-device.json', function(data) {
+  d3.json('data/crashes-android-by-device-gfx.json', function(data) {
     data = MG.convert.date(data, 'date');
     globals.data = data;
     split_by_params.data = data;
-    split_by_params.y_accessor = ["klte","hlte","trlte","espresso10wifi","santos10wifi"];
-    split_by_params.legend = ["klte","hlte","trlte","espresso10wifi","santos10wifi"];
+    split_by_params.y_accessor = ["x86","ja3g","klte","espresso10wifi","trlte"];
+    split_by_params.legend = ["x86","ja3g","klte","espresso10wifi","trlte"];
     split_by_params.markers = [{
       'date': new Date('2015-08-10T00:00:00.000Z'),
       'label': '40.0'

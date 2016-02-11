@@ -30,11 +30,17 @@
                 <hr />
                 <div id='trunk'></div>
                 <div id='menu' style="text-align:left">
-                  Socorro:
-                  <a href="#" id="goto-android-crashes" class='pill'>android</a>|
+                  Socorro (Firefox):
                   <a href="#" id="goto-webgl" class='pill'>webgl</a>|
                   <a href="#" id="goto-driver-crashes" class='pill'>driver crashes</a>|
                   <a href="#" id="goto-graphics-critical-error" class='pill'>graphics critical error</a>
+                  <br />
+                  Socorro (Fennec):
+                  <a href="#" id="goto-android-crashes" class='pill'>Graphics</a>|
+                  <a href='#' id='goto-android-crashes-by-device' class='pill' title='Android crashes for top-5 devices'>Top-5 Devices (All)</a>|
+                  <a href='#' id='goto-android-crashes-by-device-gfx' class='pill' title='Android crashes for top-5 devices'>Top-5 Devices (GFX)</a>|
+                  <a href='#' id='goto-android-crashes-by-api' class='pill' title='Android crashes for top-5 api versions'>Top-5 Versions (All)</a>|
+                  <a href='#' id='goto-android-crashes-by-api-gfx' class='pill' title='Android crashes for top-5 api versions'>Top-5 Versions (GFX)</a>
                   <br />
                   Bugzilla: <a href='#' id='goto-bugzilla-all' class='pill' title='Graphics Bugzilla Dashboard (click to return to dashboard)'>Dashboard</a>
                   <hr />
@@ -65,7 +71,6 @@
                     <li><a href='#' id='goto-amd-driver-crashes' class='pill' title='Crashes in the AMD graphics driver'>AMD driver crashes</a></li>
                     <li><a href='#' id='goto-intel-driver-crashes' class='pill' title='Crashes in the Intel graphics driver'>Intel driver crashes</a></li>
                     <li><a href='#' id='goto-safemode-crashes' class='pill' title='Safemode crashes in tmozilla::gfx and mozilla::layers'>Safemode crashes</a></li>
-                    <li><a href='#' id='goto-android-crashes-by-device' class='pill' title='Android crashes for top-5 devices'>Android by Device</a></li>
                   </ul>
                 </div>
 
