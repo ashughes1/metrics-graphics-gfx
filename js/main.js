@@ -26,6 +26,19 @@ var theme = 'dark';
     assignEventListeners();
 
     function assignEventListeners() {
+        $('button.load').on('click', function(event) {
+            var metric = document.getElementById('select_metric').selectedOptions[0].value;
+            if (metric.indexOf('bugzilla') != -1) {
+                metric = 'bugzilla/' + metric;
+            }
+            var chart = 'charts/' + metric + '.htm';
+            $('#trunk').load(chart, function() {
+                $('pre code').each(function(i, block) {
+                    hljs.highlightBlock(block);
+                });
+            });
+        })
+        
         $('a.pill').on('click', function(event) {
             event.preventDefault();
             $('a.pill').removeClass('active');
