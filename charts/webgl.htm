@@ -6,18 +6,19 @@
     d3.json('data/webgl.json', function(data) {
       data = MG.convert.date(data, 'date');
       MG.data_graphic({
-          title: "Crash sessions where WebGL is attempted",
+          title: "Percentage of crashes where WebGL is reported",
           data: data,
           width: 1140,
           height: 300,
           right: 40,
+          max_y:100,
           target: document.getElementById('chart'),
           x_accessor: 'date',
           y_accessor: ['webgl?','webgl+','webgl-'],
           interpolate: "monotone",
           chart_type: "line",
           linked: true,
-          legend: ['webgl?','webgl+','webgl-']
+          legend: ['WebGL?','WebGL+','WebGL-']
       });
     });
 </script>
