@@ -1,0 +1,40 @@
+<div class='row trunk-section'>
+  <div class='col-lg-12' id='chart'></div>
+</div>
+
+<script>
+    MG._hooks = {};
+    d3.json('data/gfx-android-hardware.json', function(data) {
+        data = MG.convert.date(data, 'date');
+        MG.data_graphic({
+            data: data,
+            title: "Top-5 Android chipsets reporting Graphics crashes",
+            width: 900,
+            height: 300,
+            right: 50,
+            target: document.getElementById('chart'),
+            x_accessor: "date",
+            y_accessor: ["qcom","espresso10","universal5420","smdx4x12","redhookbay"],
+            legend: ["qcom","espresso10","universal5420","smdx4x12","redhookbay"],
+            interpolate: "monotone",
+            chart_type: "line",
+            linked: true,
+            markers: [{
+              'date': new Date('2015-12-14T00:00:00.000Z'),
+              'label': '43/44/45/46'
+            },{
+              'date': new Date('2015-11-03T00:00:00.000Z'),
+              'label': '42/43/44/45'
+            },{
+              'date': new Date('2015-09-22T00:00:00.000Z'),
+              'label': '41/42/43/44'
+            },{
+              'date': new Date('2015-08-11T00:00:00.000Z'),
+              'label': '40/41/42/43'
+            },{
+              'date': new Date('2015-06-30T00:00:00.000Z'),
+              'label': '39/40/41/42'
+            }]
+        });
+    });
+</script>
