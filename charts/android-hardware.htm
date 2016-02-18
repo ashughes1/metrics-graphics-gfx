@@ -1,6 +1,7 @@
 <div class='row trunk-section'>
   <div class='col-lg-6' id='chart_counts'></div>
   <div class='col-lg-6' id='chart_percents'></div>
+  <div class='col-lg-6' id='chart_qcom'></div>
 </div>
 
 <script>
@@ -51,6 +52,40 @@
             x_accessor: "date",
             y_accessor: ["qcom","espresso10","universal5420","smdx4x12","redhookbay"],
             legend: ["qcom","espresso10","universal5420","smdx4x12","redhookbay"],
+            interpolate: "monotone",
+            chart_type: "line",
+            linked: true,
+            markers: [{
+              'date': new Date('2015-12-14T00:00:00.000Z'),
+              'label': '43/44/45/46'
+            },{
+              'date': new Date('2015-11-03T00:00:00.000Z'),
+              'label': '42/43/44/45'
+            },{
+              'date': new Date('2015-09-22T00:00:00.000Z'),
+              'label': '41/42/43/44'
+            },{
+              'date': new Date('2015-08-11T00:00:00.000Z'),
+              'label': '40/41/42/43'
+            },{
+              'date': new Date('2015-06-30T00:00:00.000Z'),
+              'label': '39/40/41/42'
+            }]
+        });
+    });
+    
+    d3.json('data/gfx-android-hardware-qcom.json', function(data) {
+        data = MG.convert.date(data, 'date');
+        MG.data_graphic({
+            data: data,
+            title: "Jan 31, 2016 QCOM spike (top-5 models)",
+            width: 600,
+            height: 300,
+            right: 50,
+            target: document.getElementById('chart_qcom'),
+            x_accessor: "date",
+            y_accessor: ["SM-N910F","SM-N910V","SAMSUNG SM-N910A","SM-N910T","XT1254"],
+            legend: ["SM-N910F","SM-N910V","SM-N910A","SM-N910T","XT1254"],
             interpolate: "monotone",
             chart_type: "line",
             linked: true,
