@@ -1,0 +1,51 @@
+<div class='row trunk-section' style='text-align:center; margin-top:-40px'>
+    <h4 style="width:100%; text-align:center;"><u>D2D1.1 success rate by Platform</u></h4>
+    <br />
+    <div class='btn-group btn-group-sm text-center split-by-controls'>
+      <button type='button' class='btn btn-default active' data-y_accessor='Windows 10'>Windows 10</button>
+      <button type='button' class='btn btn-default' data-y_accessor='Windows 8'>Windows 8</button>
+      <button type='button' class='btn btn-default' data-y_accessor='Windows 7'>Windows 7</button>
+      <button type='button' class='btn btn-default' data-y_accessor='Windows Vista'>Windows Vista</button>
+      <button type='button' class='btn btn-default' data-y_accessor='Windows XP'>Windows XP</button>
+    </div>
+    <div class='col-lg-12 text-left' id='chart'></div>
+    <div class='col-lg-12 text-left' id='chart2'></div>
+</div>
+
+<script>
+    var globals = {};
+
+    var split_by_params = {
+        width: 1190,
+        height: 300,
+        right:40,
+        target: document.getElementById('chart'),
+        x_accessor: "date",
+        interpolate: "monotone",
+        chart_type: "line",
+        max_y: 100,
+        linked:true
+    };
+  
+    $('.split-by-controls button').click(function() {
+      var new_y_accessor = $(this).data('y_accessor');
+      split_by_params.y_accessor = new_y_accessor;
+      split_by_params.legend = new_y_accessor;
+      // change button state
+      $(this).addClass('active').siblings().removeClass('active');
+      // update data
+      delete split_by_params.yay_format;
+      MG.data_graphic(split_by_params);
+    });
+    
+    MG._hooks = {};
+    d3.json('data/success-rate-d2d11.json', function(data) {
+        data = MG.convert.date(data, 'date');
+        globals.data = data;
+        split_by_params.data = data;
+        split_by_params.y_accessor = "Windows 10";
+        split_by_params.legend = "Windows 10";
+        MG.data_graphic(split_by_params);
+    });
+
+</script>
