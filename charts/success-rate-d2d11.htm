@@ -2,7 +2,8 @@
     <h4 style="width:100%; text-align:center;"><u>D2D1.1 success rate by Platform</u></h4>
     <br />
     <div class='btn-group btn-group-sm text-center split-by-controls'>
-      <button type='button' class='btn btn-default active' data-y_accessor='Windows 10'>Windows 10</button>
+      <button type='button' class='btn btn-default active' data-y_accessor='All'>All</button>
+      <button type='button' class='btn btn-default' data-y_accessor='Windows 10'>Windows 10</button>
       <button type='button' class='btn btn-default' data-y_accessor='Windows 8'>Windows 8</button>
       <button type='button' class='btn btn-default' data-y_accessor='Windows 7'>Windows 7</button>
       <button type='button' class='btn btn-default' data-y_accessor='Windows Vista'>Windows Vista</button>
@@ -29,8 +30,13 @@
   
     $('.split-by-controls button').click(function() {
       var new_y_accessor = $(this).data('y_accessor');
-      split_by_params.y_accessor = new_y_accessor;
-      split_by_params.legend = new_y_accessor;
+      if (new_y_accessor == "All") {
+        split_by_params.y_accessor = ['Windows 10','Windows 7','Windows XP','OS X','Linux'];
+        split_by_params.legend = ['Win 10','Win 7','Win XP','Mac OS','Linux'];
+      } else {
+        split_by_params.y_accessor = new_y_accessor;
+        split_by_params.legend = new_y_accessor;  
+      }
       // change button state
       $(this).addClass('active').siblings().removeClass('active');
       // update data
@@ -43,8 +49,8 @@
         data = MG.convert.date(data, 'date');
         globals.data = data;
         split_by_params.data = data;
-        split_by_params.y_accessor = "Windows 10";
-        split_by_params.legend = "Windows 10";
+        split_by_params.y_accessor = ['Windows 10','Windows 8','Windows 7','Windows Vista','Windows XP'];
+        split_by_params.legend = ['Win 10','Win 8','Win 7','Vista','Win XP'];
         MG.data_graphic(split_by_params);
     });
 
