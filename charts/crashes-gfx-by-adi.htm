@@ -56,7 +56,7 @@
     });
     
     MG._hooks = {};
-    d3.json('data/crashes-gfx-by-adi.json', function(data) {
+    d3.json('https://raw.githubusercontent.com/ashughes1/gfx-data/master/data/socorro/crashes-per-adi.json', function(data) {
         data = MG.convert.date(data, 'date');
         globals.data = data;
         split_by_params.data = data;
