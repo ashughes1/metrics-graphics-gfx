@@ -1,5 +1,5 @@
 <div class='row trunk-section' style='text-align:center; margin-top:-40px'>
-    <h4 style="width:100%; text-align:center;"><u>D2D1.1 success rate by Platform</u></h4>
+    <h4 style="width:100%; text-align:center;"><u>WebGL success rate by Platform</u></h4>
     <br />
     <div class='btn-group btn-group-sm text-center split-by-controls'>
       <button type='button' class='btn btn-default active' data-y_accessor='All'>All</button>
@@ -8,6 +8,8 @@
       <button type='button' class='btn btn-default' data-y_accessor='Windows 7'>Windows 7</button>
       <button type='button' class='btn btn-default' data-y_accessor='Windows Vista'>Windows Vista</button>
       <button type='button' class='btn btn-default' data-y_accessor='Windows XP'>Windows XP</button>
+      <button type='button' class='btn btn-default' data-y_accessor='OS X'>Mac OS</button>
+      <button type='button' class='btn btn-default' data-y_accessor='Linux'>Linux</button>
     </div>
     <div class='col-lg-12 text-left' id='chart'></div>
 </div>
@@ -54,12 +56,12 @@
     });
     
     MG._hooks = {};
-    d3.json('data/success-rate-d2d11.json', function(data) {
+    d3.json('data/success-rate-webgl.json', function(data) {
         data = MG.convert.date(data, 'date');
         globals.data = data;
         split_by_params.data = data;
-        split_by_params.y_accessor = ['Windows 10','Windows 8','Windows 7','Windows Vista','Windows XP'];
-        split_by_params.legend = ['Win 10','Win 8','Win 7','Vista','Win XP'];
+        split_by_params.y_accessor = ['Windows 10','Windows 7','Windows XP','OS X','Linux'];
+        split_by_params.legend = ['Win 10','Win 7','Win XP','Mac OS','Linux'];
         MG.data_graphic(split_by_params);
     });
 
