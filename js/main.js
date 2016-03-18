@@ -4,7 +4,7 @@ var theme = 'dark';
     'use strict';
 
     //set the active pill and section on first load
-    var section = (document.location.hash) ? document.location.hash.slice(1) : 'gfx-crashes-by-vendor';
+    var section = (document.location.hash) ? document.location.hash.slice(1) : '';
 
     if (section.indexOf("bugzilla") != -1) {
       $('#trunk').load('charts/bugzilla/' + section + '.htm', function() {
