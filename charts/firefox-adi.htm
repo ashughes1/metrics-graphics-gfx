@@ -1,0 +1,116 @@
+<div class='row trunk-section'>
+    <div class='col-lg-12'>
+        <div class='col-lg-6' id='chart_release'></div>
+        <div class='col-lg-6' id='chart_beta'></div>
+        <div class='col-lg-6' id='chart_aurora'></div>
+        <div class='col-lg-6' id='chart_nightly'></div>
+    </div>
+</div>
+
+<script>
+    MG._hooks = {};
+    d3.json('data/firefox_adi.json', function(data) {
+        data = MG.convert.date(data, 'date');
+        MG.data_graphic({
+            data: data,
+            title: "Firefox Release ADIs",
+            width: 600,
+            height: 300,
+            right: 50,
+            target: document.getElementById('chart_release'),
+            x_accessor: "date",
+            y_accessor:"release",
+            interpolate: "monotone",
+            chart_type: "line",
+            linked: true,
+            markers: [{
+                'date': new Date('2015-12-14T00:00:00.000Z'),
+                'label': '43.0'
+              },{
+                'date': new Date('2016-01-25T00:00:00.000Z'),
+                'label': '44.0'
+              },{
+                'date': new Date('2016-03-08T00:00:00.000Z'),
+                'label': '45.0'
+            }]
+        });
+    });
+    d3.json('data/firefox_adi.json', function(data) {
+        data = MG.convert.date(data, 'date');
+        MG.data_graphic({
+            data: data,
+            title: "Firefox Beta ADIs",
+            width: 600,
+            height: 300,
+            right: 50,
+            target: document.getElementById('chart_beta'),
+            x_accessor: "date",
+            y_accessor:"beta",
+            interpolate: "monotone",
+            chart_type: "line",
+            linked: true,
+            markers: [{
+                'date': new Date('2015-12-14T00:00:00.000Z'),
+                'label': '44.0b*'
+              },{
+                'date': new Date('2016-01-25T00:00:00.000Z'),
+                'label': '45.0b*'
+              },{
+                'date': new Date('2016-03-08T00:00:00.000Z'),
+                'label': '46.0b*'
+            }]
+        });
+    });
+    d3.json('data/firefox_adi.json', function(data) {
+        data = MG.convert.date(data, 'date');
+        MG.data_graphic({
+            data: data,
+            title: "Firefox Aurora ADIs",
+            width: 600,
+            height: 300,
+            right: 50,
+            target: document.getElementById('chart_aurora'),
+            x_accessor: "date",
+            y_accessor:"aurora",
+            interpolate: "monotone",
+            chart_type: "line",
+            linked: true,
+            markers: [{
+                'date': new Date('2015-12-14T00:00:00.000Z'),
+                'label': '45.0a2'
+              },{
+                'date': new Date('2016-01-25T00:00:00.000Z'),
+                'label': '46.0a2'
+              },{
+                'date': new Date('2016-03-08T00:00:00.000Z'),
+                'label': '47.0a2'
+            }]
+        });
+    });
+    d3.json('data/firefox_adi.json', function(data) {
+        data = MG.convert.date(data, 'date');
+        MG.data_graphic({
+            data: data,
+            title: "Firefox Nightly ADIs",
+            width: 600,
+            height: 300,
+            right: 50,
+            target: document.getElementById('chart_nightly'),
+            x_accessor: "date",
+            y_accessor:"nightly",
+            interpolate: "monotone",
+            chart_type: "line",
+            linked: true,
+            markers: [{
+                'date': new Date('2015-12-14T00:00:00.000Z'),
+                'label': '46.0a1'
+              },{
+                'date': new Date('2016-01-25T00:00:00.000Z'),
+                'label': '47.0a1'
+              },{
+                'date': new Date('2016-03-08T00:00:00.000Z'),
+                'label': '48.0a1'
+            }]
+        });
+    });
+</script>
