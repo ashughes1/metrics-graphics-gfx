@@ -12,12 +12,12 @@
         <button type='button' class='btn btn-default' data-y_accessor='nightly'>Nightly</button>
     </div>
     <div class='col-lg-12 text-center'>
-        <div class='col-lg-6 text-left' id='crashes'></div>
-        <div class='col-lg-6 text-left' id='installs'></div>
-        <div class='col-lg-6 text-left' id='affected'></div>
-        <div class='col-lg-6 text-left' id='overall'></div>
-        <div class='col-lg-6 text-left' id='rate'></div>
-        <div class='col-lg-6 text-left' id='adi'></div>
+        <div class='col-lg-4 text-left' id='crashes'></div>
+        <div class='col-lg-4 text-left' id='installs'></div>
+        <div class='col-lg-4 text-left' id='affected'></div>
+        <div class='col-lg-4 text-left' id='overall'></div>
+        <div class='col-lg-4 text-left' id='rate'></div>
+        <div class='col-lg-4 text-left' id='adi'></div>
     </div>
 </div>
 
@@ -146,6 +146,14 @@
         for (i in split_by_params) {
             split_by_params[i].data = globals.data[new_y_accessor];
             split_by_params[i].markers = markers[new_y_accessor];
+            
+            baseline = 0;
+            for (var j=0; j<split_by_params[i].data.length; j++) {
+                baseline = baseline + split_by_params[i].data[j][i];
+            }
+            baseline = baseline/split_by_params[i].data.length;
+            split_by_params[i].baselines = [{'value':baseline, 'label':'period average'}];
+            
             delete split_by_params[i].yay_format;
             MG.data_graphic(split_by_params[i]);
         }
