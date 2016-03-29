@@ -1,155 +1,176 @@
 <div class='row trunk-section' style='text-align:center; margin-top:-40px'>
-    <h4 style="width:100%; text-align:center;"><u>Graphics Crash Rate by Channel</u></h4>
+    <h4 style="width:100%; text-align:center;"><u>Graphics Crashes by Channel</u></h4>
     <div style="width: 50%; margin-left: 25%; font-size: small; text-align: left;">
-        Graphs the crash rate in Graphics<sup>1</sup> for all active Firefox installations<sup>2</sup>
-        on a given date, broken down by release channel. A value over 1.0 effectively means more than one crash per user on average.
-        <br /><br />
-        <sup>1</sup><span style="font-size: x-small"> Any crash report with a signature in <i>gfx</i>, <i>layers</i>, or <i>canvas</i></span><br />
-        <sup>2</sup><span style="font-size: x-small"> The total number of unique Firefox installations based on <a href="https://crash-stats.mozilla.com/documentation/supersearch/examples/#installations">installation time</a>.</span>
+        Illustrates the current state of stability in the Firefox code base,
+        broken down by channel (ie. branch).
     </div>
     <br />
-    
-    <div class='col-lg-12 text-left'>
-        <div class='col-lg-6 text-left' id='release_rate'></div>
-        <div class='col-lg-6 text-left' id='release_value'></div>
+    <div class='btn-group btn-group-sm text-center split-by-controls'>
+        <button type='button' class='btn btn-default active' data-y_accessor='release'>Release</button>
+        <button type='button' class='btn btn-default' data-y_accessor='beta'>Beta</button>
+        <button type='button' class='btn btn-default' data-y_accessor='aurora'>Aurora</button>
+        <button type='button' class='btn btn-default' data-y_accessor='nightly'>Nightly</button>
     </div>
-    <div class='col-lg-12 text-left'>
-        <div class='col-lg-6 text-left' id='beta_rate'></div>
-        <div class='col-lg-6 text-left' id='beta_value'></div>
-    </div>
-    <div class='col-lg-12 text-left'>
-        <div class='col-lg-6 text-left' id='aurora_rate'></div>
-        <div class='col-lg-6 text-left' id='aurora_value'></div>
-    </div>
-    <div class='col-lg-12 text-left'>
-        <div class='col-lg-6 text-left' id='nightly_rate'></div>
-        <div class='col-lg-6 text-left' id='nightly_value'></div>
+    <div class='col-lg-12 text-center'>
+        <div class='col-lg-6 text-left' id='crashes'></div>
+        <div class='col-lg-6 text-left' id='installs'></div>
+        <div class='col-lg-6 text-left' id='affected'></div>
+        <div class='col-lg-6 text-left' id='overall'></div>
+        <div class='col-lg-6 text-left' id='rate'></div>
+        <div class='col-lg-6 text-left' id='adi'></div>
     </div>
 </div>
 
 <script>
-    d3.json('data/crashes-by-channel-new.json', function(data) {
-        for (var key in data) {
-            if (data.hasOwnProperty(key)) {
-                data[key] = MG.convert.date(data[key], 'date');
+    var globals = {};
+    markers = {
+        'release':[
+            {
+                'date': new Date('2015-12-15T00:00:00.000Z'),
+                'label': '43.0'
+            },{
+                'date': new Date('2016-01-26T00:00:00.000Z'),
+                'label': '44.0'
+            },{
+                'date': new Date('2016-03-08T00:00:00.000Z'),
+                'label': '45.0'
+            }],
+        'beta':[
+            {
+                'date': new Date('2015-12-14T00:00:00.000Z'),
+                'label': '44.0b1'
+            },{
+                'date': new Date('2016-01-25T00:00:00.000Z'),
+                'label': '45.0b1'
+            },{
+                'date': new Date('2016-03-07T00:00:00.000Z'),
+                'label': '46.0b1'
             }
-        }         
-        MG.data_graphic({
-            title: "Release",
-            data: data['release'],
-            width: 600,
-            height: 300,
-            right: 40,
-            target: document.getElementById('release_value'),
+        ],
+        'aurora':[
+            {
+                'date': new Date('2015-12-14T00:00:00.000Z'),
+                'label': '45.0a2'
+            },{
+                'date': new Date('2016-01-25T00:00:00.000Z'),
+                'label': '46.0a2'
+            },{
+                'date': new Date('2016-03-07T00:00:00.000Z'),
+                'label': '47.0a2'
+            }
+        ],
+        'nightly':[
+            {
+                'date': new Date('2015-12-14T00:00:00.000Z'),
+                'label': '46.0a1'
+            },{
+                'date': new Date('2016-01-25T00:00:00.000Z'),
+                'label': '47.0a1'
+            },{
+                'date': new Date('2016-03-07T00:00:00.000Z'),
+                'label': '48.0a1'
+            }
+        ]};
+        
+    var split_by_params = {
+        'crashes': {
+            title: "Number of Crashes Reported [7-day average]",
+            width: 400,
+            height: 200,
+            target: document.getElementById('crashes'),
             x_accessor: "date",
-            y_accessor: ['crashes','installs'],
-            legend: ['crashes','installs'],
+            y_accessor: "crashes_weekly",
             interpolate: "monotone",
             chart_type: "line",
             linked: true
-        });
-        MG.data_graphic({
-            title: "Release",
-            data: data['release'],
-            width: 600,
-            height: 300,
-            right: 40,
-            target: document.getElementById('release_rate'),
+        },
+        'installs': {
+            title: "Number of users reporting crashes [7-day average]",
+            width: 400,
+            height: 200,
+            target: document.getElementById('installs'),
             x_accessor: "date",
-            y_accessor: "rate",
-            min_y: 0.8,
-            legend: "rate",
+            y_accessor: "installs_weekly",
             interpolate: "monotone",
             chart_type: "line",
             linked: true
-        });
-        MG.data_graphic({
-            title: "Beta",
-            data: data['beta'],
-            width: 600,
-            height: 300,
-            right: 40,
-            target: document.getElementById('beta_value'),
+        },
+        'affected': {
+            title: "Percentage of users affected [7-day average]",
+            width: 400,
+            height: 200,
+            target: document.getElementById('affected'),
             x_accessor: "date",
-            y_accessor: ['crashes','installs'],
-            legend: ['crashes','installs'],
+            y_accessor: "affected_weekly",
             interpolate: "monotone",
             chart_type: "line",
             linked: true
-        });
-        MG.data_graphic({
-            title: "Beta",
-            data: data['beta'],
-            width: 600,
-            height: 300,
-            right: 40,
-            target: document.getElementById('beta_rate'),
-            min_y: 0.8,
+        },
+        'overall': {
+            title: "Crashes per 100 Users (all users) [7-day average]",
+            width: 400,
+            height: 200,
+            target: document.getElementById('overall'),
             x_accessor: "date",
-            y_accessor: "rate",
-            legend: "rate",
+            y_accessor: "overall_weekly",
             interpolate: "monotone",
             chart_type: "line",
             linked: true
-        });
-        MG.data_graphic({
-            title: "Aurora",
-            data: data['aurora'],
-            width: 600,
-            height: 300,
-            right: 40,
-            target: document.getElementById('aurora_value'),
+        },
+        'rate': {
+            title: "Crashes per Affected User [7-day average]",
+            width: 400,
+            height: 200,
+            target: document.getElementById('rate'),
             x_accessor: "date",
-            y_accessor: ['crashes','installs'],
-            legend: ['crashes','installs'],
+            y_accessor: "rate_weekly",
             interpolate: "monotone",
             chart_type: "line",
             linked: true
-        });
-        MG.data_graphic({
-            title: "Aurora",
-            data: data['aurora'],
-            width: 600,
-            height: 300,
-            right: 40,
-            min_y: 0.8,
-            target: document.getElementById('aurora_rate'),
+        },
+        'adi': {
+            title: "Active Daily Installations [7-day average]",
+            width: 400,
+            height: 200,
+            target: document.getElementById('adi'),
             x_accessor: "date",
-            y_accessor: "rate",
-            legend: "rate",
+            y_accessor: "adi_weekly",
             interpolate: "monotone",
             chart_type: "line",
             linked: true
-        });
-        MG.data_graphic({
-            title: "Nightly",
-            data: data['nightly'],
-            width: 600,
-            height: 300,
-            right: 40,
-            target: document.getElementById('nightly_value'),
-            x_accessor: "date",
-            y_accessor: ['crashes','installs'],
-            legend: ['crashes','installs'],
-            interpolate: "monotone",
-            chart_type: "line",
-            linked: true
-        });
-        MG.data_graphic({
-            title: "Nightly",
-            data: data['nightly'],
-            width: 600,
-            height: 300,
-            right: 40,
-            min_y: 0.8,
-            target: document.getElementById('nightly_rate'),
-            x_accessor: "date",
-            y_accessor: "rate",
-            legend: "rate",
-            interpolate: "monotone",
-            chart_type: "line",
-            linked: true
-        });
+        }
+    };
+    
+    $('.split-by-controls button').click(function() {
+        var new_y_accessor = $(this).data('y_accessor');
+        for (i in split_by_params) {
+            split_by_params[i].data = globals.data[new_y_accessor];
+            split_by_params[i].markers = markers[new_y_accessor];
+            delete split_by_params[i].yay_format;
+            MG.data_graphic(split_by_params[i]);
+        }
+        $(this).addClass('active').siblings().removeClass('active'); 
+    });
+    
+    d3.json('data/crashes-by-channel-new.json', function(data) {
+        for (d in data) {
+            data[d] = MG.convert.date(data[d], "date");
+        }
+        globals.data = data;
+        for (i in split_by_params) {
+            split_by_params[i].data = data['release'];
+            split_by_params[i].markers = markers['release'];
+            
+            baseline = 0;
+            for (var j=0; j<split_by_params[i].data.length; j++) {
+                baseline = baseline + split_by_params[i].data[j][i];
+            }
+            baseline = baseline/split_by_params[i].data.length;
+            split_by_params[i].baselines = [{'value':baseline, 'label':'period average'}];
+            
+            delete split_by_params[i].yay_format;
+            MG.data_graphic(split_by_params[i]);
+        }
     });
     
     
