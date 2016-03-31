@@ -34,17 +34,38 @@
             interpolate: "monotone",
             chart_type: "line",
             markers: [{
-              'date': new Date('2015-01-12T00:00:00.000Z'),
-              'label': '38/37/36/35'
+              'date': new Date('2015-01-13T00:00:00.000Z'),
+              'label': '35'
+            },{
+              'date': new Date('2015-02-24T00:00:00.000Z'),
+              'label': '36'
             },{
               'date': new Date('2015-03-30T00:00:00.000Z'),
-              'label': '40/39/38/37'
+              'label': '37'
+            },{
+              'date': new Date('2015-05-12T00:00:00.000Z'),
+              'label': '38'
             },{
               'date': new Date('2015-06-29T00:00:00.000Z'),
-              'label': '42/40/39/38'
+              'label': '39'
+            },{
+              'date': new Date('2015-08-11T00:00:00.000Z'),
+              'label': '40'
             },{
               'date': new Date('2015-09-21T00:00:00.000Z'),
-              'label': '44/43/42/41'
+              'label': '41'
+            },{
+              'date': new Date('2015-11-03T00:00:00.000Z'),
+              'label': '42'
+            },{
+              'date': new Date('2015-12-15T00:00:00.000Z'),
+              'label': '43'
+            },{
+              'date': new Date('2016-01-26T00:00:00.000Z'),
+              'label': '44'
+            },{
+              'date': new Date('2016-03-08T00:00:00.000Z'),
+              'label': '45'
             }]
         });
     });
@@ -67,17 +88,38 @@
             interpolate: "monotone",
             chart_type: "line",
             markers: [{
-              'date': new Date('2015-01-12T00:00:00.000Z'),
-              'label': '38/37/36/35'
+              'date': new Date('2015-01-13T00:00:00.000Z'),
+              'label': '35'
+            },{
+              'date': new Date('2015-02-24T00:00:00.000Z'),
+              'label': '36'
             },{
               'date': new Date('2015-03-30T00:00:00.000Z'),
-              'label': '40/39/38/37'
+              'label': '37'
+            },{
+              'date': new Date('2015-05-12T00:00:00.000Z'),
+              'label': '38'
             },{
               'date': new Date('2015-06-29T00:00:00.000Z'),
-              'label': '42/40/39/38'
+              'label': '39'
+            },{
+              'date': new Date('2015-08-11T00:00:00.000Z'),
+              'label': '40'
             },{
               'date': new Date('2015-09-21T00:00:00.000Z'),
-              'label': '44/43/42/41'
+              'label': '41'
+            },{
+              'date': new Date('2015-11-03T00:00:00.000Z'),
+              'label': '42'
+            },{
+              'date': new Date('2015-12-15T00:00:00.000Z'),
+              'label': '43'
+            },{
+              'date': new Date('2016-01-26T00:00:00.000Z'),
+              'label': '44'
+            },{
+              'date': new Date('2016-03-08T00:00:00.000Z'),
+              'label': '45'
             }]
         });
     });
@@ -100,18 +142,39 @@ d3.json('data/bugzilla/bugzilla-uplifts.json', function(data) {
         interpolate: "monotone",
         chart_type: "line",
         markers: [{
-          'date': new Date('2015-01-12T00:00:00.000Z'),
-          'label': '38/37/36/35'
-        },{
-          'date': new Date('2015-03-30T00:00:00.000Z'),
-          'label': '40/39/38/37'
-        },{
-          'date': new Date('2015-06-29T00:00:00.000Z'),
-          'label': '42/40/39/38'
-        },{
-          'date': new Date('2015-09-21T00:00:00.000Z'),
-          'label': '44/43/42/41'
-        }]
+              'date': new Date('2015-01-13T00:00:00.000Z'),
+              'label': '35'
+            },{
+              'date': new Date('2015-02-24T00:00:00.000Z'),
+              'label': '36'
+            },{
+              'date': new Date('2015-03-30T00:00:00.000Z'),
+              'label': '37'
+            },{
+              'date': new Date('2015-05-12T00:00:00.000Z'),
+              'label': '38'
+            },{
+              'date': new Date('2015-06-29T00:00:00.000Z'),
+              'label': '39'
+            },{
+              'date': new Date('2015-08-11T00:00:00.000Z'),
+              'label': '40'
+            },{
+              'date': new Date('2015-09-21T00:00:00.000Z'),
+              'label': '41'
+            },{
+              'date': new Date('2015-11-03T00:00:00.000Z'),
+              'label': '42'
+            },{
+              'date': new Date('2015-12-15T00:00:00.000Z'),
+              'label': '43'
+            },{
+              'date': new Date('2016-01-26T00:00:00.000Z'),
+              'label': '44'
+            },{
+              'date': new Date('2016-03-08T00:00:00.000Z'),
+              'label': '45'
+            }]
     });
 });
 </script>
@@ -178,7 +241,7 @@ d3.json('data/bugzilla/bugzilla-uplifts.json', function(data) {
           data: summary_data,
           title: "Post-release Reports",
           width: 292,
-          height: 220,
+          height: 300,
           right: 40,
           target: document.getElementById('bugzilla_postrelease_reported'),
           x_accessor:"reported",
@@ -190,7 +253,7 @@ d3.json('data/bugzilla/bugzilla-uplifts.json', function(data) {
           data: summary_data,
           title: "Post-release Fixes",
           width: 292,
-          height: 220,
+          height: 300,
           right: 40,
           target: document.getElementById('bugzilla_postrelease_resolved'),
           x_accessor:"resolved",
@@ -213,7 +276,7 @@ d3.json('data//bugzilla/bugzilla-crashes-by-version.json', function(data) {
       data: summary_data,
       title: "Reported Crash Bugs",
       width: 292,
-      height: 220,
+      height: 300,
       right: 40,
       target: document.getElementById('bugzilla_crashes_by_version_reported'),
       y_accessor: "release",
@@ -225,7 +288,7 @@ d3.json('data//bugzilla/bugzilla-crashes-by-version.json', function(data) {
       data: summary_data,
       title: "Fixed Crash Bugs",
       width: 292,
-      height: 220,
+      height: 300,
       right: 40,
       target: document.getElementById('bugzilla_crashes_by_version_resolved'),
       y_accessor: "release",
