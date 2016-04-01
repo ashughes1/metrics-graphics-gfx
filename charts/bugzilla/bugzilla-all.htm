@@ -76,51 +76,38 @@
     d3.json('data//bugzilla/bugzilla-crashes.json', function(data) {
         data = MG.convert.date(data, 'date');
         MG.data_graphic({
-            data: data,
+            data: data.slice(-90),
             title: "Crash Bugs",
+            description: "This shows bugs in Graphics where:<u><li>Reported is the number of bug reports created</li><li>Resolved is the number of bug reports changed to RESOLVED</li></u>Note: some of these counts may include bugs which have since changed in status (eg. reopened, duped, etc)",
             width: 390,
             height: 220,
             right: 50,
+            min_y: 2400,
             target: document.getElementById('bugzilla_crashes_by_date'),
             x_accessor: "date",
             y_accessor: ["reported","resolved"],
             legend:["Reported","Resolved"],
             interpolate: "monotone",
             chart_type: "line",
-            markers: [{
-              'date': new Date('2015-01-13T00:00:00.000Z'),
-              'label': '35'
-            },{
-              'date': new Date('2015-02-24T00:00:00.000Z'),
-              'label': '36'
-            },{
-              'date': new Date('2015-03-30T00:00:00.000Z'),
-              'label': '37'
-            },{
-              'date': new Date('2015-05-12T00:00:00.000Z'),
-              'label': '38'
-            },{
-              'date': new Date('2015-06-29T00:00:00.000Z'),
-              'label': '39'
-            },{
-              'date': new Date('2015-08-11T00:00:00.000Z'),
-              'label': '40'
-            },{
-              'date': new Date('2015-09-21T00:00:00.000Z'),
-              'label': '41'
-            },{
-              'date': new Date('2015-11-03T00:00:00.000Z'),
-              'label': '42'
-            },{
-              'date': new Date('2015-12-15T00:00:00.000Z'),
-              'label': '43'
-            },{
-              'date': new Date('2016-01-26T00:00:00.000Z'),
-              'label': '44'
-            },{
-              'date': new Date('2016-03-08T00:00:00.000Z'),
-              'label': '45'
-            }]
+            markers: [
+                {'date': new Date('2014-04-29T00:00:00.000Z'),'label': '29'},
+                {'date': new Date('2014-06-10T00:00:00.000Z'),'label': '30'},
+                {'date': new Date('2014-07-22T00:00:00.000Z'),'label': '31'},
+                {'date': new Date('2014-09-02T00:00:00.000Z'),'label': '32'},
+                {'date': new Date('2014-10-14T00:00:00.000Z'),'label': '33'},
+                {'date': new Date('2014-12-01T00:00:00.000Z'),'label': '34'},
+                {'date': new Date('2015-01-13T00:00:00.000Z'),'label': '35'},
+                {'date': new Date('2015-02-24T00:00:00.000Z'),'label': '36'},
+                {'date': new Date('2015-03-30T00:00:00.000Z'),'label': '37'},
+                {'date': new Date('2015-05-12T00:00:00.000Z'),'label': '38'},
+                {'date': new Date('2015-06-29T00:00:00.000Z'),'label': '39'},
+                {'date': new Date('2015-08-11T00:00:00.000Z'),'label': '40'},
+                {'date': new Date('2015-09-21T00:00:00.000Z'),'label': '41'},
+                {'date': new Date('2015-11-03T00:00:00.000Z'),'label': '42'},
+                {'date': new Date('2015-12-15T00:00:00.000Z'),'label': '43'},
+                {'date': new Date('2016-01-26T00:00:00.000Z'),'label': '44'},
+                {'date': new Date('2016-03-08T00:00:00.000Z'),'label': '45'}
+            ]
         });
     });
 </script>

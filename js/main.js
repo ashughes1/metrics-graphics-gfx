@@ -111,6 +111,8 @@ var theme = 'dark';
 
             return false;
         });
+        
+       
 
         $('#accessible-css').on('click', function () {
             $('.head ul li a.pill').removeClass('active');

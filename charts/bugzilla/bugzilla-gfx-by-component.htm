@@ -1,0 +1,116 @@
+<div class='row trunk-section' style='text-align:center; margin-top:-40px'>
+  <h3>Unresolved Bugs</h3>
+  <br />
+  <div class='btn-group btn-group-sm text-center split-by-controls'>
+    <button type='button' class='btn btn-default active' data-y_accessor='Canvas: 2D'>Canvas: 2D</button>
+    <button type='button' class='btn btn-default' data-y_accessor='Canvas: WebGL'>Canvas: WebGL</button>
+    <button type='button' class='btn btn-default' data-y_accessor='GFX: Color Management'>GFX: Color Management</button>
+    <button type='button' class='btn btn-default' data-y_accessor='Graphics'>Graphics</button>
+    <button type='button' class='btn btn-default' data-y_accessor='Graphics: Layers'>Graphics: Layers</button>
+    <button type='button' class='btn btn-default' data-y_accessor='Graphics: Text'>Graphics: Text</button>
+    <button type='button' class='btn btn-default' data-y_accessor='Image Blocking'>Image Blocking</button>
+    <button type='button' class='btn btn-default' data-y_accessor='ImageLib'>ImageLib</button>
+    <button type='button' class='btn btn-default' data-y_accessor='Panning and Zooming'>Panning and Zooming</button>
+  </div>
+  <div class='col-lg-12 text-center' id='chart'></div>
+</div>
+
+<script>
+var globals = {};
+
+globals.mouseover = function(d) {
+  var date = d['date'].toISOString().substring(0,10);
+  var component = d3.selectAll('.active')[0][0].textContent;
+  if (component == 'All') {
+    globals.url = 'https://bugzilla.mozilla.org/buglist.cgi?product=Core&component=Canvas: 2D&component=Canvas: WebGL&component=GFX: Color Management&component=Graphics&component=Graphics: Layers&component=Graphics: Text&component=Image Blocking&component=ImageLib&component=Panning and Zooming&chfield=[Bug%20creation]&chfieldto=' + date + '&chfieldfrom=' + date + '&query_format=advanced';
+  } else {
+    globals.url = 'https://bugzilla.mozilla.org/buglist.cgi?product=Core&component=' + component + '&chfield=[Bug%20creation]&chfieldto=' + date + '&chfieldfrom=' + date + '&query_format=advanced';
+  }
+}
+
+var split_by_params = {
+  width: 1170,
+  height: 400,
+  right: 90,
+  bottom: 40,
+  max_y: 60,
+  target: document.getElementById('chart'),
+  x_accessor:"date",
+  chart_type: "line",
+  markers: [{
+    'date': new Date('2015-06-30T00:00:00.000Z'),
+    'label': 'WebGL Conformance'
+  },{
+    'date': new Date('2015-02-24T00:00:00.000Z'),
+    'label': 'WebGL Conformance'
+  },{
+    'date': new Date('2013-08-06T00:00:00.000Z'),
+    'label': '26/25/24/23'
+  },{
+    'date': new Date('2013-10-29T00:00:00.000Z'),
+    'label': '28/27/26/25'
+  },{
+    'date': new Date('2014-02-04T00:00:00.000Z'),
+    'label': '30/29/28/27'
+  },{
+    'date': new Date('2014-04-29T00:00:00.000Z'),
+    'label': '32/31/30/29'
+  },{
+    'date': new Date('2014-07-22T00:00:00.000Z'),
+    'label': '34/33/32/31'
+  },{
+    'date': new Date('2014-10-14T00:00:00.000Z'),
+    'label': '36/35/34/33'
+  },{
+    'date': new Date('2015-01-12T00:00:00.000Z'),
+    'label': '38/37/36/35'
+  },{
+    'date': new Date('2015-03-30T00:00:00.000Z'),
+    'label': '40/39/38/37'
+  },{
+    'date': new Date('2015-06-29T00:00:00.000Z'),
+    'label': '42/40/39/38'
+  },{
+    'date': new Date('2015-09-21T00:00:00.000Z'),
+    'label': '44/43/42/41'
+  },{
+    'date': new Date('2015-12-15T00:00:00.000Z'),
+    'label': '46/45/44/43'
+  }],
+  mouseover:globals.mouseover,
+  linked:true,
+  linked_format: "%Y-%m-%d"
+};
+
+$('.split-by-controls button').click(function() {
+    var new_y_accessor = $(this).data('y_accessor');
+    split_by_params.y_accessor = new_y_accessor;
+
+    // change button state
+    $(this).addClass('active').siblings().removeClass('active');
+
+    // update data
+    delete split_by_params.yay_format;
+    MG.data_graphic(split_by_params);
+
+    var mouseouts = d3.selectAll('.mg-rollover-rect rect').on('mouseout');
+    d3.selectAll('.mg-rollover-rect rect')
+                  .on('click', function(d) {
+                    window.open(globals.url, '_blank');
+                  });
+});
+
+d3.json('data/bugzilla/bugzilla-gfx-by-component.json', function(data) {
+  data = MG.convert.date(data, 'date');
+  globals.data = data;
+  split_by_params.data = data;
+  split_by_params.y_accessor = 'Canvas: 2D';
+  MG.data_graphic(split_by_params);
+
+  var mouseouts = d3.selectAll('.mg-rollover-rect rect').on('mouseout');
+  d3.selectAll('.mg-rollover-rect rect')
+                .on('click', function(d) {
+                  window.open(globals.url, '_blank');
+                });
+});
+</script>
