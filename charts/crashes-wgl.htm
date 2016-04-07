@@ -7,59 +7,81 @@
       <button type='button' class='btn btn-default' data-y_accessor='Windows Vista'>Windows Vista</button>
       <button type='button' class='btn btn-default' data-y_accessor='Windows XP'>Windows XP</button>
     </div>
-    <div class='col-lg-12 text-left' id='chart'></div>
+    <br />
+    <div class='col-lg-6 text-left' id='crashes'></div>
+    <div class='col-lg-6 text-left' id='percents'></div>
 </div>
 
 <script>
     var globals = {};
 
-    var split_by_params = {
-        title: 'Reported crashes with WGL+ in AppNotes (all versions)',
-        width: 1190,
+    var split_by_params = {"crashes": {
+        title: 'Number of reported crashes with WGL+ in AppNotes (all versions)',
+        width: 600,
         height: 300,
         right:40,
-        target: document.getElementById('chart'),
+        target: document.getElementById('crashes'),
         x_accessor: "date",
         interpolate: "monotone",
         chart_type: "line",
         linked:true,
         max_y:100,
         markers: [{
-          'date': new Date('2015-12-14T00:00:00.000Z'),
-          'label': '43.0'
-        },{
-          'date': new Date('2016-01-25T00:00:00.000Z'),
-          'label': '44.0'
-        },{
           'date': new Date('2016-03-08T00:00:00.000Z'),
-          'label': '45.0'
+          'label': '45.0.*, 46.0b*, 47.0a2, 48.0a1'
         }]
-    };
+    }, "percents": {
+        title: 'Percentage of reported crashes with WGL+ in AppNotes (all versions)',
+        width: 600,
+        height: 300,
+        right:40,
+        target: document.getElementById('percents'),
+        x_accessor: "date",
+        interpolate: "monotone",
+        chart_type: "line",
+        linked:true,
+        max_y:0.5,
+        markers: [{
+          'date': new Date('2016-03-08T00:00:00.000Z'),
+          'label': '45.0.*, 46.0b*, 47.0a2, 48.0a1'
+        }]
+    }};
   
     $('.split-by-controls button').click(function() {
       var new_y_accessor = $(this).data('y_accessor');
       if (new_y_accessor == "All") {
-        split_by_params.y_accessor = ['Windows 10','Windows 8','Windows 7','Windows Vista','Windows XP'];
-        split_by_params.legend = ['Win 10','Win 8','Win 7','Vista','Win XP'];
+        split_by_params['crashes'].y_accessor = ['Windows 10','Windows 8','Windows 7','Windows Vista','Windows XP'];
+        split_by_params['percents'].y_accessor = ['Windows 10','Windows 8','Windows 7','Windows Vista','Windows XP'];
+        split_by_params['crashes'].legend = ['Win 10','Win 8','Win 7','Vista','Win XP'];
+        split_by_params['percents'].legend = ['Win 10','Win 8','Win 7','Vista','Win XP'];
       } else {
-        split_by_params.y_accessor = new_y_accessor;
-        split_by_params.legend = new_y_accessor;  
+        split_by_params['crashes'].y_accessor = new_y_accessor;
+        split_by_params['percents'].y_accessor = new_y_accessor;
+        split_by_params['crashes'].legend = new_y_accessor;
+        split_by_params['percents'].legend = new_y_accessor; 
       }
       // change button state
       $(this).addClass('active').siblings().removeClass('active');
       // update data
-      delete split_by_params.yay_format;
-      MG.data_graphic(split_by_params);
+      delete split_by_params['crashes'].yay_format;
+      delete split_by_params['percents'].yay_format;
+      MG.data_graphic(split_by_params['crashes']);
+      MG.data_graphic(split_by_params['percents']);
     });
     
     MG._hooks = {};
     d3.json('data/crashes-wgl.json', function(data) {
-        data = MG.convert.date(data, 'date');
+        data['crashes'] = MG.convert.date(data['crashes'], 'date');
+        data['percents'] = MG.convert.date(data['percents'], 'date');
         globals.data = data;
-        split_by_params.data = data;
-        split_by_params.y_accessor = ['Windows 10','Windows 8','Windows 7','Windows Vista','Windows XP'];
-        split_by_params.legend = ['Win 10','Win 8','Win 7','Vista','Win XP'];
-        MG.data_graphic(split_by_params);
+        split_by_params['crashes'].data = data['crashes'];
+        split_by_params['percents'].data = data['percents'];
+        split_by_params['crashes'].y_accessor = ['Windows 10','Windows 8','Windows 7','Windows Vista','Windows XP'];
+        split_by_params['percents'].y_accessor = ['Windows 10','Windows 8','Windows 7','Windows Vista','Windows XP'];
+        split_by_params['crashes'].legend = ['Win 10','Win 8','Win 7','Vista','Win XP'];
+        split_by_params['percents'].legend = ['Win 10','Win 8','Win 7','Vista','Win XP'];
+        MG.data_graphic(split_by_params['crashes']);
+        MG.data_graphic(split_by_params['percents']);
     });
 
 </script>
