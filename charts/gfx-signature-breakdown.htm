@@ -1,0 +1,75 @@
+<div class='row trunk-section'>
+    <div style="width:50%; margin-left: 30%">
+    <small>
+    These graphs show the distribution of graphics crashes by signature (ie. the percentage of signatures showing up at high-volume versus low-volume), tracking how well the
+    Graphics team is doing toward the Platform Engineering goal to drive high-volume crashes down to less than 1% of overall crash volume. (<a href="https://trello.com/c/aPBcO3LN">#2445</a>)
+    </small>
+    </div>
+  <div class='col-lg-12 text-center' id='gfx'></div>
+  <div class='col-lg-12 text-center' id='layers'></div>
+</div>
+
+<script>
+MG._hooks = {};
+d3.json('data/gfx-signature-breakdown.json', function(data) {
+    data = MG.convert.date(data, 'date');
+    MG.data_graphic({
+        data: data,
+        title: "Distribution of gfx signatures",
+        width: 600,
+        height: 300,
+        right: 40,
+        left:80,
+        target: document.getElementById('gfx'),
+        x_accessor: "date",
+        y_accessor: ["A","B","C","D"],
+        y_label: "% of Signatures in Range",
+        legend:["< 0.1%","< 1.0%", "< 5.0%", "> 5.0%"],
+        interpolate: "monotone",
+        chart_type: "line",
+        linked:true,
+        animate_on_load:true,
+        markers: [{
+          'date': new Date('2016-03-08T00:00:00.000Z'),
+          'label': '45/46/47/48'
+        },{
+          'date': new Date('2016-01-26T00:00:00.000Z'),
+          'label': '44/45/46/47'
+        },{
+          'date': new Date('2015-12-15T00:00:00.000Z'),
+          'label': '43/44/45/46'
+        }]
+    });
+});
+
+d3.json('data/layers-signature-breakdown.json', function(data) {
+    data = MG.convert.date(data, 'date');
+    MG.data_graphic({
+        data: data,
+        title: "Distribution of layers signatures",
+        width: 600,
+        height: 300,
+        right: 40,
+        left: 80,
+        target: document.getElementById('layers'),
+        x_accessor: "date",
+        y_accessor: ["A","B","C","D"],
+        y_label: "% of Signatures in Range",
+        legend:["< 0.1%","< 1.0%", "< 5.0%", "> 5.0%"],
+        interpolate: "monotone",
+        chart_type: "line",
+        linked:true,
+        animate_on_load:true,
+        markers: [{
+          'date': new Date('2016-03-08T00:00:00.000Z'),
+          'label': '45/46/47/48'
+        },{
+          'date': new Date('2016-01-26T00:00:00.000Z'),
+          'label': '44/45/46/47'
+        },{
+          'date': new Date('2015-12-15T00:00:00.000Z'),
+          'label': '43/44/45/46'
+        }]
+    });
+});
+</script>
