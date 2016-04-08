@@ -5,12 +5,19 @@
     Graphics team is doing toward the Platform Engineering goal to drive high-volume crashes down to less than 1% of overall crash volume. (<a href="https://trello.com/c/aPBcO3LN">#2445</a>)
     </small>
     </div>
-  <div class='col-lg-12 text-center' id='gfx'></div>
-  <div class='col-lg-12 text-center' id='layers'></div>
+  <div class='col-lg-6 text-left' id='gfx'></div>
+  <div class='col-lg-6 text-left' id='layers'></div>
+  <div class='col-lg-6 text-left' id='gfx_top_ten'></div>
+  <div class='col-lg-6 text-left' id='layers_top_ten'></div>
+  <div class='col-lg-6 text-left' id='gfx_top_ten_percent'></div>
+  <div class='col-lg-6 text-left' id='layers_top_ten_percent'></div>
+  <div class='col-lg-6 text-left' id='gfx_top_one_percent'></div>
+  <div class='col-lg-6 text-left' id='layers_top_one_percent'></div>
 </div>
 
 <script>
 MG._hooks = {};
+
 d3.json('data/gfx-signature-breakdown.json', function(data) {
     data = MG.convert.date(data, 'date');
     MG.data_graphic({
@@ -56,6 +63,183 @@ d3.json('data/layers-signature-breakdown.json', function(data) {
         y_accessor: ["A","B","C","D"],
         y_label: "% of Signatures in Range",
         legend:["< 0.1%","< 1.0%", "< 5.0%", "> 5.0%"],
+        interpolate: "monotone",
+        chart_type: "line",
+        linked:true,
+        animate_on_load:true,
+        markers: [{
+          'date': new Date('2016-03-08T00:00:00.000Z'),
+          'label': '45/46/47/48'
+        },{
+          'date': new Date('2016-01-26T00:00:00.000Z'),
+          'label': '44/45/46/47'
+        },{
+          'date': new Date('2015-12-15T00:00:00.000Z'),
+          'label': '43/44/45/46'
+        }]
+    });
+});
+
+d3.json('data/layers-signature-breakdown.json', function(data) {
+    data = MG.convert.date(data, 'date');
+    MG.data_graphic({
+        data: data,
+        title: "Top-10 layers signatures",
+        width: 600,
+        height: 300,
+        right: 40,
+        left: 80,
+        target: document.getElementById('layers_top_ten'),
+        x_accessor: "date",
+        y_accessor: "top_ten",
+        y_label: "% of Volume",
+        interpolate: "monotone",
+        chart_type: "line",
+        linked:true,
+        animate_on_load:true,
+        markers: [{
+          'date': new Date('2016-03-08T00:00:00.000Z'),
+          'label': '45/46/47/48'
+        },{
+          'date': new Date('2016-01-26T00:00:00.000Z'),
+          'label': '44/45/46/47'
+        },{
+          'date': new Date('2015-12-15T00:00:00.000Z'),
+          'label': '43/44/45/46'
+        }]
+    });
+});
+d3.json('data/gfx-signature-breakdown.json', function(data) {
+    data = MG.convert.date(data, 'date');
+    MG.data_graphic({
+        data: data,
+        title: "Top-10 gfx signatures",
+        width: 600,
+        height: 300,
+        right: 40,
+        left: 80,
+        target: document.getElementById('gfx_top_ten'),
+        x_accessor: "date",
+        y_accessor: "top_ten",
+        y_label: "% of Volume",
+        interpolate: "monotone",
+        chart_type: "line",
+        linked:true,
+        animate_on_load:true,
+        markers: [{
+          'date': new Date('2016-03-08T00:00:00.000Z'),
+          'label': '45/46/47/48'
+        },{
+          'date': new Date('2016-01-26T00:00:00.000Z'),
+          'label': '44/45/46/47'
+        },{
+          'date': new Date('2015-12-15T00:00:00.000Z'),
+          'label': '43/44/45/46'
+        }]
+    });
+});
+
+d3.json('data/layers-signature-breakdown.json', function(data) {
+    data = MG.convert.date(data, 'date');
+    MG.data_graphic({
+        data: data,
+        title: "Top 10% of layers signatures",
+        width: 600,
+        height: 300,
+        right: 40,
+        left: 80,
+        target: document.getElementById('layers_top_ten_percent'),
+        x_accessor: "date",
+        y_accessor: "top_ten_percent",
+        y_label: "% of Volume",
+        interpolate: "monotone",
+        chart_type: "line",
+        linked:true,
+        animate_on_load:true,
+        markers: [{
+          'date': new Date('2016-03-08T00:00:00.000Z'),
+          'label': '45/46/47/48'
+        },{
+          'date': new Date('2016-01-26T00:00:00.000Z'),
+          'label': '44/45/46/47'
+        },{
+          'date': new Date('2015-12-15T00:00:00.000Z'),
+          'label': '43/44/45/46'
+        }]
+    });
+});
+d3.json('data/gfx-signature-breakdown.json', function(data) {
+    data = MG.convert.date(data, 'date');
+    MG.data_graphic({
+        data: data,
+        title: "Top 10% of gfx signatures",
+        width: 600,
+        height: 300,
+        right: 40,
+        left: 80,
+        target: document.getElementById('gfx_top_ten_percent'),
+        x_accessor: "date",
+        y_accessor: "top_ten_percent",
+        y_label: "% of Volume",
+        interpolate: "monotone",
+        chart_type: "line",
+        linked:true,
+        animate_on_load:true,
+        markers: [{
+          'date': new Date('2016-03-08T00:00:00.000Z'),
+          'label': '45/46/47/48'
+        },{
+          'date': new Date('2016-01-26T00:00:00.000Z'),
+          'label': '44/45/46/47'
+        },{
+          'date': new Date('2015-12-15T00:00:00.000Z'),
+          'label': '43/44/45/46'
+        }]
+    });
+});
+
+d3.json('data/layers-signature-breakdown.json', function(data) {
+    data = MG.convert.date(data, 'date');
+    MG.data_graphic({
+        data: data,
+        title: "Top 1% of layers signatures",
+        width: 600,
+        height: 300,
+        right: 40,
+        left: 80,
+        target: document.getElementById('layers_top_one_percent'),
+        x_accessor: "date",
+        y_accessor: "top_one_percent",
+        y_label: "% of Volume",
+        interpolate: "monotone",
+        chart_type: "line",
+        linked:true,
+        animate_on_load:true,
+        markers: [{
+          'date': new Date('2016-03-08T00:00:00.000Z'),
+          'label': '45/46/47/48'
+        },{
+          'date': new Date('2016-01-26T00:00:00.000Z'),
+          'label': '44/45/46/47'
+        },{
+          'date': new Date('2015-12-15T00:00:00.000Z'),
+          'label': '43/44/45/46'
+        }]
+    });
+});
+d3.json('data/gfx-signature-breakdown.json', function(data) {
+    data = MG.convert.date(data, 'date');
+    MG.data_graphic({
+        data: data,
+        title: "Top 1% of gfx signatures",
+        width: 600,
+        height: 300,
+        right: 40,
+        left: 80,
+        target: document.getElementById('gfx_top_one_percent'),
+        x_accessor: "date",
+        y_accessor: "top_one_percent",
+        y_label: "% of Volume",
         interpolate: "monotone",
         chart_type: "line",
         linked:true,
