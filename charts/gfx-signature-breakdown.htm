@@ -5,6 +5,7 @@
     Graphics team is doing toward the Platform Engineering goal to drive high-volume crashes down to less than 1% of overall crash volume. (<a href="https://trello.com/c/aPBcO3LN">#2445</a>)
     </small>
     </div>
+    <div class='col-lg-12 text-center' id='top_10_breakdown'></div>
   <div class='col-lg-6 text-left' id='gfx'></div>
   <div class='col-lg-6 text-left' id='layers'></div>
   <div class='col-lg-6 text-left' id='gfx_top_ten'></div>
@@ -239,6 +240,37 @@ d3.json('data/gfx-signature-breakdown.json', function(data) {
         target: document.getElementById('gfx_top_one_percent'),
         x_accessor: "date",
         y_accessor: "top_one_percent",
+        y_label: "% of Volume",
+        interpolate: "monotone",
+        chart_type: "line",
+        linked:true,
+        animate_on_load:true,
+        markers: [{
+          'date': new Date('2016-03-08T00:00:00.000Z'),
+          'label': '45/46/47/48'
+        },{
+          'date': new Date('2016-01-26T00:00:00.000Z'),
+          'label': '44/45/46/47'
+        },{
+          'date': new Date('2015-12-15T00:00:00.000Z'),
+          'label': '43/44/45/46'
+        }]
+    });
+});
+
+d3.json('data/top10-breakdown.json', function(data) {
+    data = MG.convert.date(data, 'date');
+    MG.data_graphic({
+        data: data,
+        title: "Percentage of overall Graghics crash volume for the Top 10 signatures",
+        width: 1000,
+        height: 300,
+        right: 40,
+        left: 80,
+        target: document.getElementById('top_10_breakdown'),
+        x_accessor: "date",
+        y_accessor: ["driver","other","webgl"],
+        legend: ["driver","other","webgl"],
         y_label: "% of Volume",
         interpolate: "monotone",
         chart_type: "line",
