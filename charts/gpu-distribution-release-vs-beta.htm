@@ -1,0 +1,207 @@
+<div class='row trunk-section'>
+    <h4 align="center">Graphics Cards represented in Release but not in Beta (based on crash reports)</h4>
+    <div style="text-align:center; width:100%">
+        <a href="http://pcidatabase.com/search.php?device_search_str=&device_search.x=55&device_search.y=4" style="text-align:center">[DEVICE ID LOOKUP]</a>
+    </div>
+    <div class='col-lg-4 text-left' style='float:left;' id='amd_month'></div>
+    <div class='col-lg-4 text-left' style='float:left;' id='intel_month'></div>
+    <div class='col-lg-4 text-left' style='float:left;' id='nvidia_month'></div>
+    <div class='col-lg-4 text-left' style='float:left;' id='amd_quarter'></div>
+    <div class='col-lg-4 text-left' style='float:left;' id='intel_quarter'></div>
+    <div class='col-lg-4 text-left' style='float:left;' id='nvidia_quarter'></div>
+    <div class='col-lg-4 text-left' style='float:left;' id='amd_year'></div>
+    <div class='col-lg-4 text-left' style='float:left;' id='intel_year'></div>
+    <div class='col-lg-4 text-left' style='float:left;' id='nvidia_year'></div>
+</div>
+
+<script>
+var globals = {};
+
+
+d3.json('data/gpu-distribution-lastmonth.json', function(data) {    
+    MG.data_graphic({
+        data: data['amd'],
+        title: "AMD GPUs (30 days)",
+        width: 400,
+        height: 300,
+        right: 40,
+        left:80,
+        target: document.getElementById('amd_month'),
+        x_accessor:"device",
+        y_accessor:"count",
+        y_label:"Number of crashes",
+        x_axis:false,
+        max_y:80,
+        size_accessor:"count",
+        chart_type: "point",
+        mouseover:function(e) {
+            d3.select('.mg-active-datapoint')
+                .text('device: ' + e['point']['device'] + '   crashes: ' + e['point']['count']);
+        }
+    });
+    MG.data_graphic({
+        data: data['intel'],
+        title: "Intel GPUs (30 days)",
+        width: 400,
+        height: 300,
+        right: 40,
+        left:80,
+        target: document.getElementById('intel_month'),
+        x_accessor:"device",
+        y_accessor:"count",
+        y_label:"Number of crashes",
+        max_y:80,
+        x_axis:false,
+        size_accessor:"count",
+        chart_type: "point",
+        mouseover:function(e) {
+            d3.select('.mg-active-datapoint')
+                .text('device: ' + e['point']['device'] + '   crashes: ' + e['point']['count']);
+        }
+    });
+    MG.data_graphic({
+        data: data['nvidia'],
+        title: "NVidia GPUs (30 days)",
+        width: 400,
+        height: 300,
+        right: 40,
+        left:80,
+        target: document.getElementById('nvidia_month'),
+        x_accessor:"device",
+        y_accessor:"count",
+        y_label:"Number of crashes",
+        max_y:80,
+        x_axis:false,
+        size_accessor:"count",
+        chart_type: "point",
+        mouseover:function(e) {
+            d3.select('.mg-active-datapoint')
+                .text('device: ' + e['point']['device'] + '   crashes: ' + e['point']['count']);
+        }
+    });
+});
+
+d3.json('data/gpu-distribution-lastquarter.json', function(data) {    
+    MG.data_graphic({
+        data: data['amd'],
+        title: "AMD GPUs (3 months)",
+        width: 400,
+        height: 300,
+        right: 40,
+        left:80,
+        target: document.getElementById('amd_quarter'),
+        x_accessor:"device",
+        y_accessor:"count",
+        y_label:"Number of crashes",
+        x_axis:false,
+        max_y:80,
+        size_accessor:"count",
+        chart_type: "point",
+        mouseover:function(e) {
+            d3.select('.mg-active-datapoint')
+                .text('device: ' + e['point']['device'] + '   crashes: ' + e['point']['count']);
+        }
+    });
+    MG.data_graphic({
+        data: data['intel'],
+        title: "Intel GPUs (3 months)",
+        width: 400,
+        height: 300,
+        right: 40,
+        left:80,
+        target: document.getElementById('intel_quarter'),
+        x_accessor:"device",
+        y_accessor:"count",
+        y_label:"Number of crashes",
+        max_y:80,
+        x_axis:false,
+        size_accessor:"count",
+        chart_type: "point",
+        mouseover:function(e) {
+            d3.select('.mg-active-datapoint')
+                .text('device: ' + e['point']['device'] + '   crashes: ' + e['point']['count']);
+        }
+    });
+    MG.data_graphic({
+        data: data['nvidia'],
+        title: "NVidia GPUs (3 months)",
+        width: 400,
+        height: 300,
+        right: 40,
+        left:80,
+        target: document.getElementById('nvidia_quarter'),
+        x_accessor:"device",
+        y_accessor:"count",
+        y_label:"Number of crashes",
+        max_y:80,
+        x_axis:false,
+        size_accessor:"count",
+        chart_type: "point",
+        mouseover:function(e) {
+            d3.select('.mg-active-datapoint')
+                .text('device: ' + e['point']['device'] + '   crashes: ' + e['point']['count']);
+        }
+    });
+});
+
+d3.json('data/gpu-distribution-lastyear.json', function(data) {    
+    MG.data_graphic({
+        data: data['amd'],
+        title: "AMD GPUs (1 year)",
+        width: 400,
+        height: 300,
+        right: 40,
+        left:80,
+        target: document.getElementById('amd_year'),
+        x_accessor:"device",
+        y_accessor:"count",
+        y_label:"Number of crashes",
+        x_axis:false,
+        max_y:80,
+        size_accessor:"count",
+        chart_type: "point",
+        mouseover:function(e) {
+            d3.select('.mg-active-datapoint')
+                .text('device: ' + e['point']['device'] + '   crashes: ' + e['point']['count']);
+        }
+    });
+    MG.data_graphic({
+        data: data['intel'],
+        title: "Intel GPUs (1 year)",
+        width: 400,
+        height: 300,
+        right: 40,
+        left:80,
+        target: document.getElementById('intel_year'),
+        x_accessor:"device",
+        y_accessor:"count",
+        y_label:"Number of crashes",
+        max_y:80,
+        x_axis:false,
+        size_accessor:"count",
+        chart_type: "point",
+        mouseover:function(e) {
+            d3.select('.mg-active-datapoint')
+                .text('device: ' + e['point']['device'] + '   crashes: ' + e['point']['count']);
+        }
+    });
+    MG.data_graphic({
+        data: data['nvidia'],
+        title: "NVidia GPUs (1 year)",
+        width: 400,
+        height: 300,
+        right: 40,
+        left:80,
+        target: document.getElementById('nvidia_year'),
+        x_accessor:"device",
+        y_accessor:"count",
+        y_label:"Number of crashes",
+        max_y:80,
+        x_axis:false,
+        size_accessor:"count",
+        chart_type: "point",
+        mouseover:globals.mouseover
+    });
+});
+
+</script>
