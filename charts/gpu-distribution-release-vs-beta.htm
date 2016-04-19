@@ -200,7 +200,10 @@ d3.json('data/gpu-distribution-lastyear.json', function(data) {
         x_axis:false,
         size_accessor:"count",
         chart_type: "point",
-        mouseover:globals.mouseover
+        mouseover:function(e) {
+            d3.select('.mg-active-datapoint')
+                .text('device: ' + e['point']['device'] + '   crashes: ' + e['point']['count']);
+        }
     });
 });
 
