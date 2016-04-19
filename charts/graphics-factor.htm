@@ -1,0 +1,48 @@
+<div class='row trunk-section'>
+    <div class='col-lg-12 text-left' id='factors'></div>
+    <div class='col-lg-12 text-left' id='factors_vendor'></div>
+</div>
+
+<script>
+var globals = {};
+
+
+d3.json('data/graphics-factor.json', function(data) {
+    data = MG.convert.date(data, 'date');
+    MG.data_graphic({
+        data: data,
+        title: "Factor in overall crash and install volume (Release vs Beta)",
+        width: 1190,
+        height: 300,
+        right: 40,
+        left:80,
+        target: document.getElementById('factors'),
+        x_accessor:"date",
+        y_accessor:["crash_factor","adi_factor","factor_factor"],
+        legend:["Crashes","Installs","Diff"],
+        y_label:"X Factor",
+        chart_type: "line",
+        linked:true
+    });
+});
+
+d3.json('data/graphics-factor-by-vendor.json', function(data) {
+    data = MG.convert.date(data, 'date');
+    MG.data_graphic({
+        data: data,
+        title: "Factor in crash volume by vendor (Release vs Beta)",
+        width: 1190,
+        height: 300,
+        right: 40,
+        left:80,
+        target: document.getElementById('factors_vendor'),
+        x_accessor:"date",
+        y_accessor:["amd","intel","nvidia"],
+        legend:["amd","intel","nvidia"],
+        y_label:"X Factor (Release vs Beta)",
+        chart_type: "line",
+        linked:true
+    });
+});
+
+</script>
