@@ -37,8 +37,8 @@ d3.json('data/graphics-factor-by-vendor.json', function(data) {
         left:80,
         target: document.getElementById('factors_vendor'),
         x_accessor:"date",
-        y_accessor:["amd","intel","nvidia"],
-        legend:["amd","intel","nvidia"],
+        y_accessor:["amd","intel","nvidia","total"],
+        legend:["amd","intel","nvidia","overall"],
         y_label:"X Factor (Release vs Beta)",
         chart_type: "line",
         linked:true
