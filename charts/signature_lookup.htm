@@ -1,0 +1,50 @@
+<div class='row trunk-section'>
+    <div style="text-align:center">
+        <h4>Crash Signature Lookup</h4>
+        <small>Please allow several seconds for the graph to load, especially on the first attempt.<br />(Leave blank to show all crashes)</small>
+        <br /><br />
+        <input type="text" id="signature" style="width:30%"></input><br />
+        <button type="submit" onclick="loadGraph()">Graph</button>
+    </div>
+    <div class='col-lg-12 text-left' id='chart'></div>
+</div>
+<script>
+    function convertDate(d) {
+        var day = (d.getDate() < 10) ? '0' + d.getDate().toString() : d.getDate().toString();
+        var month = ((d.getMonth()+1) < 10) ? '0' + (d.getMonth()+1).toString() : (d.getMonth()+1).toString();
+        var year = d.getFullYear().toString();
+        return year + '-' + month + '-' + day;
+    }
+    
+    function loadGraph() {
+        var signature = document.getElementById("signature").value;
+        var end_date = convertDate(new Date((new Date()).valueOf() - 1000*60*60*24*1));
+        var start_date = convertDate(new Date((new Date()).valueOf() - 1000*60*60*24*364));
+        var url = "https://crash-stats.mozilla.com/api/SuperSearch/?&signature=~" + signature + "&date=%3E%3D" + start_date + "&date=%3C%3D" + end_date + "&_histogram.date=release_channel&_histogram_interval=1d";
+        d3.json(url, function(data) {
+            var items = [];
+            $.each(data, function(key, value) {
+              if (key == "facets") {
+                var histogram_date = value.histogram_date;
+                $.each(histogram_date, function(key, value) {
+                    items.push({"date":value.term.substring(0,10),"count":value.count})
+                });
+              }
+            });
+            items = MG.convert.date(items, 'date');
+            var title = (signature == "") ? "Crashes for all signatures since " + start_date : "Crashes for " + signature + " since " + start_date;
+            MG.data_graphic({
+                data: items,
+                title: title,
+                width: 1140,
+                height: 300,
+                right: 40,
+                target: document.getElementById('chart'),
+                x_accessor: 'date',
+                y_accessor: 'count',
+                interpolate: "monotone",
+                chart_type: "line"
+            });
+        });
+    }
+</script>
