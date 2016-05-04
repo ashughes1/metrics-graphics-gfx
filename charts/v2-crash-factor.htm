@@ -1,0 +1,134 @@
+<div class='row trunk-section'>
+  <div class='col-lg-12 text-center' id='chart'>LOADING DATA...</div>
+</div>
+
+<script>
+    MG._hooks = {};
+    
+    var globals = {};
+    
+    globals.mouseover = function(d,i) {
+        var end_date = convertDate(d.date);
+        var start_date = convertDate(new Date(d.date.valueOf()-1*24*60*60*1000));
+        globals.url = "https://hg.mozilla.org/releases/mozilla-release/pushloghtml?startdate=" + start_date + "&enddate=" + end_date;
+    }
+    
+    globals.markers = [
+        {'date': new Date('2015-12-14T00:00:00.000Z'),'label': '43.0'},
+        {'date': new Date('2016-01-25T00:00:00.000Z'),'label': '44.0'},
+        {'date': new Date('2016-03-08T00:00:00.000Z'),'label': '45.0'},
+        {'date': new Date('2016-04-26T00:00:00.000Z'),'label': '46.0'}
+    ];
+    
+    function convertDate(d) {
+        var day = (d.getDate() < 10) ? '0' + d.getDate().toString() : d.getDate().toString();
+        var month = ((d.getMonth()+1) < 10) ? '0' + (d.getMonth()+1).toString() : (d.getMonth()+1).toString();
+        var year = d.getFullYear().toString();
+        return year + '-' + month + '-' + day;
+    }
+    
+    function draw() {
+        chartData = MG.convert.date(chartData, 'date');
+        document.getElementById('chart').innerHTML = "";
+        MG.data_graphic({
+            data: chartData,
+            title: "Graphics Crash Factor (Release vs Beta)",
+            description: "How many more crashes do we see on Release vs Beta?",
+            width: 800,
+            height: 300,
+            left:90,
+            right:90,
+            target: document.getElementById('chart'),
+            x_accessor: "date",
+            y_accessor: ["firefox_factor","fennec_factor"],
+            y_mouseover: function(d){
+                var factor = (d.line_id == 2) ? d.fennec_factor : d.firefox_factor;
+                return factor.toString() + "x crashes on Release";
+            },
+            legend: ['Firefox','Fennec'],
+            y_label: "X-Factor",
+            chart_type: "line",
+            linked:true,
+            mouseover: globals.mouseover,
+            markers:globals.markers
+        });
+        
+        var mouseouts = d3.selectAll('.mg-voronoi path').on('mouseout');
+        d3.selectAll('.mg-voronoi path')
+            .on('click', function(d) {
+                window.open(globals.url, '_blank');
+            });
+    }
+    
+    function processFennecData(start, end) {
+        d3.json("https://crash-stats.mozilla.com/api/SuperSearch/?"
+            + "product=FennecAndroid"
+            + "&signature=~gfx&signature=~layers&signature=~canvas&signature=~glcontext&signature=~d3d&signature=~d2d&signature=~dwrite&signature=~skia&signature=~mesa&signature=~cairo&signature=^amd&signature=^ati&signature=^igd&signature=^nv"
+            + "&date=%3E%3D" + start
+            + "&date=%3C%3D" + end
+            + "&_histogram.date=release_channel&_histogram_interval=1d", function(data) {
+                if (!data) return new Error("Unable to load JSON data!");
+                var histogram_date = data.facets.histogram_date;
+                for (var d in histogram_date) {
+                    var term = histogram_date[d].term.substring(0,10);
+                    var release = 0;
+                    var beta = 0;
+                    var factor = 0;
+                    for (var c in histogram_date[d].facets.release_channel) {
+                        if (histogram_date[d].facets.release_channel[c].term == 'release') {
+                            release = histogram_date[d].facets.release_channel[c].count;
+                        } else if (histogram_date[d].facets.release_channel[c].term == 'beta') {
+                            beta = histogram_date[d].facets.release_channel[c].count;
+                        }
+                    }
+                    if (release != 0 && beta != 0) {
+                        factor = (release/beta).toFixed(2);
+                    }
+                    chartData.push({"date":term,"fennec_factor":factor,"firefox_factor":0});  
+                }
+                if (chartData.length == histogram_date.length) {
+                    processFirefoxData(start, end);
+                }
+        });
+    }
+    
+    function processFirefoxData(start, end) {
+        d3.json("https://crash-stats.mozilla.com/api/SuperSearch/?"
+            + "product=Firefox"
+            + "&signature=~gfx&signature=~layers&signature=~canvas&signature=~glcontext&signature=~d3d&signature=~d2d&signature=~dwrite&signature=~skia&signature=~mesa&signature=~cairo&signature=^amd&signature=^ati&signature=^igd&signature=^nv"
+            + "&date=%3E%3D" + start
+            + "&date=%3C%3D" + end
+            + "&_histogram.date=release_channel&_histogram_interval=1d", function(data) {
+                if (!data) return new Error("Unable to load JSON data!");
+                var histogram_date = data.facets.histogram_date;
+                for (var d=0; d<histogram_date.length; d++) {
+                    var term = histogram_date[d].term.substring(0,10);
+                    var release = 0;
+                    var beta = 0;
+                    var factor = 0;
+                    for (var c in histogram_date[d].facets.release_channel) {
+                        if (histogram_date[d].facets.release_channel[c].term == 'release') {
+                            release = histogram_date[d].facets.release_channel[c].count;
+                        } else if (histogram_date[d].facets.release_channel[c].term == 'beta') {
+                            beta = histogram_date[d].facets.release_channel[c].count;
+                        }
+                    }
+                    if (release != 0 && beta != 0) {
+                        factor = (release/beta).toFixed(2);
+                    }
+                    for (var i=0; i<chartData.length; i++) {
+                        if (chartData[i].date == term) {
+                            chartData[i]['firefox_factor'] = factor;
+                        }
+                    }                    
+                }
+                draw();
+        });
+    }
+    
+    var chartData = [];
+    var endDate = convertDate(new Date((new Date()).valueOf()-1*24*60*60*1000));
+    var startDate = convertDate(new Date((new Date()).valueOf()-365*24*60*60*1000));
+    processFennecData(startDate, endDate);
+    
+</script>
