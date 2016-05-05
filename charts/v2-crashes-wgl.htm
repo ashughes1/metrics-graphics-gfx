@@ -1,0 +1,134 @@
+<div class='row trunk-section'>
+  <div class='col-lg-12 text-center' id='chart_count'>LOADING DATA...</div>
+  <div class='col-lg-12 text-center' id='chart_pct'>LOADING DATA...</div>
+</div>
+
+<script>
+    function convertDate(d) {
+        var day = (d.getDate() < 10) ? '0' + d.getDate().toString() : d.getDate().toString();
+        var month = ((d.getMonth()+1) < 10) ? '0' + (d.getMonth()+1).toString() : (d.getMonth()+1).toString();
+        var year = d.getFullYear().toString();
+        return year + '-' + month + '-' + day;
+    }
+    
+    function callback(items) {
+        var count = 0;
+        d3.json("https://crash-stats.mozilla.com/api/SuperSearch/?date=%3E%3D" + dateStart + "&_histogram.date=platform_pretty_version&_histogram_interval=1d", function(data) {
+            if (!data) return callback(new Error("Unable to load JSON data!"));
+            var histogram_date = data.facets.histogram_date;
+            for (var d in histogram_date) {
+                for (var i in items) {
+                    var datestamp = histogram_date[d].term.substring(0,10);
+                    if (datestamp == items[i].date) {
+                        for (var p in histogram_date[d].facets.platform_pretty_version) {
+                            var platform = histogram_date[d].facets.platform_pretty_version[p];
+                            if (platform.term == "Windows XP") {
+                              items[i].winxp_pct = parseFloat((items[i].winxp/platform.count*100).toFixed(2));
+                              count++;
+                            } else if (platform.term == "Windows Vista") {
+                              items[i].vista_pct = parseFloat((items[i].vista/platform.count*100).toFixed(2));
+                              count++;
+                            } else if (platform.term == "Windows 7") {
+                              items[i].win7_pct = parseFloat((items[i].win7/platform.count*100).toFixed(2));
+                              count++;
+                            } else if (platform.term == "Windows 8" || platform.term == "Windows 8.1" ) {
+                              items[i].win8_pct = parseFloat((items[i].win8/platform.count*100).toFixed(2));
+                              count++;
+                            } else if (platform.term == "Windows 10") {
+                              items[i].win10_pct = parseFloat((items[i].win10/platform.count*100).toFixed(2));
+                              count++;
+                            }
+                        }
+                    }
+                }
+            }
+            if (count == items.length*6) {
+                draw(items);
+            }
+        });
+        
+    }
+    
+    function draw(data) {
+        document.getElementById('chart_count').innerHTML = "";
+        document.getElementById('chart_pct').innerHTML = "";
+        data = MG.convert.date(data, 'date');
+        MG.data_graphic({
+            data: data,
+            title: "Number of crashes with WGL+ in AppNotes",
+            width: 800,
+            height: 300,
+            right: 120,
+            bottom: 90,
+            target: document.getElementById('chart_count'),
+            x_accessor: "date",
+            y_accessor: ["winxp","vista","win7","win8","win10"],
+            legend: ["Win XP", "Vista", "Win 7", "Win 8", "Win 10"],
+            chart_type: "line",
+            mouseover: globals.mouseover
+        });
+        MG.data_graphic({
+            data: data,
+            title: "Percent of crashes with WGL+ in AppNotes",
+            width: 800,
+            height: 300,
+            right: 120,
+            bottom: 90,
+            target: document.getElementById('chart_pct'),
+            x_accessor: "date",
+            y_accessor: ["winxp_pct","vista_pct","win7_pct","win8_pct","win10_pct"],
+            legend: ["Win XP", "Vista", "Win 7", "Win 8", "Win 10"],
+            max_y:0.5,
+            chart_type: "line",
+            mouseover: globals.mouseover
+        });
+        var mouseouts = d3.selectAll('.mg-rollover-rect rect').on('mouseout');
+        d3.selectAll('.mg-rollover-rect rect')
+            .on('click', function(d) {
+                window.open(globals.url, '_blank');
+            });
+    }
+    
+    var dateStart = convertDate(new Date((new Date()).valueOf()-(364*24*60*60*1000)));
+    var globals = {
+        "url":"https://crash-stats.mozilla.com/search/",
+        "mouseover":function(d,i) {
+            d3.select('svg .mg-active-datapoint')
+                .text();
+            globals.url = "https://crash-stats.mozilla.com/search/?app_notes=~WGL+&date=%3E%3D" + convertDate(d.key);
+        }
+    };
+     
+    d3.json("https://crash-stats.mozilla.com/api/SuperSearch/?app_notes=~WGL%2B&date=%3E%3D" + dateStart + "&_histogram.date=platform_pretty_version&_histogram_interval=1d", function(data) {
+        if (!data) return callback(new Error("Unable to load JSON data!"));
+        var items = [];
+        var histogram_date = data.facets.histogram_date;
+        for (var d in histogram_date){
+            items[d] = {
+                "date":histogram_date[d].term.substring(0,10),
+                "total":histogram_date[d].count,
+                "winxp":0, "winxp_pct":0,
+                "vista":0, "vista_pct":0,
+                "win7":0, "win7_pct":0,
+                "win8":0, "win8_pct":0,
+                "win10":0, "win10_pct":0
+            };
+            for (var p in histogram_date[d].facets.platform_pretty_version) {
+              var platform = histogram_date[d].facets.platform_pretty_version[p];
+              if (platform.term == "Windows XP") {
+                items[d].winxp = platform.count;
+              } else if (platform.term == "Windows Vista") {
+                items[d].vista = platform.count;
+              } else if (platform.term == "Windows 7") {
+                items[d].win7 = platform.count;
+              } else if (platform.term == "Windows 8" || platform.term == "Windows 8.1" ) {
+                items[d].win8 = platform.count;
+              } else if (platform.term == "Windows 10") {
+                items[d].win10 = platform.count;
+              }
+            }
+        }
+        callback(items);
+    });
+
+</script>
