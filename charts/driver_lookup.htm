@@ -1,0 +1,129 @@
+<div class='row trunk-section'>
+    <div style="text-align:center">
+        <h4>Driver Lookup</h4>
+        <small>Please allow several seconds for the graph to load, especially on the first attempt.<br />(Leave blank to show all crashes)</small>
+        <br /><br />
+        <input type="text" id="driver" style="width:30%"></input><br />
+        <button type="submit" onclick="loadData('all')">Graph</button>
+    </div>
+    <div class='col-lg-12 text-left' id='chart'></div>
+    <div class='col-lg-12 text-left' id='chart_gfx'></div>
+</div>
+<script>
+    var items = [];
+    var driver = "";
+    var start_date = convertDate(new Date((new Date()).valueOf() - 1000*60*60*24*182));
+    
+    function convertDate(d) {
+        var day = (d.getDate() < 10) ? '0' + d.getDate().toString() : d.getDate().toString();
+        var month = ((d.getMonth()+1) < 10) ? '0' + (d.getMonth()+1).toString() : (d.getMonth()+1).toString();
+        var year = d.getFullYear().toString();
+        return year + '-' + month + '-' + day;
+    }
+    
+    function findIndex(value) {
+        var found = -1;
+        for (var i=0; i<items.length; i++) {
+            var keys = Object.keys(items[i]);
+            if (keys.includes("date")) {
+                if (items[i].date == value.term.substring(0,10)) {
+                    found = i;
+                    break;
+                }
+            }
+        }
+        return found;
+    }
+    
+    function loadData(category) {
+        var next = "";
+        var url = "";
+        if (category == "all") {
+            driver = document.getElementById("driver").value;
+            url = "https://crash-stats.mozilla.com/api/SuperSearch/?adapter_driver_version=~" + driver + "&date=%3E%3D" + start_date + "&_histogram.date=release_channel&_histogram_interval=1d";
+            next = "gfx";
+        } else if (category == "gfx") {
+            url = "https://crash-stats.mozilla.com/api/SuperSearch/?signature=~gfx&signature=~layers&signature=~glcontext&signature=~canvas&signature=~d3d&signature=~d2d&signature=~dwrite&signature=~skia&signature=~mesa&signature=~cairo&adapter_driver_version=~" + driver + "&date=%3E%3D" + start_date + "&_histogram.date=release_channel&_histogram_interval=1d";
+            next = "webgl";
+        } else if (category == "webgl") {
+            url = "https://crash-stats.mozilla.com/api/SuperSearch/?signature=~webgl&adapter_driver_version=~" + driver + "&date=%3E%3D" + start_date + "&_histogram.date=release_channel&_histogram_interval=1d";
+            next = "driver";
+        } else if (category == "driver") {
+            url = "https://crash-stats.mozilla.com/api/SuperSearch/?signature=^amd&signature=^ati&signature=^igd&signature=^nv&adapter_driver_version=~" + driver + "&date=%3E%3D" + start_date + "&_histogram.date=release_channel&_histogram_interval=1d";
+            next = "done";
+        } else if (category == "done") {
+            sanitizeData();
+        }
+        
+        d3.json(url, function(data) {
+            if (data.total != 0) {
+                var processed = 0;
+                $.each(data, function(key, value) {
+                  if (key == "facets") {
+                    var histogram_date = value.histogram_date;
+                    $.each(histogram_date, function(key, value) {
+                        var index = findIndex(value);
+                        if (index != -1) {
+                            items[index][category] = value.count;
+                        } else {
+                            index = items.length;
+                            items.push({"date":value.term.substring(0,10)});
+                            items[index][category] = value.count;
+                        }
+                        if (processed++ == (histogram_date.length-1)) loadData(next);
+                    });
+                  }        
+                });
+            } else {
+                loadData(next);
+            }
+        });  
+    }
+    
+    function sanitizeData() {
+        items = MG.convert.date(items, 'date');
+        var i = 0;
+        while (i<items.length) {
+            var keys = Object.keys(items[i]);
+            if (!keys.includes("all")) items[i]["all"] = 0;
+            if (!keys.includes("gfx")) items[i]["gfx"] = 0;
+            if (!keys.includes("webgl")) items[i]["webgl"] = 0;
+            if (!keys.includes("driver")) items[i]["driver"] = 0;
+            i = i + 1;
+        }
+        loadGraph();
+    }
+    
+    function loadGraph() {
+        if (items.length > 0) {
+            var title = (driver == "") ? "All crashes for all drivers since " + start_date : "All crashes for " + driver + " since " + start_date;
+            MG.data_graphic({
+                data: items,
+                title: title,
+                width: 1140,
+                height: 300,
+                right: 40,
+                target: document.getElementById('chart'),
+                x_accessor: 'date',
+                y_accessor: 'all',
+                interpolate: "monotone",
+                chart_type: "line"
+            });
+            var title = (driver == "") ? "Graphics crashes for all drivers since " + start_date : "Graphics crashes for " + driver + " since " + start_date;
+            MG.data_graphic({
+                data: items,
+                title: title,
+                width: 1140,
+                height: 300,
+                right: 40,
+                target: document.getElementById('chart_gfx'),
+                x_accessor: 'date',
+                y_accessor: ['gfx','webgl','driver'],
+                interpolate: "monotone",
+                chart_type: "line"
+            });
+        } else {
+            document.getElementById('chart').innerHTML = "<h4><center>No crash data found for " + driver + "!</center></h4>"
+        }
+    }
+</script>
