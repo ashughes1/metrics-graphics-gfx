@@ -6,8 +6,9 @@
         <input type="text" id="driver" style="width:30%"></input><br />
         <button type="submit" onclick="loadData('all')">Graph</button>
     </div>
-    <div class='col-lg-12 text-left' id='chart'></div>
-    <div class='col-lg-12 text-left' id='chart_gfx'></div>
+    <div class='col-lg-6 text-left' id='all_count'></div>
+    <div class='col-lg-6 text-left' id='gfx_count'></div>
+    <div class='col-lg-6 text-left' id='score'></div>
 </div>
 <script>
     var items = [];
@@ -40,22 +41,24 @@
         var url = "";
         if (category == "all") {
             driver = document.getElementById("driver").value;
-            url = "https://crash-stats.mozilla.com/api/SuperSearch/?adapter_driver_version=~" + driver + "&date=%3E%3D" + start_date + "&_histogram.date=release_channel&_histogram_interval=1d";
+            url = "https://crash-stats.mozilla.com/api/SuperSearch/?adapter_driver_version=~" + driver + "&date=%3E%3D" + start_date + "&_histogram.date=_cardinality.install_time&_histogram_interval=1d";
             next = "gfx";
         } else if (category == "gfx") {
-            url = "https://crash-stats.mozilla.com/api/SuperSearch/?signature=~gfx&signature=~layers&signature=~glcontext&signature=~canvas&signature=~d3d&signature=~d2d&signature=~dwrite&signature=~skia&signature=~mesa&signature=~cairo&adapter_driver_version=~" + driver + "&date=%3E%3D" + start_date + "&_histogram.date=release_channel&_histogram_interval=1d";
+            url = "https://crash-stats.mozilla.com/api/SuperSearch/?signature=~gfx&signature=~layers&signature=~glcontext&signature=~canvas&signature=~d3d&signature=~d2d&signature=~dwrite&signature=~skia&signature=~mesa&signature=~cairo&adapter_driver_version=~" + driver + "&date=%3E%3D" + start_date + "&_histogram.date=_cardinality.install_time&_histogram_interval=1d";
             next = "webgl";
         } else if (category == "webgl") {
-            url = "https://crash-stats.mozilla.com/api/SuperSearch/?signature=~webgl&adapter_driver_version=~" + driver + "&date=%3E%3D" + start_date + "&_histogram.date=release_channel&_histogram_interval=1d";
+            url = "https://crash-stats.mozilla.com/api/SuperSearch/?signature=~webgl&adapter_driver_version=~" + driver + "&date=%3E%3D" + start_date + "&_histogram.date=_cardinality.install_time&_histogram_interval=1d";
             next = "driver";
         } else if (category == "driver") {
-            url = "https://crash-stats.mozilla.com/api/SuperSearch/?signature=^amd&signature=^ati&signature=^igd&signature=^nv&adapter_driver_version=~" + driver + "&date=%3E%3D" + start_date + "&_histogram.date=release_channel&_histogram_interval=1d";
+            url = "https://crash-stats.mozilla.com/api/SuperSearch/?signature=^amd&signature=^ati&signature=^igd&signature=^nv&adapter_driver_version=~" + driver + "&date=%3E%3D" + start_date + "&_histogram.date=_cardinality.install_time&_histogram_interval=1d";
             next = "done";
         } else if (category == "done") {
             sanitizeData();
         }
         
         d3.json(url, function(data) {
+            var count_key = category + "_count";
+            var score_key = category + "_score";
             if (data.total != 0) {
                 var processed = 0;
                 $.each(data, function(key, value) {
@@ -64,11 +67,13 @@
                     $.each(histogram_date, function(key, value) {
                         var index = findIndex(value);
                         if (index != -1) {
-                            items[index][category] = value.count;
+                            items[index][count_key] = value.count;
+                            items[index][score_key] = value.count / value.facets.cardinality_install_time.value; 
                         } else {
                             index = items.length;
                             items.push({"date":value.term.substring(0,10)});
-                            items[index][category] = value.count;
+                            items[index][count_key] = value.count;
+                            items[index][score_key] = value.count / value.facets.cardinality_install_time.value;
                         }
                         if (processed++ == (histogram_date.length-1)) loadData(next);
                     });
@@ -85,27 +90,32 @@
         var i = 0;
         while (i<items.length) {
             var keys = Object.keys(items[i]);
-            if (!keys.includes("all")) items[i]["all"] = 0;
-            if (!keys.includes("gfx")) items[i]["gfx"] = 0;
-            if (!keys.includes("webgl")) items[i]["webgl"] = 0;
-            if (!keys.includes("driver")) items[i]["driver"] = 0;
+            if (!keys.includes("all_count")) items[i]["all_count"] = 0;
+            if (!keys.includes("gfx_count")) items[i]["gfx_count"] = 0;
+            if (!keys.includes("webgl_count")) items[i]["webgl_count"] = 0;
+            if (!keys.includes("driver_count")) items[i]["driver_count"] = 0;
+            if (!keys.includes("all_score")) items[i]["all_score"] = 0;
+            if (!keys.includes("gfx_score")) items[i]["gfx_score"] = 0;
+            if (!keys.includes("webgl_score")) items[i]["webgl_score"] = 0;
+            if (!keys.includes("driver_score")) items[i]["driver_score"] = 0;
             i = i + 1;
         }
         loadGraph();
     }
     
     function loadGraph() {
+        console.log(items);
         if (items.length > 0) {
             var title = (driver == "") ? "All crashes for all drivers since " + start_date : "All crashes for " + driver + " since " + start_date;
             MG.data_graphic({
                 data: items,
                 title: title,
-                width: 1140,
+                width: 550,
                 height: 300,
                 right: 40,
-                target: document.getElementById('chart'),
+                target: document.getElementById('all_count'),
                 x_accessor: 'date',
-                y_accessor: 'all',
+                y_accessor: 'all_count',
                 interpolate: "monotone",
                 chart_type: "line"
             });
@@ -113,13 +123,27 @@
             MG.data_graphic({
                 data: items,
                 title: title,
-                width: 1140,
+                width: 550,
                 height: 300,
                 right: 40,
-                target: document.getElementById('chart_gfx'),
+                target: document.getElementById('gfx_count'),
                 x_accessor: 'date',
-                y_accessor: ['gfx','webgl','driver'],
+                y_accessor: ['gfx_count','webgl_count','driver_count'],
                 legend: ['Graphics', 'WebGL', 'Driver'],
+                interpolate: "monotone",
+                chart_type: "line"
+            });
+            var title = (driver == "") ? "Crashes per Install for all drivers since " + start_date : "Crashes per Install for " + driver + " since " + start_date;
+            MG.data_graphic({
+                data: items,
+                title: title,
+                width: 550,
+                height: 300,
+                right: 40,
+                target: document.getElementById('score'),
+                x_accessor: 'date',
+                y_accessor: ['all_score','gfx_score','webgl_score','driver_score'],
+                legend: ['All','Graphics', 'WebGL', 'Driver'],
                 interpolate: "monotone",
                 chart_type: "line"
             });
