@@ -9,6 +9,7 @@
     <div class='col-lg-6 text-left' id='all_count'></div>
     <div class='col-lg-6 text-left' id='gfx_count'></div>
     <div class='col-lg-6 text-left' id='score'></div>
+    <div class='col-lg-6 text-left' id='share'></div>
 </div>
 <script>
     var items = [];
@@ -59,6 +60,7 @@
         d3.json(url, function(data) {
             var count_key = category + "_count";
             var score_key = category + "_score";
+            var share_key = category + "_share";
             if (data.total != 0) {
                 var processed = 0;
                 $.each(data, function(key, value) {
@@ -68,12 +70,22 @@
                         var index = findIndex(value);
                         if (index != -1) {
                             items[index][count_key] = value.count;
-                            items[index][score_key] = value.count / value.facets.cardinality_install_time.value; 
+                            items[index][score_key] = value.count / value.facets.cardinality_install_time.value;
+                            if (category == "all") {
+                                items[index]["users_all"] = value.facets.cardinality_install_time.value;
+                            } else {
+                                items[index][share_key] = value.facets.cardinality_install_time.value / items[index]["users_all"] * 100;
+                            }
                         } else {
                             index = items.length;
                             items.push({"date":value.term.substring(0,10)});
                             items[index][count_key] = value.count;
                             items[index][score_key] = value.count / value.facets.cardinality_install_time.value;
+                            if (category == "all") {
+                                items[index]["users_all"] = value.facets.cardinality_install_time.value;
+                            } else {
+                                items[index][share_key] = value.facets.cardinality_install_time.value / items[index]["users_all"] * 100;
+                            }
                         }
                         if (processed++ == (histogram_date.length-1)) loadData(next);
                     });
@@ -98,6 +110,10 @@
             if (!keys.includes("gfx_score")) items[i]["gfx_score"] = 0;
             if (!keys.includes("webgl_score")) items[i]["webgl_score"] = 0;
             if (!keys.includes("driver_score")) items[i]["driver_score"] = 0;
+            if (!keys.includes("users_all")) items[i]["users_all"] = 0;
+            if (!keys.includes("gfx_share")) items[i]["gfx_share"] = 0;
+            if (!keys.includes("webgl_share")) items[i]["webgl_share"] = 0;
+            if (!keys.includes("driver_share")) items[i]["driver_share"] = 0;
             i = i + 1;
         }
         loadGraph();
@@ -144,6 +160,20 @@
                 x_accessor: 'date',
                 y_accessor: ['all_score','gfx_score','webgl_score','driver_score'],
                 legend: ['All','Graphics', 'WebGL', 'Driver'],
+                interpolate: "monotone",
+                chart_type: "line"
+            });
+            var title = (driver == "") ? "Percentage of users reporting crashes for all drivers since " + start_date : "Percentage of users reporting crashes for " + driver + " since " + start_date;
+            MG.data_graphic({
+                data: items,
+                title: title,
+                width: 550,
+                height: 300,
+                right: 40,
+                target: document.getElementById('share'),
+                x_accessor: 'date',
+                y_accessor: ['gfx_share','webgl_share','driver_share'],
+                legend: ['Graphics', 'WebGL', 'Driver'],
                 interpolate: "monotone",
                 chart_type: "line"
             });
