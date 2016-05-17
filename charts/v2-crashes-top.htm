@@ -1,0 +1,140 @@
+<div class='row trunk-section'>
+  <div class='col-lg-6 text-left' id='top10_percent'>LOADING DATA...</div>
+  <div class='col-lg-6 text-left' id='top10_count'>LOADING DATA...</div>
+</div>
+
+<script>
+    var result = [];
+    
+    function convertDate(d) {
+        var day = (d.getDate() < 10) ? '0' + d.getDate().toString() : d.getDate().toString();
+        var month = ((d.getMonth()+1) < 10) ? '0' + (d.getMonth()+1).toString() : (d.getMonth()+1).toString();
+        var year = d.getFullYear().toString();
+        return year + '-' + month + '-' + day;
+    }
+    
+    // Check if the output json has data for the date
+    function findDateInResult(value) {
+        var found = -1;
+        for (var i=0; i<result.length; i++) {
+            var keys = Object.keys(result[i]);
+            if (keys.includes("date")) {
+                if (result[i].date == value) {
+                    found = i;
+                    break;
+                }
+            }
+        }
+        return found;
+    }
+    
+    function processData(category) {
+        d3.json(urls[category], function(data) {
+            if (!data) return callback(new Error("Unable to load JSON data!"));
+            var histogram_date = data.facets.histogram_date;
+            for (var d in histogram_date) {
+                var datestamp = histogram_date[d].term.substring(0,10);
+                var index = findDateInResult(datestamp);
+                if (index >= 0) {
+                    var keys = Object.keys(result[index]);
+                    if (!keys.includes(category)) {
+                        var signatures = histogram_date[d].facets.signature;
+                        var max = (signatures.length < 10) ? signatures.length : 10;
+                        var count = 0;
+                        for (var i=0; i<max; i++) {
+                            count = count + signatures[i].count;
+                        }
+                        var percent_key = category + "_percent";
+                        var count_key = category + "_count";
+                        result[index][percent_key] = count / result[index].total * 100;
+                        result[index][count_key] = count;
+                    }
+                } else {
+                    result.push({"date":datestamp,"total":histogram_date[d].count});    
+                }
+
+                if (d >= (histogram_date.length - 1)) {
+                    if (category == "all") {
+                        processData("webgl");
+                    } else if (category == "webgl") {
+                        processData("driver");
+                    } else if (category == "driver") {
+                        processData("graphics")
+                    } else {
+                        drawChart();
+                    }
+                }
+            }
+        });
+    }
+    
+    function sanitizeData() {
+        result = MG.convert.date(result, 'date');
+        var i = 0;
+        while (i<result.length) {
+            var keys = Object.keys(result[i]);
+            if (!keys.includes("webgl_count")) result[i]["webgl_count"] = 0;
+            if (!keys.includes("driver_count")) result[i]["driver_count"] = 0;
+            if (!keys.includes("graphics_count")) result[i]["graphics_count"] = 0;
+            if (!keys.includes("webgl_percent")) result[i]["webgl_percent"] = 0;
+            if (!keys.includes("driver_percent")) result[i]["driver_percent"] = 0;
+            if (!keys.includes("graphics_percent")) result[i]["graphics_percent"] = 0;
+            i = i + 1;
+        }
+    }
+    
+    function drawChart() {
+        document.getElementById("top10_percent").innerHTML = "";
+        document.getElementById("top10_count").innerHTML = "";
+        sanitizeData();
+        MG.data_graphic({
+            data: result,
+            title: "Top-10 Graphics Signatures (% of Crashes)",
+            width: 550,
+            height: 300,
+            right: 45,
+            left: 70,
+            target: document.getElementById('top10_percent'),
+            x_accessor: 'date',
+            y_accessor: ["webgl_percent","graphics_percent","driver_percent"],
+            y_label: "% of Crash Volume",
+            legend: ["WebGL","Graphics","Driver"],
+            interpolate: "monotone",
+            chart_type: "line"
+        });
+        MG.data_graphic({
+            data: result,
+            title: "Top-10 Graphics Signatures (# of Crashes)",
+            width: 550,
+            height: 300,
+            right: 45,
+            left:70,
+            target: document.getElementById('top10_count'),
+            x_accessor: 'date',
+            y_accessor: ["webgl_count","graphics_count","driver_count","total"],
+            y_label: "# of Crashes",
+            legend: ["WebGL","Graphics","Driver","Total"],
+            interpolate: "monotone",
+            chart_type: "line"
+        });
+    }
+    
+    var dateStart = convertDate(new Date((new Date()).valueOf()-(180*24*60*60*1000)));
+    var globals = {
+        "url":"https://crash-stats.mozilla.com/search/",
+        "mouseover":function(d,i) {
+            d3.select('svg .mg-active-datapoint')
+                .text();
+            globals.url = "https://crash-stats.mozilla.com/search/?app_notes=~WGL+&date=%3E%3D" + convertDate(d.key);
+        }
+    };
+    
+    var urls = {
+        "all":"https://crash-stats.mozilla.com/api/SuperSearch/?signature=~gfx&signature=~layers&signature=~glcontext&signature=~canvas&signature=~d3d&signature=~d2d&signature=~dwrite&signature=~skia&signature=~mesa&signature=~cairo&signature=^amd&signature=^ati&signature=^igd&signature=^nv&signature=~webgl&date=%3E%3D" + dateStart + "&_histogram.date=signature&_histogram_interval=1d",
+        "webgl":"https://crash-stats.mozilla.com/api/SuperSearch/?signature=~webgl&date=%3E%3D" + dateStart + "&_histogram.date=signature&_histogram_interval=1d",
+        "driver":"https://crash-stats.mozilla.com/api/SuperSearch/?signature=^amd&signature=^ati&signature=^igd&signature=^nv&date=%3E%3D" + dateStart + "&_histogram.date=signature&_histogram_interval=1d",
+        "graphics":"https://crash-stats.mozilla.com/api/SuperSearch/?signature=~gfx&signature=~layers&signature=~glcontext&signature=~canvas&signature=~d3d&signature=~d2d&signature=~dwrite&signature=~skia&signature=~mesa&signature=~cairo&date=%3E%3D" + dateStart + "&_histogram.date=signature&_histogram_interval=1d"
+    };
+    
+    processData("all");
+</script>
