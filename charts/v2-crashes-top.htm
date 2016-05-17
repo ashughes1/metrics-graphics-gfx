@@ -1,6 +1,8 @@
 <div class='row trunk-section'>
   <div class='col-lg-6 text-left' id='top10_percent'>LOADING DATA...</div>
   <div class='col-lg-6 text-left' id='top10_count'>LOADING DATA...</div>
+  <div class='col-lg-6 text-left' id='top5_percent'>LOADING DATA...</div>
+  <div class='col-lg-6 text-left' id='top5_count'>LOADING DATA...</div>
 </div>
 
 <script>
@@ -50,7 +52,22 @@
                         result[index][count_key] = count;
                     }
                 } else {
-                    result.push({"date":datestamp,"total":histogram_date[d].count});    
+                    var signatures = histogram_date[d].facets.signature;
+                    var counts = [];
+                    var max = (signatures.length < 5) ? signatures.length : 5;
+                    for (var i=0; i<max; i++) {
+                        counts.push(signatures[i].count);
+                    }
+                    result.push({
+                        "date":datestamp,
+                        "total":histogram_date[d].count,
+                        "first_count":counts[0], "first_percent":counts[0]/histogram_date[d].count*100,
+                        "second_count":counts[1], "second_percent":counts[1]/histogram_date[d].count*100,
+                        "third_count":counts[2], "third_percent":counts[2]/histogram_date[d].count*100,
+                        "fourth_count":counts[3], "fourth_percent":counts[3]/histogram_date[d].count*100,
+                        "fifth_count":counts[4], "fifth_percent":counts[4]/histogram_date[d].count*100
+                    });    
+                    
                 }
 
                 if (d >= (histogram_date.length - 1)) {
@@ -86,6 +103,8 @@
     function drawChart() {
         document.getElementById("top10_percent").innerHTML = "";
         document.getElementById("top10_count").innerHTML = "";
+        document.getElementById("top5_percent").innerHTML = "";
+        document.getElementById("top5_count").innerHTML = "";
         sanitizeData();
         MG.data_graphic({
             data: result,
@@ -114,6 +133,36 @@
             y_accessor: ["webgl_count","graphics_count","driver_count","total"],
             y_label: "# of Crashes",
             legend: ["WebGL","Graphics","Driver","Total"],
+            interpolate: "monotone",
+            chart_type: "line"
+        });
+        MG.data_graphic({
+            data: result,
+            title: "Top-5 Graphics Signatures (% of Crashes)",
+            width: 550,
+            height: 300,
+            right: 45,
+            left: 70,
+            target: document.getElementById('top5_percent'),
+            x_accessor: 'date',
+            y_accessor: ["first_percent","second_percent","third_percent","fourth_percent","fifth_percent"],
+            y_label: "% of Crash Volume",
+            legend: ["1st","2nd","3rd","4th","5th"],
+            interpolate: "monotone",
+            chart_type: "line"
+        });
+        MG.data_graphic({
+            data: result,
+            title: "Top-5 Graphics Signatures (# of Crashes)",
+            width: 550,
+            height: 300,
+            right: 45,
+            left:70,
+            target: document.getElementById('top5_count'),
+            x_accessor: 'date',
+            y_accessor: ["first_count","second_count","third_count","fourth_count","fifth_count"],
+            y_label: "# of Crashes",
+            legend: ["1st","2nd","3rd","4th","5th"],
             interpolate: "monotone",
             chart_type: "line"
         });
