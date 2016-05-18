@@ -9,6 +9,20 @@
     <div class='col-lg-12 text-left' id='chart'></div>
 </div>
 <script>
+    var items = [];
+    var signature = "";
+    var end_date = convertDate(new Date((new Date()).valueOf() - 1000*60*60*24*1));
+    var start_date = convertDate(new Date((new Date()).valueOf() - 1000*60*60*24*364));
+    var globals = {
+        "url":"https://crash-stats.mozilla.com/search/",
+        "mouseover":function(d,i) {
+            var next = new Date(d.date.valueOf()+1*24*60*60*1000);
+            d3.select('svg .mg-active-datapoint')
+                .text();
+            globals.url = "https://crash-stats.mozilla.com/search/?signature=~" + signature + "&date=>%3D" + convertDate(d.date) + "&date=%3C" + convertDate(next);
+        }
+    };
+    
     function convertDate(d) {
         var day = (d.getDate() < 10) ? '0' + d.getDate().toString() : d.getDate().toString();
         var month = ((d.getMonth()+1) < 10) ? '0' + (d.getMonth()+1).toString() : (d.getMonth()+1).toString();
@@ -17,20 +31,25 @@
     }
     
     function loadGraph() {
-        var signature = document.getElementById("signature").value;
-        var end_date = convertDate(new Date((new Date()).valueOf() - 1000*60*60*24*1));
-        var start_date = convertDate(new Date((new Date()).valueOf() - 1000*60*60*24*364));
+        signature = document.getElementById("signature").value;
         var url = "https://crash-stats.mozilla.com/api/SuperSearch/?&signature=~" + signature + "&date=%3E%3D" + start_date + "&date=%3C%3D" + end_date + "&_histogram.date=release_channel&_histogram_interval=1d";
         d3.json(url, function(data) {
-            var items = [];
             $.each(data, function(key, value) {
               if (key == "facets") {
                 var histogram_date = value.histogram_date;
                 $.each(histogram_date, function(key, value) {
                     items.push({"date":value.term.substring(0,10),"count":value.count})
+                    if (items.length >= histogram_date.length) {
+                        drawChart();
+                    }
                 });
               }
             });
+        });
+    }
+    
+    function drawChart() {
+        if (items.length > 0) {
             items = MG.convert.date(items, 'date');
             var title = (signature == "") ? "Crashes for all signatures since " + start_date : "Crashes for " + signature + " since " + start_date;
             MG.data_graphic({
@@ -43,8 +62,14 @@
                 x_accessor: 'date',
                 y_accessor: 'count',
                 interpolate: "monotone",
-                chart_type: "line"
+                chart_type: "line",
+                mouseover: globals.mouseover
             });
-        });
+            var mouseouts = d3.selectAll('.mg-rollover-rect rect').on('mouseout');
+            d3.selectAll('.mg-rollover-rect rect')
+                .on('click', function(d) {
+                    window.open(globals.url, '_blank');
+                });
+        }   
     }
 </script>

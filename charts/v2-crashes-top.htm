@@ -8,6 +8,16 @@
 <script>
     var result = [];
     
+    var globals = {
+        "url":"https://crash-stats.mozilla.com/search/",
+        "mouseover":function(d,i) {
+            var next = new Date(d.key.valueOf()+1*24*60*60*1000);
+            d3.select('svg .mg-active-datapoint')
+                .text();
+            globals.url = "https://crash-stats.mozilla.com/search/?signature=~gfx&signature=~layers&signature=~glcontext&signature=~canvas&signature=~d3d&signature=~d2d&signature=~dwrite&signature=~skia&signature=~mesa&signature=~cairo&signature=^amd&signature=^ati&signature=^igd&signature=^nv&signature=~webgl&date=>%3D" + convertDate(d.key) + "&date=%3C" + convertDate(next);
+        }
+    };
+    
     function convertDate(d) {
         var day = (d.getDate() < 10) ? '0' + d.getDate().toString() : d.getDate().toString();
         var month = ((d.getMonth()+1) < 10) ? '0' + (d.getMonth()+1).toString() : (d.getMonth()+1).toString();
@@ -119,7 +129,8 @@
             y_label: "% of Crash Volume",
             legend: ["WebGL","Graphics","Driver"],
             interpolate: "monotone",
-            chart_type: "line"
+            chart_type: "line",
+            mouseover: globals.mouseover
         });
         MG.data_graphic({
             data: result,
@@ -134,7 +145,8 @@
             y_label: "# of Crashes",
             legend: ["WebGL","Graphics","Driver","Total"],
             interpolate: "monotone",
-            chart_type: "line"
+            chart_type: "line",
+            mouseover: globals.mouseover
         });
         MG.data_graphic({
             data: result,
@@ -149,7 +161,8 @@
             y_label: "% of Crash Volume",
             legend: ["1st","2nd","3rd","4th","5th"],
             interpolate: "monotone",
-            chart_type: "line"
+            chart_type: "line",
+            mouseover: globals.mouseover
         });
         MG.data_graphic({
             data: result,
@@ -164,19 +177,18 @@
             y_label: "# of Crashes",
             legend: ["1st","2nd","3rd","4th","5th"],
             interpolate: "monotone",
-            chart_type: "line"
+            chart_type: "line",
+            mouseover: globals.mouseover
         });
+        var mouseouts = d3.selectAll('.mg-rollover-rect rect').on('mouseout');
+        d3.selectAll('.mg-rollover-rect rect')
+            .on('click', function(d) {
+                window.open(globals.url, '_blank');
+            });
+            
     }
     
     var dateStart = convertDate(new Date((new Date()).valueOf()-(180*24*60*60*1000)));
-    var globals = {
-        "url":"https://crash-stats.mozilla.com/search/",
-        "mouseover":function(d,i) {
-            d3.select('svg .mg-active-datapoint')
-                .text();
-            globals.url = "https://crash-stats.mozilla.com/search/?app_notes=~WGL+&date=%3E%3D" + convertDate(d.key);
-        }
-    };
     
     var urls = {
         "all":"https://crash-stats.mozilla.com/api/SuperSearch/?signature=~gfx&signature=~layers&signature=~glcontext&signature=~canvas&signature=~d3d&signature=~d2d&signature=~dwrite&signature=~skia&signature=~mesa&signature=~cairo&signature=^amd&signature=^ati&signature=^igd&signature=^nv&signature=~webgl&date=%3E%3D" + dateStart + "&_histogram.date=signature&_histogram_interval=1d",
