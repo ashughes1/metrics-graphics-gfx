@@ -1,0 +1,161 @@
+<div class='row trunk-section'>
+    <div style="text-align:center">
+        <h4>Graphics Adapter Correlation</h4>
+        <small>Please allow several seconds for the graph to load, especially on the first attempt.<br />(Leave blank to show all crashes)</small>
+        <br /><br />
+        Vendor: <input type="select" id="vendor" style="width:10%" value="0x0000"></input>
+        Device: <input type="select" id="device" style="width:10%" value="0x0000"></input>
+        Driver: <input type="select" id="driver" style="width:10%" value="0.0.0.0"></input>
+        <button type="submit" onclick="loadData()">Search</button>
+    </div>
+    <div class='col-lg-6 text-left' id='chart_count'></div>
+    <div class='col-lg-6 text-left' id='chart_percent'></div>
+    <div id="table"></div>
+</div>
+<script>
+    var items = [];
+    var signature = "";
+    var end_date = convertDate(new Date((new Date()).valueOf() - 1000*60*60*24*1));
+    var start_date = convertDate(new Date((new Date()).valueOf() - 1000*60*60*24*182));
+    var globals = {
+        "url":"https://crash-stats.mozilla.com/search/",
+        "mouseover":function(d,i) {
+            var next = new Date(d.date.valueOf()+1*24*60*60*1000);
+            d3.select('svg .mg-active-datapoint')
+                .text();
+            globals.url = "https://crash-stats.mozilla.com/search/?signature=~" + signature + "&date=>%3D" + convertDate(d.date) + "&date=%3C" + convertDate(next);
+        }
+    };
+    
+    function convertDate(d) {
+        var day = (d.getDate() < 10) ? '0' + d.getDate().toString() : d.getDate().toString();
+        var month = ((d.getMonth()+1) < 10) ? '0' + (d.getMonth()+1).toString() : (d.getMonth()+1).toString();
+        var year = d.getFullYear().toString();
+        return year + '-' + month + '-' + day;
+    }
+    
+    function formatURL(vendor, device, driver) {
+        var url = "https://crash-stats.mozilla.com/api/SuperSearch/?signature=~gfx&signature=~layers&signature=~glcontext&signature=~canvas&signature=~d3d&signature=~d2d&signature=~dwrite&signature=~skia&signature=~mesa&signature=~cairo&signature=^amd&signature=^ati&signature=^igd&signature=^nv&signature=~webgl&date=%3E%3D" + start_date + "&date=%3C%3D" + end_date
+        if (vendor != "0x0000") url = url + "&adapter_vendor_id=" + vendor;
+        if (device != "0x0000") url = url + "&adapter_device_id=" + device;
+        if (driver != "0.0.0.0") url = url + "&adapter_driver_version=~" + driver;
+        url = url + "&_histogram.date=signature&_histogram_interval=1d";
+        return url;
+    }
+    
+     function findIndex(value) {
+        var found = -1;
+        for (var i=0; i<items.length; i++) {
+            var keys = Object.keys(items[i]);
+            if (keys.includes("date")) {
+                if (items[i].date == value.term.substring(0,10)) {
+                    found = i;
+                    break;
+                }
+            }
+        }
+        return found;
+    }
+    
+    function loadData() {
+        items = [];
+        vendor = document.getElementById("vendor").value;
+        device = document.getElementById("device").value;
+        driver = document.getElementById("driver").value;
+        var url = formatURL(vendor, device, driver);
+        var tableOpen = "<table style='font-size:8pt; width:100%'>";
+        var tableHeading = "<tr><th>Date</th><th>Top Crash</th><th>Reports</th><th>Percent</th></tr>";
+        var tableClose = "</table>";
+        var tableHTML = "";
+        d3.json(url, function(data) {
+            $.each(data, function(key, value) {
+              if (key == "facets") {
+                var histogram_date = value.histogram_date;
+                $.each(histogram_date, function(key, value) {
+                    var today = new Date(value.term.valueOf());
+                    var tomorrow = new Date(today.valueOf()+1*24*60*60*1000);
+                    var total = value.count;
+                    var signature = value.facets.signature[0];
+                    var tableRow = "<tr>"
+                    tableRow += "<td style='width:10%'>" + value.term.substring(0,10) + "</td>";
+                    tableRow += "<td style='width:70%; word-wrap: break-word'>"
+                    tableRow += "<a href='https://crash-stats.mozilla.com/search/?signature=~" + signature.term + "&date=>%3D" + convertDate(today) + "&date=%3C" + convertDate(tomorrow) + "'>" + signature.term + "</a></td>";
+                    tableRow += "<td style='width:10%'>" + signature.count + "</td>";
+                    tableRow += "<td style='width:10%'>" + (signature.count/total*100).toFixed(2) + "%</td>";
+                    tableRow += "</tr>";
+                    tableHTML = tableHTML + tableRow;
+                    document.getElementById("table").innerHTML = tableOpen + tableHeading + tableHTML + tableClose;
+                    
+                    var index = findIndex(value);
+                    if (index != -1) {
+                        items[index].count = signature.count;
+                    } else {
+                        items.push({
+                            "date":value.term.substring(0,10),
+                            "count":signature.count,
+                            "total":value.count,
+                            "percent":signature.count/value.count*100,
+                            "signature":signature.term});
+                    }
+                    
+                    if (items.length >= histogram_date.length) {
+                        drawChart();
+                    }
+                });
+              }
+            });
+        });
+    }
+    
+    function drawChart() {
+        if (items.length > 0) {
+            items = MG.convert.date(items, 'date');
+            
+            var title = "Graphics crashes for ";
+            title += (vendor == "0x0000") ? "all vendors " : vendor + " ";
+            title += (device == "0x0000") ? "all devices " : device + " ";
+            title += (driver == "0.0.0.0") ? "all drivers " : driver + " ";
+            title += "since " + start_date;
+            
+            MG.data_graphic({
+                data: items,
+                title: title,
+                width: 550,
+                height: 300,
+                right: 40,
+                target: document.getElementById('chart_count'),
+                x_accessor: 'date',
+                y_accessor: ['total','count'],
+                legend: ['Gfx: All', 'Gfx: #1'],
+                interpolate: "monotone",
+                chart_type: "line",
+                mouseover: globals.mouseover
+            });
+            
+            var title = "#1 Topcrash Percent for ";
+            title += (vendor == "0x0000") ? "all vendors " : vendor + " ";
+            title += (device == "0x0000") ? "all devices " : device + " ";
+            title += (driver == "0.0.0.0") ? "all drivers " : driver + " ";
+            title += "since " + start_date;
+            
+            MG.data_graphic({
+                data: items,
+                title: title,
+                width: 550,
+                height: 300,
+                right: 40,
+                target: document.getElementById('chart_percent'),
+                x_accessor: 'date',
+                y_accessor: 'percent',
+                interpolate: "monotone",
+                chart_type: "line",
+                mouseover: globals.mouseover
+            });
+            var mouseouts = d3.selectAll('.mg-rollover-rect rect').on('mouseout');
+            d3.selectAll('.mg-rollover-rect rect')
+                .on('click', function(d) {
+                    window.open(globals.url, '_blank');
+                });
+        }   
+    }
+</script>

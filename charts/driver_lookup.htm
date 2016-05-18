@@ -47,6 +47,7 @@
     }
     
     function loadData(category) {
+        items = [];
         var next = "";
         var url = "";
         if (category == "all") {
@@ -195,7 +196,7 @@
                     window.open(globals.url, '_blank');
                 });
         } else {
-            document.getElementById('chart').innerHTML = "<h4><center>No crash data found for " + driver + "!</center></h4>"
+            //document.getElementById('chart').innerHTML = "<h4><center>No crash data found for " + driver + "!</center></h4>"
         }
     }
 </script>
