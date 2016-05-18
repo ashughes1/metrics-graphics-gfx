@@ -4,15 +4,19 @@
         <small>Please allow several seconds for the graph to load, especially on the first attempt.<br />(Leave blank to show all crashes)</small>
         <br /><br />
         <input type="text" id="signature" style="width:30%"></input><br />
-        <button type="submit" onclick="loadGraph()">Graph</button>
+        <button type="submit" onclick="loadGraph('all')">Graph</button>
     </div>
     <div class='col-lg-12 text-left' id='chart'></div>
+    <div class='col-lg-4 text-left' id='vendor'></div>
+    <div class='col-lg-4 text-left' id='driver'></div>
+    <div class='col-lg-4 text-left' id='device'></div>
 </div>
 <script>
+    var legend = [];
     var items = [];
     var signature = "";
     var end_date = convertDate(new Date((new Date()).valueOf() - 1000*60*60*24*1));
-    var start_date = convertDate(new Date((new Date()).valueOf() - 1000*60*60*24*364));
+    var start_date = convertDate(new Date((new Date()).valueOf() - 1000*60*60*24*182));
     var globals = {
         "url":"https://crash-stats.mozilla.com/search/",
         "mouseover":function(d,i) {
@@ -29,47 +33,217 @@
         var year = d.getFullYear().toString();
         return year + '-' + month + '-' + day;
     }
-    
-    function loadGraph() {
+        
+    function loadGraph(facet) {
+        items = [];
+        legend = [];
         signature = document.getElementById("signature").value;
-        var url = "https://crash-stats.mozilla.com/api/SuperSearch/?&signature=~" + signature + "&date=%3E%3D" + start_date + "&date=%3C%3D" + end_date + "&_histogram.date=release_channel&_histogram_interval=1d";
-        d3.json(url, function(data) {
-            $.each(data, function(key, value) {
-              if (key == "facets") {
-                var histogram_date = value.histogram_date;
-                $.each(histogram_date, function(key, value) {
-                    items.push({"date":value.term.substring(0,10),"count":value.count})
-                    if (items.length >= histogram_date.length) {
-                        drawChart();
-                    }
+        if (facet == "vendor") {
+            var url = "https://crash-stats.mozilla.com/api/SuperSearch/?&signature=~" + signature + "&date=%3E%3D" + start_date + "&date=%3C%3D" + end_date + "&_histogram.date=adapter_vendor_id&_histogram_interval=1d";
+            d3.json(url, function(data) {
+                $.each(data, function(key, value) {
+                  if (key == "facets") {
+                    var histogram_date = value.histogram_date;
+                    $.each(histogram_date, function(key, value) {
+                        items.push({"date":value.term.substring(0,10),"count":value.count})
+                        var facetVendor = value.facets.adapter_vendor_id;
+                        for (var v in facetVendor) {
+                            if (facetVendor[v].term == "0x8086") {
+                                items[(items.length-1)]["intel"] = facetVendor[v].count/value.count*100
+                            }
+                            if (facetVendor[v].term == "0x1002") {
+                                items[(items.length-1)]["amd"] = facetVendor[v].count/value.count*100
+                            }
+                            if (facetVendor[v].term == "0x10de") {
+                                items[(items.length-1)]["nvidia"] = facetVendor[v].count/value.count*100
+                            }
+                        }
+                        if (items.length >= histogram_date.length) {
+                            drawChart(facet);
+                        }
+                    });
+                  }
                 });
-              }
             });
-        });
+        } else if (facet == "driver") {
+            var url = "https://crash-stats.mozilla.com/api/SuperSearch/?&signature=~" + signature + "&date=%3E%3D" + start_date + "&date=%3C%3D" + end_date + "&_histogram.date=adapter_driver_version&_histogram_interval=1d";
+            d3.json(url, function(data) {
+                $.each(data, function(key, value) {
+                  if (key == "facets") {
+                    var histogram_date = value.histogram_date;
+                    $.each(histogram_date, function(key, value) {
+                        items.push({"date":value.term.substring(0,10),"count":value.count})
+                        var facets = value.facets.adapter_driver_version;
+                        if (facets.length >= 1) {
+                            items[(items.length-1)]["first"] = facets[0].count;
+                        } else {
+                            items[(items.length-1)]["first"] = 0;
+                        }
+                        if (facets.length >= 2) {
+                            items[(items.length-1)]["second"] = facets[1].count;
+                        } else {
+                            items[(items.length-1)]["second"] = 0;
+                        }
+                        if (facets.length >= 3) {
+                            items[(items.length-1)]["third"] = facets[2].count;
+                        } else {
+                            items[(items.length-1)]["third"] = 0;
+                        }
+                        
+                        if (items.length >= histogram_date.length) {
+                            legend[0] = facets[0].term;
+                            legend[1] = facets[1].term;
+                            legend[2] = facets[2].term;
+                            drawChart(facet);
+                        }
+                    });
+                  }
+                });
+            });
+        } else if (facet == "device") {
+            var url = "https://crash-stats.mozilla.com/api/SuperSearch/?&signature=~" + signature + "&date=%3E%3D" + start_date + "&date=%3C%3D" + end_date + "&_histogram.date=adapter_device_id&_histogram_interval=1d";
+            d3.json(url, function(data) {
+                $.each(data, function(key, value) {
+                  if (key == "facets") {
+                    var histogram_date = value.histogram_date;
+                    $.each(histogram_date, function(key, value) {
+                        items.push({"date":value.term.substring(0,10),"count":value.count})
+                        var facets = value.facets.adapter_device_id;
+                        if (facets.length >= 1) {
+                            items[(items.length-1)]["first"] = facets[0].count;
+                        } else {
+                            items[(items.length-1)]["first"] = 0;
+                        }
+                        if (facets.length >= 2) {
+                            items[(items.length-1)]["second"] = facets[1].count;
+                        } else {
+                            items[(items.length-1)]["second"] = 0;
+                        }
+                        if (facets.length >= 3) {
+                            items[(items.length-1)]["third"] = facets[2].count;
+                        } else {
+                            items[(items.length-1)]["third"] = 0;
+                        }
+                        
+                        if (items.length >= histogram_date.length) {
+                            legend[0] = facets[0].term;
+                            legend[1] = facets[1].term;
+                            legend[2] = facets[2].term;
+                            drawChart(facet);
+                        }
+                    });
+                  }
+                });
+            });
+        } else {
+            var url = "https://crash-stats.mozilla.com/api/SuperSearch/?&signature=~" + signature + "&date=%3E%3D" + start_date + "&date=%3C%3D" + end_date + "&_histogram.date=signature&_histogram_interval=1d";
+            d3.json(url, function(data) {
+                $.each(data, function(key, value) {
+                  if (key == "facets") {
+                    var histogram_date = value.histogram_date;
+                    $.each(histogram_date, function(key, value) {
+                        items.push({"date":value.term.substring(0,10),"count":value.count});
+                        if (items.length >= histogram_date.length) {
+                            drawChart(facet);
+                        }
+                    });
+                  }
+                });
+            });
+        }   
+        
+        
     }
     
-    function drawChart() {
+    function drawChart(type) {
         if (items.length > 0) {
             items = MG.convert.date(items, 'date');
-            var title = (signature == "") ? "Crashes for all signatures since " + start_date : "Crashes for " + signature + " since " + start_date;
-            MG.data_graphic({
-                data: items,
-                title: title,
-                width: 1140,
-                height: 300,
-                right: 40,
-                target: document.getElementById('chart'),
-                x_accessor: 'date',
-                y_accessor: 'count',
-                interpolate: "monotone",
-                chart_type: "line",
-                mouseover: globals.mouseover
-            });
-            var mouseouts = d3.selectAll('.mg-rollover-rect rect').on('mouseout');
-            d3.selectAll('.mg-rollover-rect rect')
-                .on('click', function(d) {
-                    window.open(globals.url, '_blank');
+            if (type == 'vendor') {
+                var title = "Facet by Vendor (%)";
+                MG.data_graphic({
+                    data: items,
+                    title: title,
+                    width: 400,
+                    height: 300,
+                    right: 60,
+                    target: document.getElementById('vendor'),
+                    x_accessor: 'date',
+                    y_accessor: ['amd','intel','nvidia'],
+                    legend: ['AMD','Intel','Nvidia'],
+                    interpolate: "monotone",
+                    chart_type: "line",
+                    linked: true,
+                    mouseover: globals.mouseover
                 });
-        }   
+            } else if (type == 'driver') {
+                var title = "Facet by Top-3 Drivers (%)";
+                MG.data_graphic({
+                    data: items,
+                    title: title,
+                    width: 400,
+                    height: 300,
+                    right: 60,
+                    target: document.getElementById('driver'),
+                    x_accessor: 'date',
+                    y_accessor: ['first','second','third'],
+                    legend: legend,
+                    interpolate: "monotone",
+                    chart_type: "line",
+                    linked: true,
+                    mouseover: globals.mouseover
+                });
+            } else if (type == 'device') {
+                var title = "Facet by Top-3 Devices (%)";
+                MG.data_graphic({
+                    data: items,
+                    title: title,
+                    width: 400,
+                    height: 300,
+                    right: 60,
+                    target: document.getElementById('device'),
+                    x_accessor: 'date',
+                    y_accessor: ['first','second','third'],
+                    legend: legend,
+                    interpolate: "monotone",
+                    chart_type: "line",
+                    linked: true,
+                    mouseover: globals.mouseover
+                });
+            } else {
+                var title = (signature == "") ? "Crashes for all signatures since " + start_date : "Crashes for " + signature + " since " + start_date;
+                MG.data_graphic({
+                    data: items,
+                    title: title,
+                    width: 1140,
+                    height: 300,
+                    right: 60,
+                    target: document.getElementById('chart'),
+                    x_accessor: 'date',
+                    y_accessor: 'count',
+                    interpolate: "monotone",
+                    chart_type: "line",
+                    linked: true,
+                    mouseover: globals.mouseover
+                });
+            }
+        }
+        
+        var mouseouts = d3.selectAll('.mg-rollover-rect rect').on('mouseout');
+        d3.selectAll('.mg-rollover-rect rect')
+            .on('click', function(d) {
+                window.open(globals.url, '_blank');
+            });
+        
+        if (type == 'all') {
+            loadGraph('vendor');
+        }
+        
+        if (type == 'vendor') {
+            loadGraph('driver');
+        }
+        
+        if (type == 'driver') {
+            loadGraph('device');
+        }
     }
 </script>
