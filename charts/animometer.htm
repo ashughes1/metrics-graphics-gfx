@@ -1,0 +1,84 @@
+<div class='row trunk-section' style="width:100%">
+  <b>Configurations Tested:</b>
+  <blockquote><pre>
+   1. Firefox 49.0a1 20160530071207 | Multiprocess: ON  | APZ: ON  | Canvas: SKIA   | Acceleration: ENABLED
+   2. Firefox 49.0a1 20160530071207 | Multiprocess: ON  | APZ: ON  | Canvas: SKIA   | Acceleration: DISABLED
+   3. Firefox 49.0a1 20160530071207 | Multiprocess: ON  | APZ: ON  | Canvas: QUARTZ | Acceleration: ENABLED
+   4. Firefox 49.0a1 20160530071207 | Multiprocess: ON  | APZ: ON  | Canvas: QUARTZ | Acceleration: DISABLED
+   5. Firefox 49.0a1 20160530071207 | Multiprocess: ON  | APZ: OFF | Canvas: SKIA   | Acceleration: ENABLED
+   6. Firefox 49.0a1 20160530071207 | Multiprocess: ON  | APZ: OFF | Canvas: SKIA   | Acceleration: DISABLED
+   7. Firefox 49.0a1 20160530071207 | Multiprocess: ON  | APZ: OFF | Canvas: QUARTZ | Acceleration: ENABLED
+   8. Firefox 49.0a1 20160530071207 | Multiprocess: ON  | APZ: OFF | Canvas: QUARTZ | Acceleration: DISABLED
+   9. Firefox 49.0a1 20160530071207 | Multiprocess: OFF | APZ: ON  | Canvas: SKIA   | Acceleration: ENABLED
+  10. Firefox 49.0a1 20160530071207 | Multiprocess: OFF | APZ: ON  | Canvas: SKIA   | Acceleration: DISABLED
+  11. Firefox 49.0a1 20160530071207 | Multiprocess: OFF | APZ: ON  | Canvas: QUARTZ | Acceleration: ENABLED
+  12. Firefox 49.0a1 20160530071207 | Multiprocess: OFF | APZ: ON  | Canvas: QUARTZ | Acceleration: DISABLED
+  13. Firefox 49.0a1 20160530071207 | Multiprocess: OFF | APZ: OFF | Canvas: SKIA   | Acceleration: ENABLED
+  14. Firefox 49.0a1 20160530071207 | Multiprocess: OFF | APZ: OFF | Canvas: SKIA   | Acceleration: DISABLED
+  15. Firefox 49.0a1 20160530071207 | Multiprocess: OFF | APZ: OFF | Canvas: QUARTZ | Acceleration: ENABLED
+  16. Firefox 49.0a1 20160530071207 | Multiprocess: OFF | APZ: OFF | Canvas: QUARTZ | Acceleration: DISABLED
+  </pre></blockquote>
+
+  <div class='btn-group btn-group-sm text-center split-by-controls'>
+      <button type='button' class='btn btn-default active' data-y_accessor='motionmark'>Motion Mark</button>
+      <button type='button' class='btn btn-default' data-y_accessor='multiply'>Multiply</button>
+      <button type='button' class='btn btn-default' data-y_accessor='canvas_arc'>Canvas Arcs</button>
+      <button type='button' class='btn btn-default' data-y_accessor='leaves'>Leaves</button>
+      <button type='button' class='btn btn-default' data-y_accessor='paths'>Paths</button>
+      <button type='button' class='btn btn-default' data-y_accessor='canvas_lines'>Canvas Lines</button>
+      <button type='button' class='btn btn-default' data-y_accessor='focus'>Focus</button>
+      <button type='button' class='btn btn-default' data-y_accessor='images'>Images</button>
+      <button type='button' class='btn btn-default' data-y_accessor='design'>Design</button>
+      <button type='button' class='btn btn-default' data-y_accessor='suits'>Suits</button>
+  </div>
+
+  <div class='col-lg-12 text-left' id='chart'></div>
+</div>
+
+<script>
+    var globals = {};
+    MG._hooks = {};
+    var markers = [{"config":1.5,"label":"ON < HWA > OFF"},
+		   {"config":2.5,"label":"SKIA < > QUARTZ"},
+		   {"config":3.5,"label":"ON < HWA > OFF"},
+		   {"config":4.5,"label":"ON < APZ > OFF"},
+		   {"config":5.5,"label":"ON < HWA > OFF"},
+		   {"config":6.5,"label":"SKIA < > QUARTZ"},
+	 	   {"config":7.5,"label":"ON < HWA > OFF"},
+		   {"config":8.5,"label":"ON < E10S > OFF"}];
+
+    var split_by_params = {
+      description: "Scatterplot of Animometer benchmark results.",
+      chart_type: "point",
+      width: 1280,
+      height: 360,
+      target: document.getElementById('chart'),
+      x_accessor: "config",
+      y_rug: true
+    };
+
+    $('.split-by-controls button').click(function() {
+      var new_y_accessor = $(this).data('y_accessor');
+      split_by_params.y_accessor = new_y_accessor;
+      split_by_params.y_mouseover = function(d) {
+        return d.build + ": " + d[new_y_accessor].toString();
+      };
+      split_by_params.x_mouseover = function(d) {};
+
+      // change button state
+      $(this).addClass('active').siblings().removeClass('active');
+
+      // update data
+      delete split_by_params.yay_format;
+      MG.data_graphic(split_by_params);
+    });
+
+  d3.json('data/animometer.json', function(data) {
+    globals.data = data;
+    split_by_params.data = data;
+    split_by_params.y_accessor = "motionmark";
+    MG.data_graphic(split_by_params);
+  });
+
+
+</script>
