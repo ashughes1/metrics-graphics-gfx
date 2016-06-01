@@ -1,6 +1,7 @@
 [
 	{
 		"config":1,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/APZ, Accelerated SKIA",
 		"motionmark":20.58,
 		"multiply":1.00,
@@ -15,6 +16,7 @@
 	},
 	{
 		"config":1,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/APZ, Accelerated SKIA",
 		"motionmark":19.34,
 		"multiply":1.00,
@@ -29,6 +31,7 @@
 	},
 	{
 		"config":1,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/APZ, Accelerated SKIA",
 		"motionmark":21.86,
 		"multiply":1.00,
@@ -43,6 +46,7 @@
 	},
 	{
 		"config":1,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/APZ, Accelerated SKIA",
 		"motionmark":22.47,
 		"multiply":1.00,
@@ -57,6 +61,7 @@
 	},
 	{
 		"config":1,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/APZ, Accelerated SKIA",
 		"motionmark":21.31,
 		"multiply":2.00,
@@ -71,6 +76,7 @@
 	},
 	{
 		"config":1,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/APZ, Accelerated SKIA",
 		"motionmark":19.09,
 		"multiply":1.00,
@@ -85,6 +91,7 @@
 	},
 	{
 		"config":1,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/APZ, Accelerated SKIA",
 		"motionmark":18.74,
 		"multiply":1.00,
@@ -99,6 +106,7 @@
 	},
 	{
 		"config":1,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/APZ, Accelerated SKIA",
 		"motionmark":18.60,
 		"multiply":1.00,
@@ -113,6 +121,7 @@
 	},
 	{
 		"config":1,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/APZ, Accelerated SKIA",
 		"motionmark":23.19,
 		"multiply":2.00,
@@ -127,6 +136,7 @@
 	},
 	{
 		"config":1,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/APZ, Accelerated SKIA",
 		"motionmark":34.41,
 		"multiply":63.62,
@@ -141,6 +151,7 @@
 	},
 	{
 		"config":2,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/APZ, Unaccelerated SKIA",
 		"motionmark":45.05,
 		"multiply":1.00,
@@ -155,6 +166,7 @@
 	},
 	{
 		"config":2,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/APZ, Unaccelerated SKIA",
 		"motionmark":42.16,
 		"multiply":4.00,
@@ -169,6 +181,7 @@
 	},
 	{
 		"config":2,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/APZ, Unaccelerated SKIA",
 		"motionmark":44.57,
 		"multiply":3.00,
@@ -183,6 +196,7 @@
 	},
 	{
 		"config":2,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/APZ, Unaccelerated SKIA",
 		"motionmark":42.79,
 		"multiply":4.00,
@@ -197,6 +211,7 @@
 	},
 	{
 		"config":2,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/APZ, Unaccelerated SKIA",
 		"motionmark":66.08,
 		"multiply":98.57,
@@ -211,6 +226,7 @@
 	},
 	{
 		"config":2,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/APZ, Unaccelerated SKIA",
 		"motionmark":30.08,
 		"multiply":1.00,
@@ -225,6 +241,7 @@
 	},
 	{
 		"config":2,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/APZ, Unaccelerated SKIA",
 		"motionmark":49.11,
 		"multiply":2.00,
@@ -239,6 +256,7 @@
 	},
 	{
 		"config":2,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/APZ, Unaccelerated SKIA",
 		"motionmark":45.54,
 		"multiply":1.00,
@@ -253,6 +271,7 @@
 	},
 	{
 		"config":2,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/APZ, Unaccelerated SKIA",
 		"motionmark":46.33,
 		"multiply":1.00,
@@ -267,6 +286,7 @@
 	},
 	{
 		"config":2,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/APZ, Unaccelerated SKIA",
 		"motionmark":53.18,
 		"multiply":3.00,
@@ -281,6 +301,7 @@
 	},
 	{
 		"config":3,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/APZ, Accelerated QUARTZ",
 		"motionmark":39.52,
 		"multiply":1.00,
@@ -295,6 +316,7 @@
 	},
 	{
 		"config":3,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/APZ, Accelerated QUARTZ",
 		"motionmark":34.93,
 		"multiply":2.00,
@@ -309,6 +331,7 @@
 	},
 	{
 		"config":3,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/APZ, Accelerated QUARTZ",
 		"motionmark":43.55,
 		"multiply":3.00,
@@ -323,6 +346,7 @@
 	},
 	{
 		"config":3,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/APZ, Accelerated QUARTZ",
 		"motionmark":41.45,
 		"multiply":1.00,
@@ -337,6 +361,7 @@
 	},
 	{
 		"config":3,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/APZ, Accelerated QUARTZ",
 		"motionmark":44.04,
 		"multiply":3.00,
@@ -351,6 +376,7 @@
 	},
 	{
 		"config":3,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/APZ, Accelerated QUARTZ",
 		"motionmark":38.12,
 		"multiply":1.00,
@@ -365,6 +391,7 @@
 	},
 	{
 		"config":3,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/APZ, Accelerated QUARTZ",
 		"motionmark":44.02,
 		"multiply":3.00,
@@ -379,6 +406,7 @@
 	},
 	{
 		"config":3,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/APZ, Accelerated QUARTZ",
 		"motionmark":42.43,
 		"multiply":2.00,
@@ -393,6 +421,7 @@
 	},
 	{
 		"config":3,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/APZ, Accelerated QUARTZ",
 		"motionmark":44.36,
 		"multiply":3.00,
@@ -407,6 +436,7 @@
 	},
 	{
 		"config":3,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/APZ, Accelerated QUARTZ",
 		"motionmark":42.15,
 		"multiply":2.00,
@@ -421,6 +451,7 @@
 	},
 	{
 		"config":4,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/APZ, Unaccelerated QUARTZ",
 		"motionmark":38.31,
 		"multiply":1.00,
@@ -435,6 +466,7 @@
 	},
 	{
 		"config":4,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/APZ, Unaccelerated QUARTZ",
 		"motionmark":38.76,
 		"multiply":2.00,
@@ -449,6 +481,7 @@
 	},
 	{
 		"config":4,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/APZ, Unaccelerated QUARTZ",
 		"motionmark":56.75,
 		"multiply":46.49,
@@ -463,6 +496,7 @@
 	},
 	{
 		"config":4,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/APZ, Unaccelerated QUARTZ",
 		"motionmark":39.20,
 		"multiply":1.00,
@@ -477,6 +511,7 @@
 	},
 	{
 		"config":4,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/APZ, Unaccelerated QUARTZ",
 		"motionmark":35.21,
 		"multiply":1.00,
@@ -491,6 +526,7 @@
 	},
 	{
 		"config":4,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/APZ, Unaccelerated QUARTZ",
 		"motionmark":29.61,
 		"multiply":1.00,
@@ -505,6 +541,7 @@
 	},
 	{
 		"config":4,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/APZ, Unaccelerated QUARTZ",
 		"motionmark":38.96,
 		"multiply":5.00,
@@ -519,6 +556,7 @@
 	},
 	{
 		"config":4,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/APZ, Unaccelerated QUARTZ",
 		"motionmark":26.95,
 		"multiply":1.00,
@@ -533,6 +571,7 @@
 	},
 	{
 		"config":4,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/APZ, Unaccelerated QUARTZ",
 		"motionmark":41.18,
 		"multiply":59.45,
@@ -547,6 +586,7 @@
 	},
 	{
 		"config":4,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/APZ, Unaccelerated QUARTZ",
 		"motionmark":32.02,
 		"multiply":1.00,
@@ -561,6 +601,7 @@
 	},
 	{
 		"config":5,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/o APZ, Accelerated SKIA",
 		"motionmark":35.49,
 		"multiply":137.45,
@@ -575,6 +616,7 @@
 	},
 	{
 		"config":5,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/o APZ, Accelerated SKIA",
 		"motionmark":35.10,
 		"multiply":103.51,
@@ -589,6 +631,7 @@
 	},
 	{
 		"config":5,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/o APZ, Accelerated SKIA",
 		"motionmark":33.27,
 		"multiply":101.78,
@@ -603,6 +646,7 @@
 	},
 	{
 		"config":5,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/o APZ, Accelerated SKIA",
 		"motionmark":39.35,
 		"multiply":107.12,
@@ -617,6 +661,7 @@
 	},
 	{
 		"config":5,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/o APZ, Accelerated SKIA",
 		"motionmark":37.81,
 		"multiply":126.18,
@@ -631,6 +676,7 @@
 	},
 	{
 		"config":5,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/o APZ, Accelerated SKIA",
 		"motionmark":36.25,
 		"multiply":119.82,
@@ -645,6 +691,7 @@
 	},
 	{
 		"config":5,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/o APZ, Accelerated SKIA",
 		"motionmark":35.88,
 		"multiply":114.57,
@@ -659,6 +706,7 @@
 	},
 	{
 		"config":5,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/o APZ, Accelerated SKIA",
 		"motionmark":37.54,
 		"multiply":119.00,
@@ -673,6 +721,7 @@
 	},
 	{
 		"config":5,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/o APZ, Accelerated SKIA",
 		"motionmark":40.25,
 		"multiply":131.28,
@@ -687,6 +736,7 @@
 	},
 	{
 		"config":5,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/o APZ, Accelerated SKIA",
 		"motionmark":37.53,
 		"multiply":112.85,
@@ -701,6 +751,7 @@
 	},
 	{
 		"config":6,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/o APZ, Unaccelerated SKIA",
 		"motionmark":68.42,
 		"multiply":120.99,
@@ -715,6 +766,7 @@
 	},
 	{
 		"config":6,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/o APZ, Unaccelerated SKIA",
 		"motionmark":79.27,
 		"multiply":119.73,
@@ -729,6 +781,7 @@
 	},
 	{
 		"config":6,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/o APZ, Unaccelerated SKIA",
 		"motionmark":78.57,
 		"multiply":120.46,
@@ -743,6 +796,7 @@
 	},
 	{
 		"config":6,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/o APZ, Unaccelerated SKIA",
 		"motionmark":75.16,
 		"multiply":116.76,
@@ -757,6 +811,7 @@
 	},
 	{
 		"config":6,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/o APZ, Unaccelerated SKIA",
 		"motionmark":73.06,
 		"multiply":100.29,
@@ -771,6 +826,7 @@
 	},
 	{
 		"config":6,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/o APZ, Unaccelerated SKIA",
 		"motionmark":81.23,
 		"multiply":117.47,
@@ -785,6 +841,7 @@
 	},
 	{
 		"config":6,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/o APZ, Unaccelerated SKIA",
 		"motionmark":84.91,
 		"multiply":138.45,
@@ -799,6 +856,7 @@
 	},
 	{
 		"config":6,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/o APZ, Unaccelerated SKIA",
 		"motionmark":80.22,
 		"multiply":135.66,
@@ -813,6 +871,7 @@
 	},
 	{
 		"config":6,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/o APZ, Unaccelerated SKIA",
 		"motionmark":83.86,
 		"multiply":132.77,
@@ -827,6 +886,7 @@
 	},
 	{
 		"config":6,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/o APZ, Unaccelerated SKIA",
 		"motionmark":82.81,
 		"multiply":108.19,
@@ -841,6 +901,7 @@
 	},
 	{
 		"config":7,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/o APZ, Accelerated QUARTZ",
 		"motionmark":11.50,
 		"multiply":141.88,
@@ -855,6 +916,7 @@
 	},
 	{
 		"config":7,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/o APZ, Accelerated QUARTZ",
 		"motionmark":36.60,
 		"multiply":122.95,
@@ -869,6 +931,7 @@
 	},
 	{
 		"config":7,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/o APZ, Accelerated QUARTZ",
 		"motionmark":52.06,
 		"multiply":137.31,
@@ -883,6 +946,7 @@
 	},
 	{
 		"config":7,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/o APZ, Accelerated QUARTZ",
 		"motionmark":56.16,
 		"multiply":123.62,
@@ -897,6 +961,7 @@
 	},
 	{
 		"config":7,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/o APZ, Accelerated QUARTZ",
 		"motionmark":51.70,
 		"multiply":122.05,
@@ -911,6 +976,7 @@
 	},
 	{
 		"config":7,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/o APZ, Accelerated QUARTZ",
 		"motionmark":51.30,
 		"multiply":138.18,
@@ -925,6 +991,7 @@
 	},
 	{
 		"config":7,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/o APZ, Accelerated QUARTZ",
 		"motionmark":55.37,
 		"multiply":132.52,
@@ -939,6 +1006,7 @@
 	},
 	{
 		"config":7,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/o APZ, Accelerated QUARTZ",
 		"motionmark":71.00,
 		"multiply":126.80,
@@ -953,6 +1021,7 @@
 	},
 	{
 		"config":7,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/o APZ, Accelerated QUARTZ",
 		"motionmark":60.06,
 		"multiply":122.36,
@@ -967,6 +1036,7 @@
 	},
 	{
 		"config":7,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/o APZ, Accelerated QUARTZ",
 		"motionmark":52.97,
 		"multiply":129.12,
@@ -981,6 +1051,7 @@
 	},
 	{
 		"config":8,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/o APZ, Unaccelerated QUARTZ",
 		"motionmark":20.65,
 		"multiply":148.17,
@@ -995,6 +1066,7 @@
 	},
 	{
 		"config":8,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/o APZ, Unaccelerated QUARTZ",
 		"motionmark":52.00,
 		"multiply":147.96,
@@ -1009,6 +1081,7 @@
 	},
 	{
 		"config":8,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/o APZ, Unaccelerated QUARTZ",
 		"motionmark":48.80,
 		"multiply":156.60,
@@ -1023,6 +1096,7 @@
 	},
 	{
 		"config":8,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/o APZ, Unaccelerated QUARTZ",
 		"motionmark":49.17,
 		"multiply":154.98,
@@ -1037,6 +1111,7 @@
 	},
 	{
 		"config":8,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/o APZ, Unaccelerated QUARTZ",
 		"motionmark":59.76,
 		"multiply":150.34,
@@ -1051,6 +1126,7 @@
 	},
 	{
 		"config":8,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/o APZ, Unaccelerated QUARTZ",
 		"motionmark":44.31,
 		"multiply":149.00,
@@ -1065,6 +1141,7 @@
 	},
 	{
 		"config":8,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/o APZ, Unaccelerated QUARTZ",
 		"motionmark":44.04,
 		"multiply":152.54,
@@ -1079,6 +1156,7 @@
 	},
 	{
 		"config":8,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/o APZ, Unaccelerated QUARTZ",
 		"motionmark":38.52,
 		"multiply":146.71,
@@ -1093,6 +1171,7 @@
 	},
 	{
 		"config":8,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/o APZ, Unaccelerated QUARTZ",
 		"motionmark":48.79,
 		"multiply":150.11,
@@ -1107,6 +1186,7 @@
 	},
 	{
 		"config":8,
+		"product":"firefox",
 		"build":"Firefox 49, Multiprocess w/o APZ, Unaccelerated QUARTZ",
 		"motionmark":48.29,
 		"multiply":143.63,
@@ -1121,566 +1201,7 @@
 	},
 	{
 		"config":9,
-		"build":"Firefox 49, Single process w/APZ, Accelerated SKIA",
-		"motionmark":38.91,
-		"multiply":133.13,
-		"canvas_arc":61.22,
-		"leaves":212.68,
-		"paths":125.00,
-		"canvas_lines":97.88,
-		"focus":2.47,
-		"images":46.71,
-		"design":2.69,
-		"suits":31.00
-	},
-	{
-		"config":9,
-		"build":"Firefox 49, Single process w/APZ, Accelerated SKIA",
-		"motionmark":39.84,
-		"multiply":136.30,
-		"canvas_arc":64.41,
-		"leaves":212.29,
-		"paths":129.00,
-		"canvas_lines":97.01,
-		"focus":2.29,
-		"images":40.82,
-		"design":2.97,
-		"suits":39.00
-	},
-	{
-		"config":9,
-		"build":"Firefox 49, Single process w/APZ, Accelerated SKIA",
-		"motionmark":39.89,
-		"multiply":126.28,
-		"canvas_arc":64.95,
-		"leaves":207.82,
-		"paths":118.41,
-		"canvas_lines":103.80,
-		"focus":2.10,
-		"images":45.67,
-		"design":2.83,
-		"suits":44.97
-	},
-	{
-		"config":9,
-		"build":"Firefox 49, Single process w/APZ, Accelerated SKIA",
-		"motionmark":40.88,
-		"multiply":125.44,
-		"canvas_arc":58.66,
-		"leaves":201.82,
-		"paths":160.28,
-		"canvas_lines":95.31,
-		"focus":1.93,
-		"images":44.96,
-		"design":3.29,
-		"suits":49.17
-	},
-	{
-		"config":9,
-		"build":"Firefox 49, Single process w/APZ, Accelerated SKIA",
-		"motionmark":38.02,
-		"multiply":121.78,
-		"canvas_arc":62.51,
-		"leaves":203.59,
-		"paths":99.20,
-		"canvas_lines":94.44,
-		"focus":2.24,
-		"images":42.37,
-		"design":2.84,
-		"suits":42.43
-	},
-	{
-		"config":9,
-		"build":"Firefox 49, Single process w/APZ, Accelerated SKIA",
-		"motionmark":38.83,
-		"multiply":131.90,
-		"canvas_arc":56.75,
-		"leaves":206.42,
-		"paths":106.31,
-		"canvas_lines":89.83,
-		"focus":2.17,
-		"images":44.05,
-		"design":2.75,
-		"suits":51.68
-	},
-	{
-		"config":9,
-		"build":"Firefox 49, Single process w/APZ, Accelerated SKIA",
-		"motionmark":39.82,
-		"multiply":120.81,
-		"canvas_arc":63.67,
-		"leaves":192.40,
-		"paths":130.52,
-		"canvas_lines":96.96,
-		"focus":2.28,
-		"images":45.15,
-		"design":2.69,
-		"suits":48.61
-	},
-	{
-		"config":9,
-		"build":"Firefox 49, Single process w/APZ, Accelerated SKIA",
-		"motionmark":39.89,
-		"multiply":129.82,
-		"canvas_arc":62.80,
-		"leaves":194.29,
-		"paths":143.43,
-		"canvas_lines":101.25,
-		"focus":2.27,
-		"images":40.97,
-		"design":2.83,
-		"suits":42.30
-	},
-	{
-		"config":9,
-		"build":"Firefox 49, Single process w/APZ, Accelerated SKIA",
-		"motionmark":41.16,
-		"multiply":128.53,
-		"canvas_arc":65.23,
-		"leaves":200.01,
-		"paths":105.26,
-		"canvas_lines":103.96,
-		"focus":2.29,
-		"images":47.66,
-		"design":2.83,
-		"suits":59.89
-	},
-	{
-		"config":9,
-		"build":"Firefox 49, Single process w/APZ, Accelerated SKIA",
-		"motionmark":40.21,
-		"multiply":125.05,
-		"canvas_arc":58.82,
-		"leaves":203.87,
-		"paths":144.63,
-		"canvas_lines":98.12,
-		"focus":2.28,
-		"images":40.09,
-		"design":2.87,
-		"suits":49.06
-	},
-	{
-		"config":10,
-		"build":"Firefox 49, Single process w/APZ, Unaccelerated SKIA",
-		"motionmark":85.55,
-		"multiply":127.27,
-		"canvas_arc":356.18,
-		"leaves":200.29,
-		"paths":1193.12,
-		"canvas_lines":1183.82,
-		"focus":2.16,
-		"images":46.60,
-		"design":3.45,
-		"suits":54.98
-	},
-	{
-		"config":10,
-		"build":"Firefox 49, Single process w/APZ, Unaccelerated SKIA",
-		"motionmark":78.28,
-		"multiply":110.35,
-		"canvas_arc":360.57,
-		"leaves":204.23,
-		"paths":1166.29,
-		"canvas_lines":1195.32,
-		"focus":1.79,
-		"images":43.46,
-		"design":2.82,
-		"suits":44.47
-	},
-	{
-		"config":10,
-		"build":"Firefox 49, Single process w/APZ, Unaccelerated SKIA",
-		"motionmark":83.98,
-		"multiply":126.84,
-		"canvas_arc":375.73,
-		"leaves":202.32,
-		"paths":1198.87,
-		"canvas_lines":1170.61,
-		"focus":2.40,
-		"images":44.98,
-		"design":3.23,
-		"suits":44.04
-	},
-	{
-		"config":10,
-		"build":"Firefox 49, Single process w/APZ, Unaccelerated SKIA",
-		"motionmark":83.81,
-		"multiply":111.79,
-		"canvas_arc":374.20,
-		"leaves":208.21,
-		"paths":1214.31,
-		"canvas_lines":1208.63,
-		"focus":1.90,
-		"images":46.32,
-		"design":2.87,
-		"suits":63.00
-	},
-	{
-		"config":10,
-		"build":"Firefox 49, Single process w/APZ, Unaccelerated SKIA",
-		"motionmark":82.82,
-		"multiply":130.32,
-		"canvas_arc":382.99,
-		"leaves":203.70,
-		"paths":1211.28,
-		"canvas_lines":1081.71,
-		"focus":2.42,
-		"images":44.50,
-		"design":2.77,
-		"suits":46.07
-	},
-	{
-		"config":10,
-		"build":"Firefox 49, Single process w/APZ, Unaccelerated SKIA",
-		"motionmark":76.24,
-		"multiply":111.26,
-		"canvas_arc":375.02,
-		"leaves":204.07,
-		"paths":1202.21,
-		"canvas_lines":1236.32,
-		"focus":2.10,
-		"images":43.19,
-		"design":2.67,
-		"suits":28.39
-	},
-	{
-		"config":10,
-		"build":"Firefox 49, Single process w/APZ, Unaccelerated SKIA",
-		"motionmark":85.55,
-		"multiply":131.85,
-		"canvas_arc":364.14,
-		"leaves":207.40,
-		"paths":1167.32,
-		"canvas_lines":1207.89,
-		"focus":2.28,
-		"images":42.81,
-		"design":3.31,
-		"suits":54.20
-	},
-	{
-		"config":10,
-		"build":"Firefox 49, Single process w/APZ, Unaccelerated SKIA",
-		"motionmark":79.66,
-		"multiply":109.82,
-		"canvas_arc":371.59,
-		"leaves":186.43,
-		"paths":1096.68,
-		"canvas_lines":1190.36,
-		"focus":2.21,
-		"images":48.93,
-		"design":2.67,
-		"suits":44.90
-	},
-	{
-		"config":10,
-		"build":"Firefox 49, Single process w/APZ, Unaccelerated SKIA",
-		"motionmark":85.65,
-		"multiply":131.81,
-		"canvas_arc":370.31,
-		"leaves":209.53,
-		"paths":1192.99,
-		"canvas_lines":1145.15,
-		"focus":2.31,
-		"images":61.00,
-		"design":2.81,
-		"suits":44.92
-	},
-	{
-		"config":10,
-		"build":"Firefox 49, Single process w/APZ, Unaccelerated SKIA",
-		"motionmark":81.72,
-		"multiply":126.05,
-		"canvas_arc":371.38,
-		"leaves":196.23,
-		"paths":1156.28,
-		"canvas_lines":1228.36,
-		"focus":2.26,
-		"images":44.34,
-		"design":2.65,
-		"suits":46.87
-	},
-	{
-		"config":11,
-		"build":"Firefox 49, Single process w/APZ, Accelerated QUARTZ",
-		"motionmark":64.45,
-		"multiply":128.27,
-		"canvas_arc":242.43,
-		"leaves":214.22,
-		"paths":627.24,
-		"canvas_lines":681.28,
-		"focus":1.78,
-		"images":46.89,
-		"design":3.42,
-		"suits":23.59
-	},
-	{
-		"config":11,
-		"build":"Firefox 49, Single process w/APZ, Accelerated QUARTZ",
-		"motionmark":66.30,
-		"multiply":129.45,
-		"canvas_arc":221.19,
-		"leaves":206.12,
-		"paths":576.61,
-		"canvas_lines":628.39,
-		"focus":1.76,
-		"images":44.12,
-		"design":2.96,
-		"suits":50.22
-	},
-	{
-		"config":11,
-		"build":"Firefox 49, Single process w/APZ, Accelerated QUARTZ",
-		"motionmark":68.44,
-		"multiply":122.10,
-		"canvas_arc":239.47,
-		"leaves":203.11,
-		"paths":635.29,
-		"canvas_lines":617.79,
-		"focus":2.20,
-		"images":48.61,
-		"design":3.60,
-		"suits":36.74
-	},
-	{
-		"config":11,
-		"build":"Firefox 49, Single process w/APZ, Accelerated QUARTZ",
-		"motionmark":66.88,
-		"multiply":120.07,
-		"canvas_arc":239.67,
-		"leaves":203.69,
-		"paths":656.27,
-		"canvas_lines":584.50,
-		"focus":1.80,
-		"images":39.57,
-		"design":2.93,
-		"suits":57.04
-	},
-	{
-		"config":11,
-		"build":"Firefox 49, Single process w/APZ, Accelerated QUARTZ",
-		"motionmark":71.30,
-		"multiply":127.61,
-		"canvas_arc":228.87,
-		"leaves":214.83,
-		"paths":666.24,
-		"canvas_lines":653.31,
-		"focus":2.29,
-		"images":43.79,
-		"design":3.34,
-		"suits":52.10
-	},
-	{
-		"config":11,
-		"build":"Firefox 49, Single process w/APZ, Accelerated QUARTZ",
-		"motionmark":68.87,
-		"multiply":123.21,
-		"canvas_arc":248.76,
-		"leaves":207.53,
-		"paths":652.23,
-		"canvas_lines":660.68,
-		"focus":1.89,
-		"images":41.77,
-		"design":2.91,
-		"suits":55.24
-	},
-	{
-		"config":11,
-		"build":"Firefox 49, Single process w/APZ, Accelerated QUARTZ",
-		"motionmark":69.92,
-		"multiply":131.65,
-		"canvas_arc":240.25,
-		"leaves":207.31,
-		"paths":610.37,
-		"canvas_lines":661.29,
-		"focus":1.89,
-		"images":40.44,
-		"design":3.75,
-		"suits":52.69
-	},
-	{
-		"config":11,
-		"build":"Firefox 49, Single process w/APZ, Accelerated QUARTZ",
-		"motionmark":65.81,
-		"multiply":102.68,
-		"canvas_arc":238.79,
-		"leaves":196.79,
-		"paths":581.84,
-		"canvas_lines":663.97,
-		"focus":1.81,
-		"images":43.37,
-		"design":2.88,
-		"suits":54.77
-	},
-	{
-		"config":11,
-		"build":"Firefox 49, Single process w/APZ, Accelerated QUARTZ",
-		"motionmark":71.98,
-		"multiply":128.74,
-		"canvas_arc":252.67,
-		"leaves":206.90,
-		"paths":645.07,
-		"canvas_lines":687.65,
-		"focus":2.25,
-		"images":49.19,
-		"design":2.93,
-		"suits":53.57
-	},
-	{
-		"config":11,
-		"build":"Firefox 49, Single process w/APZ, Accelerated QUARTZ",
-		"motionmark":70.51,
-		"multiply":133.27,
-		"canvas_arc":230.45,
-		"leaves":206.67,
-		"paths":662.76,
-		"canvas_lines":701.47,
-		"focus":2.18,
-		"images":44.12,
-		"design":2.83,
-		"suits":53.43
-	},
-	{
-		"config":12,
-		"build":"Firefox 49, Single process w/APZ, Unaccelerated QUARTZ",
-		"motionmark":57.50,
-		"multiply":106.61,
-		"canvas_arc":229.90,
-		"leaves":205.37,
-		"paths":656.40,
-		"canvas_lines":647.30,
-		"focus":1.85,
-		"images":42.11,
-		"design":3.77,
-		"suits":10.93
-	},
-	{
-		"config":12,
-		"build":"Firefox 49, Single process w/APZ, Unaccelerated QUARTZ",
-		"motionmark":65.85,
-		"multiply":110.43,
-		"canvas_arc":240.57,
-		"leaves":206.24,
-		"paths":587.60,
-		"canvas_lines":656.80,
-		"focus":1.88,
-		"images":40.33,
-		"design":2.95,
-		"suits":49.21
-	},
-	{
-		"config":12,
-		"build":"Firefox 49, Single process w/APZ, Unaccelerated QUARTZ",
-		"motionmark":72.11,
-		"multiply":126.37,
-		"canvas_arc":249.00,
-		"leaves":202.29,
-		"paths":609.73,
-		"canvas_lines":672.99,
-		"focus":1.85,
-		"images":45.96,
-		"design":3.34,
-		"suits":71.00
-	},
-	{
-		"config":12,
-		"build":"Firefox 49, Single process w/APZ, Unaccelerated QUARTZ",
-		"motionmark":66.31,
-		"multiply":127.59,
-		"canvas_arc":253.55,
-		"leaves":197.70,
-		"paths":610.59,
-		"canvas_lines":659.61,
-		"focus":1.88,
-		"images":41.25,
-		"design":2.91,
-		"suits":42.64
-	},
-	{
-		"config":12,
-		"build":"Firefox 49, Single process w/APZ, Unaccelerated QUARTZ",
-		"motionmark":65.42,
-		"multiply":107.07,
-		"canvas_arc":249.09,
-		"leaves":192.88,
-		"paths":611.58,
-		"canvas_lines":628.38,
-		"focus":1.82,
-		"images":40.75,
-		"design":3.25,
-		"suits":46.20
-	},
-	{
-		"config":12,
-		"build":"Firefox 49, Single process w/APZ, Unaccelerated QUARTZ",
-		"motionmark":68.44,
-		"multiply":124.68,
-		"canvas_arc":245.08,
-		"leaves":208.34,
-		"paths":596.70,
-		"canvas_lines":704.03,
-		"focus":1.94,
-		"images":42.32,
-		"design":2.86,
-		"suits":52.50
-	},
-	{
-		"config":12,
-		"build":"Firefox 49, Single process w/APZ, Unaccelerated QUARTZ",
-		"motionmark":63.26,
-		"multiply":115.84,
-		"canvas_arc":221.81,
-		"leaves":188.19,
-		"paths":576.13,
-		"canvas_lines":562.67,
-		"focus":1.70,
-		"images":40.28,
-		"design":2.88,
-		"suits":52.59
-	},
-	{
-		"config":12,
-		"build":"Firefox 49, Single process w/APZ, Unaccelerated QUARTZ",
-		"motionmark":64.38,
-		"multiply":114.36,
-		"canvas_arc":230.60,
-		"leaves":192.52,
-		"paths":603.61,
-		"canvas_lines":590.37,
-		"focus":1.80,
-		"images":38.85,
-		"design":2.95,
-		"suits":50.91
-	},
-	{
-		"config":12,
-		"build":"Firefox 49, Single process w/APZ, Unaccelerated QUARTZ",
-		"motionmark":68.24,
-		"multiply":106.54,
-		"canvas_arc":255.78,
-		"leaves":202.59,
-		"paths":633.36,
-		"canvas_lines":695.03,
-		"focus":1.90,
-		"images":43.31,
-		"design":2.84,
-		"suits":56.57
-	},
-	{
-		"config":12,
-		"build":"Firefox 49, Single process w/APZ, Unaccelerated QUARTZ",
-		"motionmark":72.71,
-		"multiply":117.22,
-		"canvas_arc":247.93,
-		"leaves":205.78,
-		"paths":640.22,
-		"canvas_lines":653.55,
-		"focus":1.95,
-		"images":46.50,
-		"design":3.64,
-		"suits":68.78
-	},
-	{
-		"config":13,
+		"product":"firefox",
 		"build":"Firefox 49, Single process w/o APZ, Accelerated SKIA",
 		"motionmark":37.64,
 		"multiply":133.22,
@@ -1694,7 +1215,8 @@
 		"suits":28.72
 	},
 	{
-		"config":13,
+		"config":9,
+		"product":"firefox",
 		"build":"Firefox 49, Single process w/o APZ, Accelerated SKIA",
 		"motionmark":39.19,
 		"multiply":121.36,
@@ -1708,7 +1230,8 @@
 		"suits":46.17
 	},
 	{
-		"config":13,
+		"config":9,
+		"product":"firefox",
 		"build":"Firefox 49, Single process w/o APZ, Accelerated SKIA",
 		"motionmark":38.36,
 		"multiply":127.99,
@@ -1722,7 +1245,8 @@
 		"suits":52.15
 	},
 	{
-		"config":13,
+		"config":9,
+		"product":"firefox",
 		"build":"Firefox 49, Single process w/o APZ, Accelerated SKIA",
 		"motionmark":41.28,
 		"multiply":127.24,
@@ -1736,7 +1260,8 @@
 		"suits":60.00
 	},
 	{
-		"config":13,
+		"config":9,
+		"product":"firefox",
 		"build":"Firefox 49, Single process w/o APZ, Accelerated SKIA",
 		"motionmark":38.16,
 		"multiply":104.23,
@@ -1750,7 +1275,8 @@
 		"suits":58.37
 	},
 	{
-		"config":13,
+		"config":9,
+		"product":"firefox",
 		"build":"Firefox 49, Single process w/o APZ, Accelerated SKIA",
 		"motionmark":40.08,
 		"multiply":118.08,
@@ -1764,7 +1290,8 @@
 		"suits":49.99
 	},
 	{
-		"config":13,
+		"config":9,
+		"product":"firefox",
 		"build":"Firefox 49, Single process w/o APZ, Accelerated SKIA",
 		"motionmark":40.63,
 		"multiply":128.24,
@@ -1778,7 +1305,8 @@
 		"suits":50.07
 	},
 	{
-		"config":13,
+		"config":9,
+		"product":"firefox",
 		"build":"Firefox 49, Single process w/o APZ, Accelerated SKIA",
 		"motionmark":41.02,
 		"multiply":122.58,
@@ -1792,7 +1320,8 @@
 		"suits":45.54
 	},
 	{
-		"config":13,
+		"config":9,
+		"product":"firefox",
 		"build":"Firefox 49, Single process w/o APZ, Accelerated SKIA",
 		"motionmark":39.83,
 		"multiply":128.69,
@@ -1806,7 +1335,8 @@
 		"suits":48.11
 	},
 	{
-		"config":13,
+		"config":9,
+		"product":"firefox",
 		"build":"Firefox 49, Single process w/o APZ, Accelerated SKIA",
 		"motionmark":38.02,
 		"multiply":121.83,
@@ -1820,7 +1350,8 @@
 		"suits":34.90
 	},
 	{
-		"config":14,
+		"config":10,
+		"product":"firefox",
 		"build":"Firefox 49, Single process w/o APZ, Unaccelerated SKIA",
 		"motionmark":78.00,
 		"multiply":128.98,
@@ -1834,7 +1365,8 @@
 		"suits":40.00
 	},
 	{
-		"config":14,
+		"config":10,
+		"product":"firefox",
 		"build":"Firefox 49, Single process w/o APZ, Unaccelerated SKIA",
 		"motionmark":84.90,
 		"multiply":117.89,
@@ -1848,7 +1380,8 @@
 		"suits":78.00
 	},
 	{
-		"config":14,
+		"config":10,
+		"product":"firefox",
 		"build":"Firefox 49, Single process w/o APZ, Unaccelerated SKIA",
 		"motionmark":82.52,
 		"multiply":122.62,
@@ -1862,7 +1395,8 @@
 		"suits":57.14
 	},
 	{
-		"config":14,
+		"config":10,
+		"product":"firefox",
 		"build":"Firefox 49, Single process w/o APZ, Unaccelerated SKIA",
 		"motionmark":80.52,
 		"multiply":120.33,
@@ -1876,7 +1410,8 @@
 		"suits":48.87
 	},
 	{
-		"config":14,
+		"config":10,
+		"product":"firefox",
 		"build":"Firefox 49, Single process w/o APZ, Unaccelerated SKIA",
 		"motionmark":81.63,
 		"multiply":130.40,
@@ -1890,7 +1425,8 @@
 		"suits":50.44
 	},
 	{
-		"config":14,
+		"config":10,
+		"product":"firefox",
 		"build":"Firefox 49, Single process w/o APZ, Unaccelerated SKIA",
 		"motionmark":81.61,
 		"multiply":109.52,
@@ -1904,7 +1440,8 @@
 		"suits":49.27
 	},
 	{
-		"config":14,
+		"config":10,
+		"product":"firefox",
 		"build":"Firefox 49, Single process w/o APZ, Unaccelerated SKIA",
 		"motionmark":77.09,
 		"multiply":117.00,
@@ -1918,7 +1455,8 @@
 		"suits":49.00
 	},
 	{
-		"config":14,
+		"config":10,
+		"product":"firefox",
 		"build":"Firefox 49, Single process w/o APZ, Unaccelerated SKIA",
 		"motionmark":80.14,
 		"multiply":120.95,
@@ -1932,7 +1470,8 @@
 		"suits":43.20
 	},
 	{
-		"config":14,
+		"config":10,
+		"product":"firefox",
 		"build":"Firefox 49, Single process w/o APZ, Unaccelerated SKIA",
 		"motionmark":81.19,
 		"multiply":124.96,
@@ -1946,7 +1485,8 @@
 		"suits":54.16
 	},
 	{
-		"config":14,
+		"config":10,
+		"product":"firefox",
 		"build":"Firefox 49, Single process w/o APZ, Unaccelerated SKIA",
 		"motionmark":81.74,
 		"multiply":124.37,
@@ -1960,7 +1500,8 @@
 		"suits":52.93
 	},
 	{
-		"config":15,
+		"config":11,
+		"product":"firefox",
 		"build":"Firefox 49, Single process w/o APZ, Accelerated QUARTZ",
 		"motionmark":66.26,
 		"multiply":114.04,
@@ -1974,7 +1515,8 @@
 		"suits":30.00
 	},
 	{
-		"config":15,
+		"config":11,
+		"product":"firefox",
 		"build":"Firefox 49, Single process w/o APZ, Accelerated QUARTZ",
 		"motionmark":67.85,
 		"multiply":139.70,
@@ -1988,7 +1530,8 @@
 		"suits":51.50
 	},
 	{
-		"config":15,
+		"config":11,
+		"product":"firefox",
 		"build":"Firefox 49, Single process w/o APZ, Accelerated QUARTZ",
 		"motionmark":71.84,
 		"multiply":127.72,
@@ -2002,7 +1545,8 @@
 		"suits":56.83
 	},
 	{
-		"config":15,
+		"config":11,
+		"product":"firefox",
 		"build":"Firefox 49, Single process w/o APZ, Accelerated QUARTZ",
 		"motionmark":67.40,
 		"multiply":118.96,
@@ -2016,7 +1560,8 @@
 		"suits":51.72
 	},
 	{
-		"config":15,
+		"config":11,
+		"product":"firefox",
 		"build":"Firefox 49, Single process w/o APZ, Accelerated QUARTZ",
 		"motionmark":72.23,
 		"multiply":120.15,
@@ -2030,7 +1575,8 @@
 		"suits":58.50
 	},
 	{
-		"config":15,
+		"config":11,
+		"product":"firefox",
 		"build":"Firefox 49, Single process w/o APZ, Accelerated QUARTZ",
 		"motionmark":71.01,
 		"multiply":126.57,
@@ -2044,7 +1590,8 @@
 		"suits":56.60
 	},
 	{
-		"config":15,
+		"config":11,
+		"product":"firefox",
 		"build":"Firefox 49, Single process w/o APZ, Accelerated QUARTZ",
 		"motionmark":70.21,
 		"multiply":125.09,
@@ -2058,7 +1605,8 @@
 		"suits":52.21
 	},
 	{
-		"config":15,
+		"config":11,
+		"product":"firefox",
 		"build":"Firefox 49, Single process w/o APZ, Accelerated QUARTZ",
 		"motionmark":70.06,
 		"multiply":124.74,
@@ -2072,7 +1620,8 @@
 		"suits":44.47
 	},
 	{
-		"config":15,
+		"config":11,
+		"product":"firefox",
 		"build":"Firefox 49, Single process w/o APZ, Accelerated QUARTZ",
 		"motionmark":68.70,
 		"multiply":130.32,
@@ -2086,7 +1635,8 @@
 		"suits":36.16
 	},
 	{
-		"config":15,
+		"config":11,
+		"product":"firefox",
 		"build":"Firefox 49, Single process w/o APZ, Accelerated QUARTZ",
 		"motionmark":70.13,
 		"multiply":120.23,
@@ -2100,7 +1650,8 @@
 		"suits":58.51
 	},
 	{
-		"config":16,
+		"config":12,
+		"product":"firefox",
 		"build":"Firefox 49, Single process w/o APZ, Unaccelerated QUARTZ",
 		"motionmark":62.44,
 		"multiply":123.80,
@@ -2114,7 +1665,8 @@
 		"suits":20.72
 	},
 	{
-		"config":16,
+		"config":12,
+		"product":"firefox",
 		"build":"Firefox 49, Single process w/o APZ, Unaccelerated QUARTZ",
 		"motionmark":68.63,
 		"multiply":124.56,
@@ -2128,7 +1680,8 @@
 		"suits":53.78
 	},
 	{
-		"config":16,
+		"config":12,
+		"product":"firefox",
 		"build":"Firefox 49, Single process w/o APZ, Unaccelerated QUARTZ",
 		"motionmark":69.10,
 		"multiply":126.91,
@@ -2142,7 +1695,8 @@
 		"suits":52.26
 	},
 	{
-		"config":16,
+		"config":12,
+		"product":"firefox",
 		"build":"Firefox 49, Single process w/o APZ, Unaccelerated QUARTZ",
 		"motionmark":72.31,
 		"multiply":127.39,
@@ -2156,7 +1710,8 @@
 		"suits":57.94
 	},
 	{
-		"config":16,
+		"config":12,
+		"product":"firefox",
 		"build":"Firefox 49, Single process w/o APZ, Unaccelerated QUARTZ",
 		"motionmark":66.18,
 		"multiply":127.92,
@@ -2170,7 +1725,8 @@
 		"suits":43.53
 	},
 	{
-		"config":16,
+		"config":12,
+		"product":"firefox",
 		"build":"Firefox 49, Single process w/o APZ, Unaccelerated QUARTZ",
 		"motionmark":71.84,
 		"multiply":134.63,
@@ -2184,7 +1740,8 @@
 		"suits":56.79
 	},
 	{
-		"config":16,
+		"config":12,
+		"product":"firefox",
 		"build":"Firefox 49, Single process w/o APZ, Unaccelerated QUARTZ",
 		"motionmark":67.81,
 		"multiply":115.16,
@@ -2198,7 +1755,8 @@
 		"suits":48.43
 	},
 	{
-		"config":16,
+		"config":12,
+		"product":"firefox",
 		"build":"Firefox 49, Single process w/o APZ, Unaccelerated QUARTZ",
 		"motionmark":69.71,
 		"multiply":125.36,
@@ -2212,7 +1770,8 @@
 		"suits":54.85
 	},
 	{
-		"config":16,
+		"config":12,
+		"product":"firefox",
 		"build":"Firefox 49, Single process w/o APZ, Unaccelerated QUARTZ",
 		"motionmark":70.93,
 		"multiply":134.95,
@@ -2226,17 +1785,468 @@
 		"suits":48.32
 	},
 	{
-		"config":16,
+		"config":12,
+		"product":"firefox",
 		"build":"Firefox 49, Single process w/o APZ, Unaccelerated QUARTZ",
-		"motionmark":70.13,
-		"multiply":120.23,
-		"canvas_arc":243.60,
-		"leaves":204.82,
-		"paths":646.73,
-		"canvas_lines":652.56,
-		"focus":2.23,
-		"images":43.46,
-		"design":2.86,
-		"suits":58.51
+		"motionmark":43.60,
+		"multiply":126.77,
+		"canvas_arc":238.70,
+		"leaves":210.39,
+		"paths":603.87,
+		"canvas_lines":88.00,
+		"focus":1.65,
+		"images":7.00,
+		"design":2.82,
+		"suits":51.71
+	},
+	{
+		"config":13,
+		"product":"chrome",
+		"build":"Google Chrome 51.0.2704.63",
+		"motionmark":185.98,
+		"multiply":407.41,
+		"canvas_arc":331.05,
+		"leaves":203.19,
+		"paths":1068.08,
+		"canvas_lines":2047.98,
+		"focus":20.22,
+		"images":28.17,
+		"design":44.66,
+		"suits":174.59
+	},
+	{
+		"config":13,
+		"product":"chrome",
+		"build":"Google Chrome 51.0.2704.63",
+		"motionmark":186.49,
+		"multiply":408.83,
+		"canvas_arc":342.86,
+		"leaves":214.56,
+		"paths":1040.57,
+		"canvas_lines":2044.98,
+		"focus":22.20,
+		"images":26.13,
+		"design":44.44,
+		"suits":165.36
+	},
+	{
+		"config":13,
+		"product":"chrome",
+		"build":"Google Chrome 51.0.2704.63",
+		"motionmark":186.49,
+		"multiply":400.91,
+		"canvas_arc":357.70,
+		"leaves":209.57,
+		"paths":1064.59,
+		"canvas_lines":2118.49,
+		"focus":20.65,
+		"images":27.82,
+		"design":40.49,
+		"suits":173.08
+	},
+	{
+		"config":13,
+		"product":"chrome",
+		"build":"Google Chrome 51.0.2704.63",
+		"motionmark":182.75,
+		"multiply":403.02,
+		"canvas_arc":333.99,
+		"leaves":197.46,
+		"paths":1027.84,
+		"canvas_lines":2047.91,
+		"focus":21.38,
+		"images":26.16,
+		"design":42.72,
+		"suits":170.08
+	},
+	{
+		"config":13,
+		"product":"chrome",
+		"build":"Google Chrome 51.0.2704.63",
+		"motionmark":185.34,
+		"multiply":403.33,
+		"canvas_arc":346.25,
+		"leaves":209.57,
+		"paths":1041.70,
+		"canvas_lines":2099.76,
+		"focus":21.46,
+		"images":26.67,
+		"design":41.60,
+		"suits":169.30
+	},
+	{
+		"config":13,
+		"product":"chrome",
+		"build":"Google Chrome 51.0.2704.63",
+		"motionmark":184.89,
+		"multiply":390.89,
+		"canvas_arc":351.75,
+		"leaves":201.27,
+		"paths":1048.42,
+		"canvas_lines":2060.30,
+		"focus":21.59,
+		"images":26.44,
+		"design":41.89,
+		"suits":176.65
+	},
+	{
+		"config":13,
+		"product":"chrome",
+		"build":"Google Chrome 51.0.2704.63",
+		"motionmark":183.49,
+		"multiply":388.85,
+		"canvas_arc":338.32,
+		"leaves":203.19,
+		"paths":1068.98,
+		"canvas_lines":2068.18,
+		"focus":20.48,
+		"images":27.35,
+		"design":42.67,
+		"suits":166.90
+	},
+	{
+		"config":13,
+		"product":"chrome",
+		"build":"Google Chrome 51.0.2704.63",
+		"motionmark":185.49,
+		"multiply":379.86,
+		"canvas_arc":338.78,
+		"leaves":207.40,
+		"paths":1060.06,
+		"canvas_lines":2006.87,
+		"focus":23.55,
+		"images":26.57,
+		"design":42.30,
+		"suits":173.02
+	},
+	{
+		"config":13,
+		"product":"chrome",
+		"build":"Google Chrome 51.0.2704.63",
+		"motionmark":181.79,
+		"multiply":388.97,
+		"canvas_arc":335.64,
+		"leaves":206.20,
+		"paths":1019.40,
+		"canvas_lines":2041.85,
+		"focus":22.89,
+		"images":24.73,
+		"design":42.08,
+		"suits":162.40
+	},
+	{
+		"config":13,
+		"product":"chrome",
+		"build":"Google Chrome 51.0.2704.63",
+		"motionmark":187.69,
+		"multiply":406.99,
+		"canvas_arc":340.74,
+		"leaves":207.47,
+		"paths":1037.80,
+		"canvas_lines":2063.31,
+		"focus":22.59,
+		"images":30.26,
+		"design":41.94,
+		"suits":163.68
+	},
+	{
+		"config":14,
+		"product":"chrome",
+		"build":"Google Chrome Canary 53.0.2754.0",
+		"motionmark":213.54,
+		"multiply":432.99,
+		"canvas_arc":359.57,
+		"leaves":226.73,
+		"paths":1090.64,
+		"canvas_lines":2401.44,
+		"focus":40.06,
+		"images":25.47,
+		"design":45.07,
+		"suits":217.19
+	},
+	{
+		"config":14,
+		"product":"chrome",
+		"build":"Google Chrome Canary 53.0.2754.0",
+		"motionmark":192.76,
+		"multiply":349.94,
+		"canvas_arc":325.06,
+		"leaves":226.53,
+		"paths":1034.47,
+		"canvas_lines":2283.51,
+		"focus":37.54,
+		"images":25.56,
+		"design":37.34,
+		"suits":168.53
+	},
+	{
+		"config":14,
+		"product":"chrome",
+		"build":"Google Chrome Canary 53.0.2754.0",
+		"motionmark":208.81,
+		"multiply":382.06,
+		"canvas_arc":348.27,
+		"leaves":223.03,
+		"paths":1113.58,
+		"canvas_lines":2363.10,
+		"focus":45.39,
+		"images":24.59,
+		"design":42.58,
+		"suits":203.36
+	},
+	{
+		"config":14,
+		"product":"chrome",
+		"build":"Google Chrome Canary 53.0.2754.0",
+		"motionmark":205.64,
+		"multiply":393.91,
+		"canvas_arc":344.37,
+		"leaves":202.55,
+		"paths":1111.46,
+		"canvas_lines":2396.22,
+		"focus":40.65,
+		"images":24.27,
+		"design":43.10,
+		"suits":211.36
+	},
+	{
+		"config":14,
+		"product":"chrome",
+		"build":"Google Chrome Canary 53.0.2754.0",
+		"motionmark":201.81,
+		"multiply":400.51,
+		"canvas_arc":336.75,
+		"leaves":220.81,
+		"paths":1053.79,
+		"canvas_lines":2378.75,
+		"focus":40.16,
+		"images":24.32,
+		"design":37.80,
+		"suits":201.47
+	},
+	{
+		"config":14,
+		"product":"chrome",
+		"build":"Google Chrome Canary 53.0.2754.0",
+		"motionmark":198.60,
+		"multiply":356.73,
+		"canvas_arc":351.78,
+		"leaves":201.07,
+		"paths":1064.47,
+		"canvas_lines":2295.97,
+		"focus":37.86,
+		"images":24.67,
+		"design":40.57,
+		"suits":205.69
+	},
+	{
+		"config":14,
+		"product":"chrome",
+		"build":"Google Chrome Canary 53.0.2754.0",
+		"motionmark":204.88,
+		"multiply":386.42,
+		"canvas_arc":348.23,
+		"leaves":214.59,
+		"paths":1046.41,
+		"canvas_lines":2384.87,
+		"focus":42.61,
+		"images":26.10,
+		"design":40.03,
+		"suits":198.28
+	},
+	{
+		"config":14,
+		"product":"chrome",
+		"build":"Google Chrome Canary 53.0.2754.0",
+		"motionmark":203.68,
+		"multiply":372.21,
+		"canvas_arc":342.77,
+		"leaves":221.54,
+		"paths":1070.31,
+		"canvas_lines":2403.60,
+		"focus":40.23,
+		"images":25.58,
+		"design":39.94,
+		"suits":201.89
+	},
+	{
+		"config":14,
+		"product":"chrome",
+		"build":"Google Chrome Canary 53.0.2754.0",
+		"motionmark":199.11,
+		"multiply":350.52,
+		"canvas_arc":344.52,
+		"leaves":216.69,
+		"paths":1075.23,
+		"canvas_lines":2331.29,
+		"focus":41.90,
+		"images":23.17,
+		"design":39.30,
+		"suits":196.47
+	},
+	{
+		"config":14,
+		"product":"chrome",
+		"build":"Google Chrome Canary 53.0.2754.0",
+		"motionmark":198.79,
+		"multiply":341.43,
+		"canvas_arc":355.38,
+		"leaves":206.76,
+		"paths":1066.46,
+		"canvas_lines":2341.45,
+		"focus":41.25,
+		"images":24.59,
+		"design":39.03,
+		"suits":195.45
+	},
+	{
+		"config":15,
+		"product":"safari",
+		"build":"Apple Safari 9.1.2",
+		"motionmark":246.54,
+		"multiply":487.11,
+		"canvas_arc":644.29,
+		"leaves":408.50,
+		"paths":1550.38,
+		"canvas_lines":4496.60,
+		"focus":97.49,
+		"images":15.23,
+		"design":44.88,
+		"suits":56.50
+	},
+	{
+		"config":15,
+		"product":"safari",
+		"build":"Apple Safari 9.1.2",
+		"motionmark":254.28,
+		"multiply":449.01,
+		"canvas_arc":653.96,
+		"leaves":531.00,
+		"paths":1573.12,
+		"canvas_lines":4718.27,
+		"focus":110.43,
+		"images":14.70,
+		"design":42.17,
+		"suits":56.12
+	},
+	{
+		"config":15,
+		"product":"safari",
+		"build":"Apple Safari 9.1.2",
+		"motionmark":241.50,
+		"multiply":448.01,
+		"canvas_arc":632.06,
+		"leaves":411.88,
+		"paths":1549.10,
+		"canvas_lines":4376.79,
+		"focus":98.62,
+		"images":14.80,
+		"design":44.56,
+		"suits":54.31
+	},
+	{
+		"config":15,
+		"product":"safari",
+		"build":"Apple Safari 9.1.2",
+		"motionmark":237.69,
+		"multiply":446.02,
+		"canvas_arc":638.83,
+		"leaves":378.16,
+		"paths":1572.62,
+		"canvas_lines":4360.25,
+		"focus":92.29,
+		"images":15.31,
+		"design":44.88,
+		"suits":51.70
+	},
+	{
+		"config":15,
+		"product":"safari",
+		"build":"Apple Safari 9.1.2",
+		"motionmark":233.14,
+		"multiply":446.34,
+		"canvas_arc":641.97,
+		"leaves":409.41,
+		"paths":1580.19,
+		"canvas_lines":4264.71,
+		"focus":73.46,
+		"images":14.70,
+		"design":42.76,
+		"suits":55.72
+	},
+	{
+		"config":15,
+		"product":"safari",
+		"build":"Apple Safari 9.1.2",
+		"motionmark":246.62,
+		"multiply":426.88,
+		"canvas_arc":631.18,
+		"leaves":378.53,
+		"paths":1587.30,
+		"canvas_lines":4644.10,
+		"focus":111.83,
+		"images":15.52,
+		"design":45.98,
+		"suits":56.27
+	},
+	{
+		"config":15,
+		"product":"safari",
+		"build":"Apple Safari 9.1.2",
+		"motionmark":250.98,
+		"multiply":407.67,
+		"canvas_arc":660.44,
+		"leaves":554.00,
+		"paths":1544.82,
+		"canvas_lines":4805.89,
+		"focus":98.30,
+		"images":15.06,
+		"design":41.51,
+		"suits":58.07
+	},
+	{
+		"config":15,
+		"product":"safari",
+		"build":"Apple Safari 9.1.2",
+		"motionmark":241.93,
+		"multiply":422.18,
+		"canvas_arc":652.37,
+		"leaves":375.46,
+		"paths":1559.29,
+		"canvas_lines":4745.79,
+		"focus":95.36,
+		"images":15.12,
+		"design":42.22,
+		"suits":60.93
+	},
+	{
+		"config":15,
+		"product":"safari",
+		"build":"Apple Safari 9.1.2",
+		"motionmark":240.87,
+		"multiply":418.48,
+		"canvas_arc":653.13,
+		"leaves":346.20,
+		"paths":1613.91,
+		"canvas_lines":4502.15,
+		"focus":107.99,
+		"images":15.51,
+		"design":41.42,
+		"suits":57.20
+	},
+	{
+		"config":15,
+		"product":"safari",
+		"build":"Apple Safari 9.1.2",
+		"motionmark":250.45,
+		"multiply":439.36,
+		"canvas_arc":641.61,
+		"leaves":547.00,
+		"paths":1533.41,
+		"canvas_lines":4537.13,
+		"focus":100.22,
+		"images":14.67,
+		"design":41.41,
+		"suits":59.36
 	}
 ]

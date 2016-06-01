@@ -1,24 +1,8 @@
 <div class='row trunk-section' style="width:100%">
-  <b>Configurations Tested:</b>
-  <blockquote><pre>
-   1. Firefox 49.0a1 20160530071207 | Multiprocess: ON  | APZ: ON  | Canvas: SKIA   | Acceleration: ENABLED
-   2. Firefox 49.0a1 20160530071207 | Multiprocess: ON  | APZ: ON  | Canvas: SKIA   | Acceleration: DISABLED
-   3. Firefox 49.0a1 20160530071207 | Multiprocess: ON  | APZ: ON  | Canvas: QUARTZ | Acceleration: ENABLED
-   4. Firefox 49.0a1 20160530071207 | Multiprocess: ON  | APZ: ON  | Canvas: QUARTZ | Acceleration: DISABLED
-   5. Firefox 49.0a1 20160530071207 | Multiprocess: ON  | APZ: OFF | Canvas: SKIA   | Acceleration: ENABLED
-   6. Firefox 49.0a1 20160530071207 | Multiprocess: ON  | APZ: OFF | Canvas: SKIA   | Acceleration: DISABLED
-   7. Firefox 49.0a1 20160530071207 | Multiprocess: ON  | APZ: OFF | Canvas: QUARTZ | Acceleration: ENABLED
-   8. Firefox 49.0a1 20160530071207 | Multiprocess: ON  | APZ: OFF | Canvas: QUARTZ | Acceleration: DISABLED
-   9. Firefox 49.0a1 20160530071207 | Multiprocess: OFF | APZ: ON  | Canvas: SKIA   | Acceleration: ENABLED
-  10. Firefox 49.0a1 20160530071207 | Multiprocess: OFF | APZ: ON  | Canvas: SKIA   | Acceleration: DISABLED
-  11. Firefox 49.0a1 20160530071207 | Multiprocess: OFF | APZ: ON  | Canvas: QUARTZ | Acceleration: ENABLED
-  12. Firefox 49.0a1 20160530071207 | Multiprocess: OFF | APZ: ON  | Canvas: QUARTZ | Acceleration: DISABLED
-  13. Firefox 49.0a1 20160530071207 | Multiprocess: OFF | APZ: OFF | Canvas: SKIA   | Acceleration: ENABLED
-  14. Firefox 49.0a1 20160530071207 | Multiprocess: OFF | APZ: OFF | Canvas: SKIA   | Acceleration: DISABLED
-  15. Firefox 49.0a1 20160530071207 | Multiprocess: OFF | APZ: OFF | Canvas: QUARTZ | Acceleration: ENABLED
-  16. Firefox 49.0a1 20160530071207 | Multiprocess: OFF | APZ: OFF | Canvas: QUARTZ | Acceleration: DISABLED
-  </pre></blockquote>
+  
 
+  <h5>Animometer Benchmarks</h5>
+  <h6>MacbookPro 11,1 - MacOS 10.11.6 Beta 15G7a - Intel Iris [<a href="data/animometer.json">data</a>|<a href="https://docs.google.com/spreadsheets/d/1xo6Yfds1YFn8FAtFdQeb5R_JKMWej-g9cVZWgfK8Rso">doc</a>]</h6>
   <div class='btn-group btn-group-sm text-center split-by-controls'>
       <button type='button' class='btn btn-default active' data-y_accessor='motionmark'>Motion Mark</button>
       <button type='button' class='btn btn-default' data-y_accessor='multiply'>Multiply</button>
@@ -33,6 +17,25 @@
   </div>
 
   <div class='col-lg-12 text-left' id='chart'></div>
+
+  <h6>Configurations Tested:</h6>
+  <blockquote><pre>
+   1. Firefox 49.0a1 20160530071207 | Multiprocess: ON  | APZ: ON  | Canvas: SKIA   | Acceleration: ENABLED
+   2. Firefox 49.0a1 20160530071207 | Multiprocess: ON  | APZ: ON  | Canvas: SKIA   | Acceleration: DISABLED
+   3. Firefox 49.0a1 20160530071207 | Multiprocess: ON  | APZ: ON  | Canvas: QUARTZ | Acceleration: ENABLED
+   4. Firefox 49.0a1 20160530071207 | Multiprocess: ON  | APZ: ON  | Canvas: QUARTZ | Acceleration: DISABLED
+   5. Firefox 49.0a1 20160530071207 | Multiprocess: ON  | APZ: OFF | Canvas: SKIA   | Acceleration: ENABLED
+   6. Firefox 49.0a1 20160530071207 | Multiprocess: ON  | APZ: OFF | Canvas: SKIA   | Acceleration: DISABLED
+   7. Firefox 49.0a1 20160530071207 | Multiprocess: ON  | APZ: OFF | Canvas: QUARTZ | Acceleration: ENABLED
+   8. Firefox 49.0a1 20160530071207 | Multiprocess: ON  | APZ: OFF | Canvas: QUARTZ | Acceleration: DISABLED
+   9. Firefox 49.0a1 20160530071207 | Multiprocess: OFF | APZ: OFF | Canvas: SKIA   | Acceleration: ENABLED
+  10. Firefox 49.0a1 20160530071207 | Multiprocess: OFF | APZ: OFF | Canvas: SKIA   | Acceleration: DISABLED
+  11. Firefox 49.0a1 20160530071207 | Multiprocess: OFF | APZ: OFF | Canvas: QUARTZ | Acceleration: ENABLED
+  12. Firefox 49.0a1 20160530071207 | Multiprocess: OFF | APZ: OFF | Canvas: QUARTZ | Acceleration: DISABLED
+  13. Google Chrome 51.0.2704.63
+  14. Google Chrome Canary 53.0.2754.0
+  15. Apple Safari 9.1.2 (11601.7.1)
+  </pre></blockquote>
 </div>
 
 <script>
@@ -48,13 +51,18 @@
 		   {"config":8.5,"label":"ON < E10S > OFF"}];
 
     var split_by_params = {
+      title: "Animometer Benchmark Results from 10 consecutive testruns",
       description: "Scatterplot of Animometer benchmark results.",
       chart_type: "point",
       width: 1280,
       height: 360,
       target: document.getElementById('chart'),
       x_accessor: "config",
-      y_rug: true
+      y_rug: true,
+      color_accessor: "product",
+      color_domain: ["firefox","chrome","safari"],
+      color_range: ["red","green","blue"],
+      color_type: "category"
     };
 
     $('.split-by-controls button').click(function() {
@@ -77,6 +85,10 @@
     globals.data = data;
     split_by_params.data = data;
     split_by_params.y_accessor = "motionmark";
+    split_by_params.y_mouseover = function(d) {
+        return d.build + ": " + d.motionmark.toString();
+      };
+    split_by_params.x_mouseover = function(d) {};
     MG.data_graphic(split_by_params);
   });
 
