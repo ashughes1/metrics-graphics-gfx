@@ -1,8 +1,6 @@
 <div class='row trunk-section' style="width:100%">
-  
-
-  <h5>Animometer Benchmarks</h5>
-  <h6>MacbookPro 11,1 - MacOS 10.11.6 Beta 15G7a - Intel Iris [<a href="data/animometer.json">data</a>|<a href="https://docs.google.com/spreadsheets/d/1xo6Yfds1YFn8FAtFdQeb5R_JKMWej-g9cVZWgfK8Rso">doc</a>]</h6>
+  <h3>Animometer Benchmarks</h3>
+  <div class='col-lg-12 text-center'>
   <div class='btn-group btn-group-sm text-center split-by-controls'>
       <button type='button' class='btn btn-default active' data-y_accessor='motionmark'>Motion Mark</button>
       <button type='button' class='btn btn-default' data-y_accessor='multiply'>Multiply</button>
@@ -15,9 +13,12 @@
       <button type='button' class='btn btn-default' data-y_accessor='design'>Design</button>
       <button type='button' class='btn btn-default' data-y_accessor='suits'>Suits</button>
   </div>
-
+  </div>
+  
   <div class='col-lg-12 text-left' id='chart'></div>
+  <div class='col-lg-12 text-left' id='chart_win7'></div>
 
+  <h6>MacbookPro 11,1 - MacOS 10.11.6 Beta 15G7a - Intel Iris [<a href="data/animometer.json">data</a>|<a href="https://docs.google.com/spreadsheets/d/1xo6Yfds1YFn8FAtFdQeb5R_JKMWej-g9cVZWgfK8Rso">doc</a>]</h6>
   <h6>Configurations Tested:</h6>
   <blockquote><pre>
    1. Firefox 49.0a1 20160530071207 | Multiprocess: ON  | APZ: ON  | Canvas: SKIA   | Acceleration: ENABLED
@@ -36,10 +37,26 @@
   14. Google Chrome Canary 53.0.2754.0
   15. Apple Safari 9.1.2 (11601.7.1)
   </pre></blockquote>
+
+  
+  <h6>MacbookPro 11,1 - Windows 7 64-bit - Intel Iris [<a href="data/animometer-win7.json">data</a>|<a href="https://docs.google.com/spreadsheets/d/1vCkgNv_EGncd-naj_89s-2Ep9iL7I2tuzTYYhAOV0WA">doc</a>]</h6>
+  <h6>Configurations Tested:</h6>
+  <blockquote><pre>
+  1. Firefox 49.0a1 20160530071207 | Multiprocess: ON  | APZ: ON  | Acceleration: ENABLED (D2D1.1)
+  2. Firefox 49.0a1 20160530071207 | Multiprocess: ON  | APZ: ON  | Acceleration: DISABLED (SKIA/CAIRO)
+  3. Firefox 49.0a1 20160530071207 | Multiprocess: ON  | APZ: OFF | Acceleration: ENABLED (D2D1.1)
+  4. Firefox 49.0a1 20160530071207 | Multiprocess: ON  | APZ: OFF | Acceleration: DISABLED (SKIA/CAIRO)
+  5. Firefox 49.0a1 20160530071207 | Multiprocess: OFF | APZ: OFF | Acceleration: ENABLED (D2D1.1)
+  6. Firefox 49.0a1 20160530071207 | Multiprocess: OFF | APZ: OFF | Acceleration: DISABLED (SKIA/CAIRO)
+  7. Chrome 51.0.2704.63
+  8. Chrome Canary 53.0.2754.0
+  9. Internet Explorer 11.0.9600.17843
+  </pre></blockquote>
 </div>
 
 <script>
     var globals = {};
+    var globals_win7 = {};
     MG._hooks = {};
     var markers = [{"config":1.5,"label":"ON < HWA > OFF"},
 		   {"config":2.5,"label":"SKIA < > QUARTZ"},
@@ -51,10 +68,10 @@
 		   {"config":8.5,"label":"ON < E10S > OFF"}];
 
     var split_by_params = {
-      title: "Animometer Benchmark Results from 10 consecutive testruns",
+      title: "MacOS 10.11 results from 10 consecutive testruns",
       description: "Scatterplot of Animometer benchmark results.",
       chart_type: "point",
-      width: 1280,
+      width: 1090,
       height: 360,
       target: document.getElementById('chart'),
       x_accessor: "config",
@@ -65,20 +82,58 @@
       color_type: "category"
     };
 
+    var split_by_params_win7 = {
+      title: "Windows 7 results from 10 consecutive testruns (INCOMPLETE!)",
+      description: "Scatterplot of Animometer benchmark results. NOTE: ONLY RESULTS FOR CANARY AND EXPLORER HAVE BEEN PROCESSED! ALL OTHER CONFIGURATIONS ARE STILL BEING TESTED!",
+      chart_type: "point",
+      width: 1090,
+      height: 360,
+      target: document.getElementById('chart_win7'),
+      x_accessor: "config",
+      y_rug: true,
+      color_accessor: "product",
+      color_domain: ["firefox","chrome","explorer"],
+      color_range: ["red","green","blue"],
+      color_type: "category",
+      markers: [{"config":6.5, "label":"LEFT OF THIS LINE IS UNTESTED!"}]
+    };
+
     $('.split-by-controls button').click(function() {
       var new_y_accessor = $(this).data('y_accessor');
+
       split_by_params.y_accessor = new_y_accessor;
+      split_by_params_win7.y_accessor = new_y_accessor;
+
       split_by_params.y_mouseover = function(d) {
-        return d.build + ": " + d[new_y_accessor].toString();
+        var label = d.build + ": ";
+        if (d[new_y_accessor] == null) {
+          label = label + "test failed!";
+        } else {
+          label = label + d[new_y_accessor].toString();
+        }
+        return label;
       };
+      split_by_params_win7.y_mouseover = function(d) {
+        var label = d.build + ": ";
+        if (d[new_y_accessor] == null) {
+          label = label + "test failed!";
+        } else {
+          label = label + d[new_y_accessor].toString();
+        }
+        return label;
+      };
+
       split_by_params.x_mouseover = function(d) {};
+      split_by_params_win7.x_mouseover = function(d) {};
 
       // change button state
       $(this).addClass('active').siblings().removeClass('active');
 
       // update data
       delete split_by_params.yay_format;
+      delete split_by_params_win7.yay_format;
       MG.data_graphic(split_by_params);
+      MG.data_graphic(split_by_params_win7);
     });
 
   d3.json('data/animometer.json', function(data) {
@@ -86,10 +141,33 @@
     split_by_params.data = data;
     split_by_params.y_accessor = "motionmark";
     split_by_params.y_mouseover = function(d) {
-        return d.build + ": " + d.motionmark.toString();
+        var label = d.build + ": ";
+        if (d.motionmark == null) {
+          label = label + "test failed!";
+        } else {
+          label = label + d.motionmark.toString();
+        }
+        return label;
       };
     split_by_params.x_mouseover = function(d) {};
     MG.data_graphic(split_by_params);
+  });
+
+  d3.json('data/animometer-win7.json', function(data) {
+    globals_win7.data = data;
+    split_by_params_win7.data = data;
+    split_by_params_win7.y_accessor = "motionmark";
+    split_by_params_win7.y_mouseover = function(d) {
+        var label = d.build + ": ";
+        if (d.motionmark == null) {
+          label = label + "test failed!";
+        } else {
+          label = label + d.motionmark.toString();
+        }
+        return label;
+      };
+    split_by_params_win7.x_mouseover = function(d) {};
+    MG.data_graphic(split_by_params_win7);
   });
 
 
