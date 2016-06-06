@@ -58,14 +58,6 @@
     var globals = {};
     var globals_win7 = {};
     MG._hooks = {};
-    var markers = [{"config":1.5,"label":"ON < HWA > OFF"},
-		   {"config":2.5,"label":"SKIA < > QUARTZ"},
-		   {"config":3.5,"label":"ON < HWA > OFF"},
-		   {"config":4.5,"label":"ON < APZ > OFF"},
-		   {"config":5.5,"label":"ON < HWA > OFF"},
-		   {"config":6.5,"label":"SKIA < > QUARTZ"},
-	 	   {"config":7.5,"label":"ON < HWA > OFF"},
-		   {"config":8.5,"label":"ON < E10S > OFF"}];
 
     var split_by_params = {
       title: "MacOS 10.11 results from 10 consecutive testruns",
@@ -84,7 +76,7 @@
 
     var split_by_params_win7 = {
       title: "Windows 7 results from 10 consecutive testruns (INCOMPLETE!)",
-      description: "Scatterplot of Animometer benchmark results. NOTE: ONLY RESULTS FOR CANARY AND EXPLORER HAVE BEEN PROCESSED! ALL OTHER CONFIGURATIONS ARE STILL BEING TESTED!",
+      description: "Scatterplot of Animometer benchmark results. NOTE: RESULTS INCOMPLETE -- TESTING IS IN PROGRESS!",
       chart_type: "point",
       width: 1090,
       height: 360,
@@ -95,7 +87,8 @@
       color_domain: ["firefox","chrome","explorer"],
       color_range: ["red","green","blue"],
       color_type: "category",
-      markers: [{"config":6.5, "label":"LEFT OF THIS LINE IS UNTESTED!"}]
+      markers: [{"config":4, "label":"CONFIG UNTESTED!"},
+                {"config":5, "label":"CONFIG UNTESTED!"}]
     };
 
     $('.split-by-controls button').click(function() {
