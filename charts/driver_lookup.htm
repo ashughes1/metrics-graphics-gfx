@@ -47,7 +47,6 @@
     }
     
     function loadData(category) {
-        items = [];
         var next = "";
         var url = "";
         if (category == "all") {
@@ -130,6 +129,7 @@
     }
     
     function loadGraph() {
+        console.log(items);
         if (items.length > 0) {
             var title = (driver == "") ? "All crashes for all drivers since " + start_date : "All crashes for " + driver + " since " + start_date;
             MG.data_graphic({
