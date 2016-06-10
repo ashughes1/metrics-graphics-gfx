@@ -1,0 +1,132 @@
+<div class='row trunk-section'>
+    <div style="text-align:center">
+        <button id="btn_graph" type="submit" onclick="loadData('all')">Load Graph</button>
+    </div>
+    <div class='col-lg-6 text-center' id='chart'></div>
+</div>
+<script>
+    var items = [];
+    var driver = "";
+    var start_date = convertDate(new Date((new Date()).valueOf() - 1000*60*60*24*115));
+    var globals = {
+        "url":"https://crash-stats.mozilla.com/search/",
+        "mouseover":function(d,i) {
+            var next = new Date(d.key.valueOf()+1*24*60*60*1000);
+            d3.select('svg .mg-active-datapoint')
+                .text();
+            globals.url = "https://crash-stats.mozilla.com/search/?signature=~gfx&signature=~layers&signature=~glcontext&signature=~canvas&signature=~d3d&signature=~d2d&signature=~dwrite&signature=~skia&signature=~mesa&signature=~cairo&signature=^amd&signature=^ati&signature=^igd&signature=^nv&signature=~webgl&adapter_driver_version=~" + driver + "&date=>%3D" + convertDate(d.key) + "&date=%3C" + convertDate(next);
+        }
+    };
+    
+    function convertDate(d) {
+        var day = (d.getDate() < 10) ? '0' + d.getDate().toString() : d.getDate().toString();
+        var month = ((d.getMonth()+1) < 10) ? '0' + (d.getMonth()+1).toString() : (d.getMonth()+1).toString();
+        var year = d.getFullYear().toString();
+        return year + '-' + month + '-' + day;
+    }
+    
+    function findIndex(value) {
+        var found = -1;
+        for (var i=0; i<items.length; i++) {
+            var keys = Object.keys(items[i]);
+            if (keys.includes("date")) {
+                if (items[i].date == value.term.substring(0,10)) {
+                    found = i;
+                    break;
+                }
+            }
+        }
+        return found;
+    }
+    
+    function loadData(category) {
+        var next = "";
+        var url = "";
+        if (category == "all") {
+            url = "https://crash-stats.mozilla.com/api/SuperSearch/?product=Firefox&date=%3E%3D" + start_date + "&_histogram.date=_cardinality.install_time&_histogram_interval=1d";
+            next = "gfx";
+            document.getElementById('btn_graph').innerHTML = "Loading... [0%]";
+        } else if (category == "gfx") {
+            url = "https://crash-stats.mozilla.com/api/SuperSearch/?product=Firefox&signature=~gfx&signature=~layers&signature=~glcontext&signature=~canvas&signature=~d3d&signature=~d2d&signature=~dwrite&signature=~skia&signature=~mesa&signature=~cairo&date=%3E%3D" + start_date + "&_histogram.date=_cardinality.install_time&_histogram_interval=1d";
+            next = "layers_fail";
+            document.getElementById('btn_graph').innerHTML = "Loading... [25%]";
+        } else if (category == "layers_fail") {
+            url = "https://crash-stats.mozilla.com/api/SuperSearch/?product=Firefox&signature=~gfx&signature=~layers&signature=~glcontext&signature=~canvas&signature=~d3d&signature=~d2d&signature=~dwrite&signature=~skia&signature=~mesa&signature=~cairo&app_notes=~Layers-&date=%3E%3D" + start_date + "&_histogram.date=_cardinality.install_time&_histogram_interval=1d";
+            next = "layers_pass";
+            document.getElementById('btn_graph').innerHTML = "Loading... [50%]";
+        } else if (category == "layers_pass") {
+            url = "https://crash-stats.mozilla.com/api/SuperSearch/?product=Firefox&signature=~gfx&signature=~layers&signature=~glcontext&signature=~canvas&signature=~d3d&signature=~d2d&signature=~dwrite&signature=~skia&signature=~mesa&signature=~cairo&app_notes=~Layers%2B&date=%3E%3D" + start_date + "&_histogram.date=_cardinality.install_time&_histogram_interval=1d";
+            next = "done";
+            document.getElementById('btn_graph').innerHTML = "Loading... [75%]";
+        } else if (category == "done") {
+            document.getElementById('btn_graph').innerHTML = "Load Graph";
+            sanitizeData();
+        }
+        
+        d3.json(url, function(data) {
+            if (data.total != 0) {
+                var processed = 0;
+                $.each(data, function(key, value) {
+                  if (key == "facets") {
+                    var histogram_date = value.histogram_date;
+                    $.each(histogram_date, function(key, value) {
+                        var index = findIndex(value);
+                        if (index != -1) {
+                            items[index][category] = value.count / value.facets.cardinality_install_time.value;
+                        } else {
+                            index = items.length;
+                            items.push({"date":value.term.substring(0,10)});
+                            items[index][category] = value.count / value.facets.cardinality_install_time.value;
+                        }
+                        if (processed++ == (histogram_date.length-1)) loadData(next);
+                    });
+                  }        
+                });
+            } else {
+                loadData(next);
+            }
+        });  
+    }
+    
+    function sanitizeData() {
+        items = MG.convert.date(items, 'date');
+        var i = 0;
+        while (i<items.length) {
+            var keys = Object.keys(items[i]);
+            if (!keys.includes("all")) items[i]["all"] = 0;
+            if (!keys.includes("gfx")) items[i]["gfx"] = 0;
+            if (!keys.includes("layers_fail")) items[i]["layers_fail"] = 0;
+            if (!keys.includes("layers_pass")) items[i]["layers_pass"] = 0;
+            i = i + 1;
+        }
+        loadGraph();
+    }
+    
+    function loadGraph() {
+        if (items.length > 0) {
+            MG.data_graphic({
+                data: items,
+                title: "Affect of HWA on Crash Rate",
+                description: "Shows the effect crash rate (crashes / unique installs) for all crashes, graphics crashes, graphics crashes with Layers-, and graphics crashes with Layers+. The intent is to estimate whether hardware acceleration makes stability better or worse.",
+                width: 1024,
+                height: 300,
+                right: 50,
+                target: document.getElementById('chart'),
+                x_accessor: 'date',
+                y_accessor: ['all','gfx','layers_fail','layers_pass'],
+                legend: ['All', 'Graphics', 'Layers-', 'Layers+'],
+                interpolate: "monotone",
+                chart_type: "line",
+                mouseover: globals.mouseover
+            });
+            
+            var mouseouts = d3.selectAll('.mg-rollover-rect rect').on('mouseout');
+            d3.selectAll('.mg-rollover-rect rect')
+                .on('click', function(d) {
+                    window.open(globals.url, '_blank');
+                });
+        } else {
+            //document.getElementById('chart').innerHTML = "<h4><center>No crash data found!</center></h4>"
+        }
+    }
+</script>
