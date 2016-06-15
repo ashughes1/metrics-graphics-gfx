@@ -80,7 +80,7 @@
             x_accessor: "date",
             y_accessor: ["winxp_pct","vista_pct","win7_pct","win8_pct","win10_pct"],
             legend: ["Win XP", "Vista", "Win 7", "Win 8", "Win 10"],
-            max_y:0.5,
+            max_y:5,
             chart_type: "line",
             mouseover: globals.mouseover
         });
@@ -91,7 +91,7 @@
             });
     }
     
-    var dateStart = convertDate(new Date((new Date()).valueOf()-(364*24*60*60*1000)));
+    var dateStart = convertDate(new Date((new Date()).valueOf()-(219*24*60*60*1000)));
     var globals = {
         "url":"https://crash-stats.mozilla.com/search/",
         "mouseover":function(d,i) {
