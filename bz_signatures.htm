@@ -43,9 +43,8 @@
         }
         
         function getSignaturesFromURL() {
-            var url = window.location.toString();
-            var index = url.indexOf("?s=");
-            var signatures = "signatures=~" + url.substring(index+3);
+            var index = window.location.search.indexOf("?s=");
+            var signatures = "signatures=~" + windows.location.search(index+2);
             signatures.replace(",", "&signature=~");
             return signatures;
         }
@@ -84,3 +83,5 @@
     </script>
 </body>
 </html>
+
+
