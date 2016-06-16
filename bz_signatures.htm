@@ -44,13 +44,15 @@
         
         function getSignaturesFromURL() {
             var url = window.location.toString();
-            var pIndex = url.indexOf("?s=");
-            return url.substring(pIndex+3);
+            var index = url.indexOf("?s=");
+            var signatures = "signatures=~" + url.substring(pIndex+3);
+            signatures.replace(",", "&signature=~");
+            return signatures;
         }
             
         function loadGraph() {
             var signatures = getSignaturesFromURL();
-            var url = "https://crash-stats.mozilla.com/api/SuperSearch/?&signature=~" + signatures + "&date=%3E%3D" + start_date + "&date=%3C%3D" + end_date + "&_histogram.date=_cardinality.install_time&_histogram_interval=1d";
+            var url = "https://crash-stats.mozilla.com/api/SuperSearch/?" + signatures + "&date=%3E%3D" + start_date + "&date=%3C%3D" + end_date + "&_histogram.date=_cardinality.install_time&_histogram_interval=1d";
             d3.json(url, function(data) {
                 $.each(data, function(key, value) {
                   if (key == "facets") {
@@ -82,5 +84,3 @@
     </script>
 </body>
 </html>
-
-
