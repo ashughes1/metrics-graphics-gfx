@@ -17,7 +17,7 @@
     <script src="js/addons/mg_line_brushing.js" type="text/javascript" charset="utf-8"></script>
 </head>
 
-<body>       
+<body onload="loadGraph(window.location.search)">       
     <div style="text-align:left; vertical-align:top; width:300px; height:150px; margin-top:-50px" id='chart'></div>
     <script src='js/main.js'></script>
     <script>
@@ -33,7 +33,6 @@
                 globals.url = "https://crash-stats.mozilla.com/search/?signature=~" + signature + "&date=>%3D" + convertDate(d.date) + "&date=%3C" + convertDate(next);
             }
         };
-        loadGraph();
         
         function convertDate(d) {
             var day = (d.getDate() < 10) ? '0' + d.getDate().toString() : d.getDate().toString();
@@ -42,17 +41,15 @@
             return year + '-' + month + '-' + day;
         }
         
-        function getSignaturesFromURL() {
-            var url = window.location;
-            var search = url.search;
+        function getSignaturesFromURL(search) {
             var index = search.indexOf("?s=");
-            var signatures = "signatures=~" + search(index+2);
+            var signatures = "signature=~" + search.substring(index+3);
             signatures.replace(",", "&signature=~");
             return signatures;
         }
             
-        function loadGraph() {
-            var signatures = getSignaturesFromURL();
+        function loadGraph(search) {
+            var signatures = getSignaturesFromURL(search);
             var url = "https://crash-stats.mozilla.com/api/SuperSearch/?" + signatures + "&date=%3E%3D" + start_date + "&date=%3C%3D" + end_date + "&_histogram.date=_cardinality.install_time&_histogram_interval=1d";
             d3.json(url, function(data) {
                 $.each(data, function(key, value) {
