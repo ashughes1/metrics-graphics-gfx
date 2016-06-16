@@ -45,6 +45,7 @@
             var index = search.indexOf("?s=");
             var signatures = "signature=~" + search.substring(index+3);
             signatures.replace(",", "&signature=~");
+            signatures.replace(" ", "");
             return signatures;
         }
             
