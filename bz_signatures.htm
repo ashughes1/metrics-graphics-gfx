@@ -43,15 +43,21 @@
         
         function getSignaturesFromURL(search) {
             var index = search.indexOf("?s=");
-            var signatures = "signature=~" + search.substring(index+3);
-            signatures.replace(",", "&signature=~");
-            signatures.replace(" ", "");
-            return signatures;
+            search = search.substring(index+3);
+            var signatures = search.split(",");
+            
+            var result = "";
+            for (var i=0; i<signatures.length; i++) {
+                if (i != 0) result = result + "&";
+                result = result + "signature=~" + signatures[i];
+            }
+            return result;
         }
             
         function loadGraph(search) {
             var signatures = getSignaturesFromURL(search);
             var url = "https://crash-stats.mozilla.com/api/SuperSearch/?" + signatures + "&date=%3E%3D" + start_date + "&date=%3C%3D" + end_date + "&_histogram.date=_cardinality.install_time&_histogram_interval=1d";
+            window.alert(url);
             d3.json(url, function(data) {
                 $.each(data, function(key, value) {
                   if (key == "facets") {
