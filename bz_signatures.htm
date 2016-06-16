@@ -44,7 +44,7 @@
         
         function getSignaturesFromURL() {
             var index = window.location.search.indexOf("?s=");
-            var signatures = "signatures=~" + windows.location.search(index+2);
+            var signatures = "signatures=~" + window.location.search(index+2);
             signatures.replace(",", "&signature=~");
             return signatures;
         }
