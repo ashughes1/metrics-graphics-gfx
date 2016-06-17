@@ -72,10 +72,11 @@
                             MG.data_graphic({
                                 data: items,
                                 width: 300,
-                                height: 150,
+                                height: 200,
                                 target: document.getElementById('chart'),
                                 x_accessor: 'date',
                                 y_accessor: 'count',
+                                yax_count: 3,
                                 interpolate: "monotone",
                                 chart_type: "line",
                                 mouseover: globals.mouseover
