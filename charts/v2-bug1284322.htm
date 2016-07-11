@@ -1,0 +1,140 @@
+<div class='row trunk-section'>
+  <div class='col-lg-12 text-center'>
+        <div class='col-lg-4 text-center' id='chart_815'>LOADING DATA...</div>
+        <div class='col-lg-4 text-center' id='chart_816'>LOADING DATA...</div>
+        <div class='col-lg-4 text-center' id='chart_817'>LOADING DATA...</div>
+  </div>
+</div>
+
+<script>
+
+    function convertDate(d) {
+        var day = (d.getDate() < 10) ? '0' + d.getDate().toString() : d.getDate().toString();
+        var month = ((d.getMonth()+1) < 10) ? '0' + (d.getMonth()+1).toString() : (d.getMonth()+1).toString();
+        var year = d.getFullYear().toString();
+        return year + '-' + month + '-' + day;
+    }
+    
+    function callback(items, url) {
+        var count = 0;
+        d3.json(url, function(data) {
+            if (!data) return callback(new Error("Unable to load JSON data!"));
+            var histogram_date = data.facets.histogram_date;
+            for (var d in histogram_date) {
+                var datefound = 0;
+                for (var i in items) {
+                    var datestamp = histogram_date[d].term.substring(0,10);
+                    if (datestamp == items[i].date) {
+                        if (url.includes('8.16')) items[i]["8.16"] = histogram_date[d].count;
+                        if (url.includes('8.17')) items[i]["8.17"] = histogram_date[d].count;
+                        datefound = 1;
+                        count = count + 1;
+                    }
+                }
+                if (datefound == 0) {
+                    if (url.includes('8.16')) {
+                        items.push({"date":histogram_date[d].term.substring(0,10),"8.15":0,"8.16":histogram_date[d].count,"8.17":0});
+                    } else if (url.includes('8.17')) {
+                        items.push({"date":histogram_date[d].term.substring(0,10),"8.15":0,"8.16":0,"8.17":histogram_date[d].count});
+                    }
+                    count = count + 1;
+                }
+            }
+            if (count >= histogram_date.length) {
+                if (url.includes('^8.16')) {
+                    callback(items, url.replace('^8.16','^8.17'));
+                } else {
+                    draw(items);    
+                }
+            }
+        });
+        
+    }
+    
+    function draw(data) {
+        document.getElementById('chart_815').innerHTML = "";
+        document.getElementById('chart_816').innerHTML = "";
+        document.getElementById('chart_817').innerHTML = "";
+        data = MG.convert.date(data, 'date');
+        MG.data_graphic({
+            data: data,
+            title: "Nightly crashes with Nvidia 8.15.*",
+            width: 400,
+            height: 300,
+            right:60,
+            target: document.getElementById('chart_815'),
+            x_accessor: "date",
+            y_accessor: "8.15",
+            chart_type: "line",
+            mouseover: globals.mouseover,
+            markers: [{'date': new Date('2016-07-11T00:00:00.000Z'),'label':'Bug 1284322 Lands'}]
+        });
+        MG.data_graphic({
+            data: data,
+            title: "Nightly crashes with Nvidia 8.16.*",
+            width: 400,
+            height: 300,
+            right:60,
+            target: document.getElementById('chart_816'),
+            x_accessor: "date",
+            y_accessor: "8.16",
+            chart_type: "line",
+            mouseover: globals.mouseover,
+            markers: [{'date': new Date('2016-07-11T00:00:00.000Z'),'label':'Bug 1284322 Lands'}]
+        });
+        MG.data_graphic({
+            data: data,
+            title: "Nightly crashes with Nvidia 8.17.*",
+            width: 400,
+            height: 300,
+            right:60,
+            target: document.getElementById('chart_817'),
+            x_accessor: "date",
+            y_accessor: "8.17",
+            chart_type: "line",
+            mouseover: globals.mouseover,
+            markers: [{'date': new Date('2016-07-11T00:00:00.000Z'),'label':'Bug 1284322 Lands'}]
+        });
+        var mouseouts = d3.selectAll('.mg-rollover-rect rect').on('mouseout');
+        d3.selectAll('.mg-rollover-rect rect')
+            .on('click', function(d) {
+                window.open(globals.url, '_blank');
+            });
+    }
+    
+    var dateStart = convertDate(new Date((new Date()).valueOf()-(219*24*60*60*1000)));
+    var url = "https://crash-stats.mozilla.com/api/SuperSearch/?product=Firefox"
+        + "&signature=~gfx&signature=~layers&signature=~canvas&signature=~glcontext&signature=~d3d&signature=~d2d&signature=~dwrite&signature=~skia&signature=~mesa&signature=~cairo&signature=^amd&signature=^ati&signature=^igd&signature=^nv"
+        + "&adapter_vendor_id=0x10de&adapter_driver_version=^8.15&release_channel=nightly"
+        + "&_histogram.date=_cardinality.install_time&date=%3E%3D" + dateStart;
+    
+    var globals = {
+        "url":"https://crash-stats.mozilla.com/search/",
+        "mouseover":function(d,i) {
+            d3.select('svg .mg-active-datapoint')
+                .text();
+            console.log(d,i);
+            globals.url = "https://crash-stats.mozilla.com/search/?product=Firefox"
+                + "&signature=~gfx&signature=~layers&signature=~canvas&signature=~glcontext&signature=~d3d&signature=~d2d&signature=~dwrite&signature=~skia&signature=~mesa&signature=~cairo&signature=^amd&signature=^ati&signature=^igd&signature=^nv"
+                + "&adapter_vendor_id=0x10de&adapter_driver_version=^8.15&adapter_driver_version=^8.16&adapter_driver_version=^8.17"
+                + "&release_channel=nightly&date=%3E%3D" + convertDate(d.date)
+                + "&_facets=adapter_driver_version&_facets=adapter_device_id&_facets=adapter_vendor_id&_facets=platform_pretty_version";
+        }
+    };
+     
+    d3.json(url, function(data) {
+        if (!data) return callback(new Error("Unable to load JSON data!"));
+        var items = [];
+        var histogram_date = data.facets.histogram_date;
+        for (var d in histogram_date){
+            items[d] = {
+                "date":histogram_date[d].term.substring(0,10),
+                "8.15":histogram_date[d].count,
+                "8.16":0,
+                "8.17":0
+            };
+        }
+        callback(items, url.replace('^8.15','^8.16'));
+    });
+
+</script>
