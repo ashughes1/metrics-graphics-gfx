@@ -139,7 +139,7 @@
     };
     
     var url = {
-        "versions":"https://crash-stats.mozilla.com/api/ProductVersions/?product=Firefox",
+        "versions":"https://crash-stats.mozilla.com/api/ProductVersions/?product=FennecAndroid",
         "adi":"https://crash-stats.mozilla.com/api/ADI/?"
     };
     
@@ -172,6 +172,7 @@
                 }
             }
             if (i >= data.hits.length) {
+                console.log(result);
                 createQueryFromVersions(result, channel);
             }
         });
@@ -181,8 +182,8 @@
         var query = url.adi
             + "end_date=" + dates.end.string
             + "&start_date=" + dates.start.string
-            + "&platforms=Windows&platforms=Mac%20OS%20X&platforms=Linux"
-            + "&product=Firefox";
+            + "&platforms=Linux"
+            + "&product=FennecAndroid";
         var i = 0;
         for (; i<versions.length; i++) {
             query = query + "&versions=" + versions[i];
@@ -246,7 +247,7 @@
         data = MG.convert.date(chartData, 'date');
         MG.data_graphic({
             data: data,
-            title: "Firefox Release ADIs",
+            title: "Fennec Release ADIs",
             width: 1000,
             height: 300,
             right: 50,
@@ -260,7 +261,7 @@
         });
         MG.data_graphic({
             data: data,
-            title: "Firefox Beta ADIs",
+            title: "Fennec Beta ADIs",
             width: 1000,
             height: 300,
             right: 50,
@@ -274,7 +275,7 @@
         });
         MG.data_graphic({
             data: data,
-            title: "Firefox Aurora ADIs",
+            title: "Fennec Aurora ADIs",
             width: 1000,
             height: 300,
             right: 50,
@@ -288,7 +289,7 @@
         });
         MG.data_graphic({
             data: data,
-            title: "Firefox Nightly ADIs",
+            title: "Fennec Nightly ADIs",
             width: 1000,
             height: 300,
             right: 50,
