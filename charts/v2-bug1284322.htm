@@ -56,9 +56,37 @@
         document.getElementById('chart_816').innerHTML = "";
         document.getElementById('chart_817').innerHTML = "";
         data = MG.convert.date(data, 'date');
+        
+        var averages = {
+            "before": {"8.15":0,"8.16":0,"8.17":0,"count":0},
+            "after": {"8.15":0,"8.16":0,"8.17":0,"count":0}
+        };
+        
+        for (var i=0; i<data.length; i++) {    
+            if (data[i].date > new Date('2016-07-11T00:00:00.000Z')) {
+                averages.after["8.15"] = averages.after["8.15"] + data[i]["8.15"];
+                averages.after["8.16"] = averages.after["8.16"] + data[i]["8.16"];
+                averages.after["8.17"] = averages.after["8.17"] + data[i]["8.17"];
+                averages.after.count = averages.after.count + 1;
+            } else {
+                averages.before["8.15"] = averages.before["8.15"] + data[i]["8.15"];
+                averages.before["8.16"] = averages.before["8.16"] + data[i]["8.16"];
+                averages.before["8.17"] = averages.before["8.17"] + data[i]["8.17"];
+                averages.before.count = averages.before.count + 1;
+            }
+        }
+        
+        averages.before["8.15"] = averages.before["8.15"] / averages.before.count;
+        averages.before["8.16"] = averages.before["8.16"] / averages.before.count;
+        averages.before["8.17"] = averages.before["8.17"] / averages.before.count;
+        averages.after["8.15"] = averages.after["8.15"] / averages.after.count;
+        averages.after["8.16"] = averages.after["8.16"] / averages.after.count;
+        averages.after["8.17"] = averages.after["8.17"] / averages.after.count;
+        
         MG.data_graphic({
             data: data,
             title: "Nightly crashes with Nvidia 8.15.*",
+            description: "Avg: " + averages.before["8.15"] + "=>" + averages.after["8.15"],
             width: 400,
             height: 300,
             right:60,
@@ -72,6 +100,7 @@
         MG.data_graphic({
             data: data,
             title: "Nightly crashes with Nvidia 8.16.*",
+            description: "Avg: " + averages.before["8.16"] + "=>" + averages.after["8.16"],
             width: 400,
             height: 300,
             right:60,
@@ -85,6 +114,7 @@
         MG.data_graphic({
             data: data,
             title: "Nightly crashes with Nvidia 8.17.*",
+            description: "Avg: " + averages.before["8.17"] + "=>" + averages.after["8.17"],
             width: 400,
             height: 300,
             right:60,
