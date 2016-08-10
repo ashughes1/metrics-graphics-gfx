@@ -1,9 +1,52 @@
-<div class='row trunk-section'>
-  <div class='col-lg-12 text-center' id='chart_count'>LOADING DATA...</div>
-  <div class='col-lg-12 text-center' id='chart_pct'>LOADING DATA...</div>
+<div class='row trunk-section'> 
+  <div class='col-lg-12 text-center' id='chart'>LOADING CHART DATA...</div>
+  <div class='col-lg-12 text-center'>
+      <div class='btn-group btn-group-sm text-center split-by-controls'>
+        <button type='button' class='btn btn-default active' data-y_accessor='count'>Count</button>
+        <button type='button' class='btn btn-default' data-y_accessor='percent'>Percent</button>
+      </div>
+      <button type='button' id='btn_show_data' class='btn btn-group-sm btn-default' onclick='showHideData()'>Show Data</button>
+      <div id='table_div'></div>
+  </div>
 </div>
 
 <script>
+    var split_by_params = {
+        'count': {
+            title: "Number of crashes with WGL+ in AppNotes",
+            width: 800,
+            height: 300,
+            right: 120,
+            bottom: 90,
+            target: document.getElementById('chart'),
+            x_accessor: "date",
+            y_accessor: ["winxp","vista","win7","win8","win10"],
+            legend: ["Win XP", "Vista", "Win 7", "Win 8", "Win 10"],
+            chart_type: "line",
+            mouseover: globals.mouseover
+        },
+        'percent': {
+            title: "Percentage of crashes with WGL+ in AppNotes",
+            width: 800,
+            height: 300,
+            right: 120,
+            bottom: 90,
+            target: document.getElementById('chart'),
+            x_accessor: "date",
+            y_accessor: ["winxp_pct","vista_pct","win7_pct","win8_pct","win10_pct"],
+            legend: ["Win XP", "Vista", "Win 7", "Win 8", "Win 10"],
+            chart_type: "line",
+            mouseover: globals.mouseover
+        }
+    };
+
+    $('.split-by-controls button').click(function() {
+        var new_y_accessor = $(this).data('y_accessor');
+        MG.data_graphic(split_by_params[new_y_accessor]);
+        $(this).addClass('active').siblings().removeClass('active'); 
+    });
+
+
     function convertDate(d) {
         var day = (d.getDate() < 10) ? '0' + d.getDate().toString() : d.getDate().toString();
         var month = ((d.getMonth()+1) < 10) ? '0' + (d.getMonth()+1).toString() : (d.getMonth()+1).toString();
@@ -13,7 +56,8 @@
     
     function callback(items) {
         var count = 0;
-        d3.json("https://crash-stats.mozilla.com/api/SuperSearch/?date=%3E%3D" + dateStart + "&_histogram.date=platform_pretty_version&_histogram_interval=1d", function(data) {
+	var url = "https://crash-stats.mozilla.com/api/SuperSearch/?date=%3E%3D" + dateStart + "&_histogram.date=platform_pretty_version&_histogram_interval=1d";
+        d3.json(url, function(data) {
             if (!data) return callback(new Error("Unable to load JSON data!"));
             var histogram_date = data.facets.histogram_date;
             for (var d in histogram_date) {
@@ -50,40 +94,16 @@
     }
     
     function draw(data) {
-        document.getElementById('chart_count').innerHTML = "";
-        document.getElementById('chart_pct').innerHTML = "";
+        document.getElementById('chart').innerHTML = "";
         data = MG.convert.date(data, 'date');
-        MG.data_graphic({
-            data: data,
-            title: "Number of crashes with WGL+ in AppNotes",
-            description: "Click a datapoint to see the related crashes (currently broken due to https://bugzil.la/1270662)",
-            width: 800,
-            height: 300,
-            right: 120,
-            bottom: 90,
-            target: document.getElementById('chart_count'),
-            x_accessor: "date",
-            y_accessor: ["winxp","vista","win7","win8","win10"],
-            legend: ["Win XP", "Vista", "Win 7", "Win 8", "Win 10"],
-            chart_type: "line",
-            mouseover: globals.mouseover
-        });
-        MG.data_graphic({
-            data: data,
-            title: "Percent of crashes with WGL+ in AppNotes",
-            description: "Click a datapoint to see the related crashes (currently broken due to https://bugzil.la/1270662)",
-            width: 800,
-            height: 300,
-            right: 120,
-            bottom: 90,
-            target: document.getElementById('chart_pct'),
-            x_accessor: "date",
-            y_accessor: ["winxp_pct","vista_pct","win7_pct","win8_pct","win10_pct"],
-            legend: ["Win XP", "Vista", "Win 7", "Win 8", "Win 10"],
-            max_y:5,
-            chart_type: "line",
-            mouseover: globals.mouseover
-        });
+	globals.data = data;
+
+        for (i in split_by_params) {
+            split_by_params[i].data = data;
+            delete split_by_params[i].yay_format;
+        }
+        MG.data_graphic(split_by_params.count);
+
         var mouseouts = d3.selectAll('.mg-rollover-rect rect').on('mouseout');
         d3.selectAll('.mg-rollover-rect rect')
             .on('click', function(d) {
@@ -105,6 +125,17 @@
         if (!data) return callback(new Error("Unable to load JSON data!"));
         var items = [];
         var histogram_date = data.facets.histogram_date;
+        var table_html = "<table id='table' border='1' style='width:100%; visibility:hidden'>"
+            + "<tr>"
+                + "<th>Date</th>"
+                + "<th>Win XP</th>"
+                + "<th>Vista</th>"
+                + "<th>Win 7</th>"
+                + "<th>Win 8</th>"
+                + "<th>Win 10</th>"
+                + "<th>Total</th>"
+            + "</tr>";
+        
         for (var d in histogram_date){
             items[d] = {
                 "date":histogram_date[d].term.substring(0,10),
@@ -129,8 +160,50 @@
                 items[d].win10 = platform.count;
               }
             }
+
+            var row = "<tr>"
+                 + "<td>" + items[d].date + "</td>"
+                 + "<td>" + items[d].winxp + "</td>"
+                 + "<td>" + items[d].vista + "</td>"
+                 + "<td>" + items[d].win7 + "</td>"
+                 + "<td>" + items[d].win8 + "</td>"
+                 + "<td>" + items[d].win10 + "</td>"
+                 + "<td>" + items[d].total + "</td>"
+                 + "</tr>";
+            table_html = table_html.concat(row);
+            
+            if (items.length >= histogram_date.length) {
+                var trend = "<tr>"
+                 + "<th>Trend</th>"
+                 + "<th>" + parseFloat((items[d].winxp-items[0].winxp)/items[0].winxp*100).toFixed(2) + " %</th>"
+                 + "<th>" + parseFloat((items[d].vista-items[0].vista)/items[0].vista*100).toFixed(2) + " %</th>"
+                 + "<th>" + parseFloat((items[d].win7-items[0].win7)/items[0].win7*100).toFixed(2) + " %</th>"
+                 + "<th>" + parseFloat((items[d].win8-items[0].win8)/items[0].win8*100).toFixed(2) + " %</th>"
+                 + "<th>" + parseFloat((items[d].win10-items[0].win10)/items[0].win10*100).toFixed(2) + " %</th>"
+                 + "<th>" + parseFloat((items[d].total-items[0].total)/items[0].total*100).toFixed(2) + " %</th>"
+                 + "</tr></table>";
+
+                table_html = table_html.concat(trend);
+                var table = document.getElementById("table_div");
+                table.innerHTML = table_html;
+                callback(items);
+            }
         }
-        callback(items);
+        
+        
     });
+
+    function showHideData() {
+        var table = document.getElementById("table");
+        if (table.style.visibility == "hidden") {
+            table.style.visibility = "visible";
+            var button = document.getElementById("btn_show_data");
+            button.innerHTML = "Hide Data";
+        } else {
+            table.style.visibility = "hidden";
+            var button = document.getElementById("btn_show_data");
+            button.innerHTML = "Show Data";
+        }
+    }
 
 </script>
