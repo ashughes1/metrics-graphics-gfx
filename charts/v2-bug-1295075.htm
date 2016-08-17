@@ -1,0 +1,163 @@
+<div class='row trunk-section'>
+  <div class='col-lg-6 text-left' id='chart'>LOADING DATA...</div>
+  <div class='col-lg-6 text-right' id='chart_rate'>LOADING DATA...</div>
+</div>
+
+<script>
+    MG._hooks = {};
+    
+    var globals = {
+        "url":"https://hg.mozilla.org/releases/mozilla-release/pushloghtml?",
+        "mouseover":function(d,i) {
+            var end_date = convertDate(d.date);
+            var start_date = convertDate(new Date(d.date.valueOf()-1*24*60*60*1000));
+            globals.url = "https://hg.mozilla.org/releases/mozilla-release/pushloghtml?startdate=" + start_date + "&enddate=" + end_date;
+        },
+        "markers":[
+            {'date': new Date('2015-12-14T00:00:00.000Z'),'label': '43.0'},
+            {'date': new Date('2016-01-25T00:00:00.000Z'),'label': '44.0'},
+            {'date': new Date('2016-03-08T00:00:00.000Z'),'label': '45.0'},
+            {'date': new Date('2016-04-26T00:00:00.000Z'),'label': '46.0'}
+        ]
+    };
+    
+    function convertDate(d) {
+        var day = (d.getDate() < 10) ? '0' + d.getDate().toString() : d.getDate().toString();
+        var month = ((d.getMonth()+1) < 10) ? '0' + (d.getMonth()+1).toString() : (d.getMonth()+1).toString();
+        var year = d.getFullYear().toString();
+        return year + '-' + month + '-' + day;
+    }
+   
+
+
+   function drawGraph() {
+       $.each(chart_data, function(key, value) {
+           value["other_crashes"] = value.all_crashes - value.fx51_crashes;
+           value["other_installs"] = value.all_installs - value.fx51_installs;
+           value["rate_all"] = (value.all_crashes / value.all_installs).toFixed(2);
+           value["rate_fx51"] = (value.fx51_installs == 0) ? 0 : (value.fx51_crashes / value.fx51_installs).toFixed(2);
+           value["rate_other"] = ((value.all_crashes - value.fx51_crashes) / (value.all_installs - value.fx51_installs)).toFixed(2);
+           console.log(value);
+       });
+
+       chart_data = MG.convert.date(chart_data, 'date');
+       document.getElementById('chart').innerHTML = "";
+       MG.data_graphic({
+            data: chart_data,
+            title: "Crash count related to Bug 1295075",
+            width: 600,
+            height: 400,
+            left:90,
+            right:90,
+            target: document.getElementById('chart'),
+            x_accessor: "date",
+            y_accessor: ["fx51_crashes","other_crashes"],
+            legend: ["Crashes (51.0a1)","Crashes (Other)"],
+            y_label: "Number of Crashes",
+            chart_type: "line",
+            linked:true,
+            mouseover: globals.mouseover,
+            markers:globals.markers
+        });
+
+       document.getElementById('chart_rate').innerHTML = "";
+       MG.data_graphic({
+            data: chart_data,
+            title: "Crash rate related to Bug 1295075",
+            width: 600,
+            height: 400,
+            left:90,
+            right:90,
+            target: document.getElementById('chart_rate'),
+            x_accessor: "date",
+            y_accessor: ["rate_fx51","rate_other"],
+            legend: ["51.0a1", "Other"],
+            y_label: "Crashes per Installation",
+            chart_type: "line",
+            linked:true,
+            mouseover: globals.mouseover,
+            markers:globals.markers
+        });
+
+   }
+
+
+    function getSocorroData(key) {
+        d3.json(url[key], function(data) {
+            if (!data) return new Error("Unable to load JSON data!");
+            var processed = 0;
+            var histogram_date = data.facets.histogram_date;
+            console.log(url[key]);
+            console.log(histogram_date);
+
+            var i = 0;
+            for (; i<histogram_date.length; i++) {
+                var term = histogram_date[i].term.substring(0,10);
+                var count = histogram_date[i].count;
+                var installs = histogram_date[i].facets.cardinality_install_time.value;
+                
+
+                chart_data.find(function(obj) {
+                   if (obj.date === term) {
+                       obj[key + "_crashes"] = count;
+                       obj[key + "_installs"] = installs;
+                   }
+                }); 
+            }
+            if (i >= histogram_date.length) {
+                if (key === "all") {
+                    getSocorroData("fx51");
+                } else {
+                    drawGraph();
+                }
+            }
+        });
+    }
+    
+    var chart_data = [];
+    var dates = {
+        "start":convertDate(new Date((new Date()).valueOf()-184*24*60*60*1000)),
+        "end":convertDate(new Date((new Date()).valueOf()))
+    };
+
+   for (var i=1; i<185; i++) {
+       chart_data.push({
+           "date":convertDate(new Date((new Date()).valueOf() - 1000*60*60*24*i)),
+           "all_crashes":0,
+           "all_installs":0,
+           "fx51_crashes":0,
+           "fx51_installs":0
+       });
+   }
+    
+    var url = {
+        "all":"https://crash-stats.mozilla.com/api/SuperSearch/?product=Firefox"
+            + "&signature=~igd10umd64.dll | D3DKMTCreateAllocation"
+            + "&signature=~igd10umd64.dll | ResourceCopyRegionDDIHelper<T>"
+            + "&signature=~igd10umd64.dll | CContext::ID3D11DeviceContext1_SetShaderResources_<T>"
+            + "&signature=~igd10umd64.dll | CContext::ID3D11DeviceContext1_SetShader_<T>"
+            + "&signature=~igd10umd64.dll | CContext::ID3D11DeviceContext1_IASetVertexBuffers_<T>"
+            + "&signature=~igd10umd64.dll | RtlAllocateHeap"
+            + "&signature=~igd10umd64.dll | CResource<T>::CopySubresourceRegion<T>"
+            + "&signature=~igd10umd64.dll"
+            + "&date=>%3D" + dates.start + "&date=<" + dates.end
+            + "&_histogram.date=_cardinality.install_time&_histogram_interval=1d",
+        "fx51":"https://crash-stats.mozilla.com/api/SuperSearch/?product=Firefox"
+            + "&version=51.0a1"
+            + "&signature=~igd10umd64.dll | D3DKMTCreateAllocation"
+            + "&signature=~igd10umd64.dll | ResourceCopyRegionDDIHelper<T>"
+            + "&signature=~igd10umd64.dll | CContext::ID3D11DeviceContext1_SetShaderResources_<T>"
+            + "&signature=~igd10umd64.dll | CContext::ID3D11DeviceContext1_SetShader_<T>"
+            + "&signature=~igd10umd64.dll | CContext::ID3D11DeviceContext1_IASetVertexBuffers_<T>"
+            + "&signature=~igd10umd64.dll | RtlAllocateHeap"
+            + "&signature=~igd10umd64.dll | CResource<T>::CopySubresourceRegion<T>"
+            + "&signature=~igd10umd64.dll"
+            + "&date=>%3D" + dates.start + "&date=<" + dates.end
+            + "&_histogram.date=_cardinality.install_time&_histogram_interval=1d"
+    }
+    
+    if (chart_data.length >= 184) getSocorroData("all");
+    
+    
+    
+</script>
