@@ -34,9 +34,9 @@
        $.each(chart_data, function(key, value) {
            value["other_crashes"] = value.all_crashes - value.fx51_crashes;
            value["other_installs"] = value.all_installs - value.fx51_installs;
-           value["rate_all"] = (value.all_crashes / value.all_installs).toFixed(2);
+           value["rate_all"] = (value.all_installs == 0) ? 0 : (value.all_crashes / value.all_installs).toFixed(2);
            value["rate_fx51"] = (value.fx51_installs == 0) ? 0 : (value.fx51_crashes / value.fx51_installs).toFixed(2);
-           value["rate_other"] = ((value.all_crashes - value.fx51_crashes) / (value.all_installs - value.fx51_installs)).toFixed(2);
+           value["rate_other"] = (value.all_installs == 0 && value.fx51_installs == 0) ? 0 : ((value.all_crashes - value.fx51_crashes) / (value.all_installs - value.fx51_installs)).toFixed(2);
            console.log(value);
        });
 
