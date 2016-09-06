@@ -1,0 +1,123 @@
+<div class='row trunk-section'>
+  <div class='col-lg-6 text-left' id='chart'>LOADING DATA...</div>
+  <div class='col-lg-6 text-right' id='chart_rate'>LOADING DATA...</div>
+</div>
+
+<script>
+    MG._hooks = {};
+    
+    var globals = {
+        "url":"https://hg.mozilla.org/releases/mozilla-release/pushloghtml?",
+        "mouseover":function(d,i) {
+            var end_date = convertDate(d.date);
+            var start_date = convertDate(new Date(d.date.valueOf()-1*24*60*60*1000));
+            globals.url = "https://hg.mozilla.org/releases/mozilla-release/pushloghtml?startdate=" + start_date + "&enddate=" + end_date;
+        },
+        "markers":[
+            {'date': new Date('2016-03-07T00:00:00.000Z'),'label': '48.0a1'},
+            {'date': new Date('2016-04-25T00:00:00.000Z'),'label': '49.0a1'},
+            {'date': new Date('2016-06-06T00:00:00.000Z'),'label': '50.0a1'},
+            {'date': new Date('2016-08-01T00:00:00.000Z'),'label': '51.0a1'},
+            {'date': new Date('2016-09-12T00:00:00.000Z'),'label': '52.0a1'}
+        ]
+    };
+    
+    function convertDate(d) {
+        var day = (d.getDate() < 10) ? '0' + d.getDate().toString() : d.getDate().toString();
+        var month = ((d.getMonth()+1) < 10) ? '0' + (d.getMonth()+1).toString() : (d.getMonth()+1).toString();
+        var year = d.getFullYear().toString();
+        return year + '-' + month + '-' + day;
+    }
+    
+    function parse_json(url) {
+        d3.json(url, function(data) {
+            if (!data) return new Error("Unable to load JSON data!");
+            var histogram_date = data.facets.histogram_date;
+            var crashes = [0,0,0,0,0,0,0];
+            var installs = [0,0,0,0,0,0,0];
+            $.each(histogram_date, function(i) {
+                var term = histogram_date[i].term.substring(0,10);
+                crashes[i%7] = histogram_date[i].count;
+                installs[i%7] = histogram_date[i].facets.cardinality_install_time.value;
+                if (i >= 7) {
+                    var total_crashes = crashes.reduce(function(a, b) { return a + b; }, 0);
+                    var total_installs = installs.reduce(function(a, b) { return a + b; }, 0);
+                    var rate = (total_crashes != 0 && total_installs != 0) ? (total_crashes/total_installs).toFixed(2) : 0;
+                    chart_data.push({
+                        "date":term,
+                        "crashes":total_crashes,
+                        "installs":total_installs,
+                        "rate":rate
+                    });
+                }
+                if (i == (histogram_date.length-1)) {
+                    console.log("DATA:", chart_data);
+                    chart_data = MG.convert.date(chart_data, 'date');
+                    document.getElementById('chart').innerHTML = "";
+                    document.getElementById('chart_rate').innerHTML = "";
+                    MG.data_graphic({
+                        data: chart_data,
+                        title: "7-day Nightly Crash Count related to Bug 1299757",
+                        description: "Tracks weekly crash and install totals in Nightly for these Intel GPUs: https://bugzilla.mozilla.org/show_bug.cgi?id=1299757#c5",
+                        width: 600,
+                        height: 400,
+                        left:90,
+                        right:90,
+                        target: document.getElementById('chart'),
+                        x_accessor: "date",
+                        y_accessor: ["crashes","installs"],
+                        legend: ["Crashes","Installs"],
+                        chart_type: "line",
+                        linked:true,
+                        mouseover: globals.mouseover,
+                        markers:globals.markers
+                    });
+                    MG.data_graphic({
+                        data: chart_data,
+                        title: "7-day Nightly Crash Rate related to Bug 1299757",
+                        description: "Tracks weekly crash rate (crashes/installs) in Nightly for these Intel GPUs: https://bugzilla.mozilla.org/show_bug.cgi?id=1299757#c5",
+                        width: 600,
+                        height: 400,
+                        left:90,
+                        right:90,
+                        target: document.getElementById('chart_rate'),
+                        x_accessor: "date",
+                        y_accessor: "rate",
+                        chart_type: "line",
+                        linked:true,
+                        mouseover: globals.mouseover,
+                        markers:globals.markers
+                    });
+                }
+            });
+            
+        });
+    }
+    
+    var chart_data = [];
+    var dates = {
+        "start":convertDate(new Date((new Date()).valueOf()-184*24*60*60*1000)),
+        "end":convertDate(new Date((new Date()).valueOf()))
+    };    
+    
+    var devices = [
+        "0x8108", "0x8109", "0x2582", "0x2782", "0x2592", "0x2792", "0x2772", "0x2776",
+        "0x27a2", "0x27a6", "0x27ae", "0xa00", "0xa01", "0xa012", "0x2972", "0x010a",
+        "0x2973", "0x2982", "0x2983", "0x2992", "0x2993", "0x29a2", "0x29a3", "0x29b",
+        "0x29b3", "0x29c2", "0x29c3", "0x29d2", "0x29d3", "0x2a02", "0x2a03", "0x2a12",
+        "0x2a13", "0x0042", "0x0102", "0x0106", "0x0112", "0x0116", "0x0122", "0x0126"
+    ];
+    
+    var url = "https://crash-stats.mozilla.com/api/SuperSearch/?product=Firefox&release_channel=nightly";
+    $.each(devices, function(i) {
+        url = url + "&adapter_device_id=" + devices[i];
+        if (i == (devices.length-1)) {
+            url = url
+                + "&date=>%3D" + dates.start + "&date=<" + dates.end
+                + "&_histogram.date=_cardinality.install_time&_histogram_interval=1d";
+            parse_json(url);
+        }
+    });    
+    
+    
+</script>
