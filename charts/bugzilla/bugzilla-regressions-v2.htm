@@ -1,5 +1,6 @@
 <div class='row trunk-section'>
   <div class='col-lg-12 text-center' id='chart'>LOADING DATA...</div>
+  <div class='col-lg-12 text-center' id='chart_pct'>LOADING DATA...</div>
 </div>
 
 <script>
@@ -11,14 +12,18 @@
         var end_date = convertDate(d.date);
         var start_date = convertDate(new Date(d.date.valueOf()-1*24*60*60*1000));
         globals.url = "https://hg.mozilla.org/releases/mozilla-release/pushloghtml?startdate=" + start_date + "&enddate=" + end_date;
-    }
+    };
     
-    globals.markers = [
-        {'date': new Date('2015-12-14T00:00:00.000Z'),'label': '43.0'},
-        {'date': new Date('2016-01-25T00:00:00.000Z'),'label': '44.0'},
-        {'date': new Date('2016-03-08T00:00:00.000Z'),'label': '45.0'},
-        {'date': new Date('2016-04-26T00:00:00.000Z'),'label': '46.0'}
-    ];
+    globals.markers = {
+        "releases":[
+            {'date': new Date('2015-12-14T00:00:00.000Z'),'label': '43'},
+            {'date': new Date('2016-01-25T00:00:00.000Z'),'label': '44'},
+            {'date': new Date('2016-03-08T00:00:00.000Z'),'label': '45'},
+            {'date': new Date('2016-04-26T00:00:00.000Z'),'label': '46'}
+        ],"events":[
+            {'date': new Date('2016-01-01T00:00:00.000Z'),'label': 'Triage Begins'},
+            {'date': new Date('2016-07-23T00:00:00.000Z'),'label': 'Cleanup Begins'}
+        ]};
     
     function convertDate(d) {
         var day = (d.getDate() < 10) ? '0' + d.getDate().toString() : d.getDate().toString();
@@ -29,10 +34,20 @@
     
     function draw(chart_data) {
         chart_data = MG.convert.date(chart_data, 'date');
+        $.each(chart_data, function(i) {
+           chart_data[i].unresolved_pct = (chart_data[i].unresolved/(chart_data[i].resolved + chart_data[i].unresolved)*100).toFixed(2);
+        });
+        
+        var data = [];
+        for (var i=chart_data.length-730; i<chart_data.length; i++) {
+            data.push(chart_data[i]);
+        }
+        
         document.getElementById('chart').innerHTML = "";
         MG.data_graphic({
-            data: chart_data,
-            title: "Graphics Regression Bugs",
+            data: data,
+            title: "Graphics Regressions",
+            description: "Only bugs filed in the last 5 years",
             width: 800,
             height: 300,
             left:90,
@@ -45,7 +60,27 @@
             chart_type: "line",
             linked:true,
             mouseover: globals.mouseover,
-            markers:globals.markers
+            markers:globals.markers.events
+        });
+        document.getElementById('chart_pct').innerHTML = "";
+        MG.data_graphic({
+            data: data,
+            title: "Graphics Regressions",
+            description: "Only bugs filed in the last 5 years",
+            width: 800,
+            height: 300,
+            left:90,
+            right:90,
+            target: document.getElementById('chart_pct'),
+            x_accessor: "date",
+            y_accessor: "unresolved_pct",
+            y_label: "Percent Unresolved",
+            chart_type: "line",
+            max_y:30,
+            min_y:0,
+            linked:true,
+            mouseover: globals.mouseover,
+            markers:globals.markers.events
         });
         
         var mouseouts = d3.selectAll('.mg-voronoi path').on('mouseout');
@@ -55,66 +90,16 @@
             });
     }
     
-    function processGraphicsData(start, end) {
-        d3.json("https://crash-stats.mozilla.com/api/SuperSearch/?"
-            + "product=Firefox"
-            + "&graphics_startup_test=%21__null__" 
-            + "&signature=~gfx&signature=~layers&signature=~canvas&signature=~glcontext&signature=~d3d&signature=~d2d&signature=~dwrite&signature=~skia&signature=~mesa&signature=~cairo&signature=^amd&signature=^ati&signature=^igd&signature=^nv"
-            + "&date=%3E%3D" + start
-            + "&date=%3C%3D" + end
-            + "&_histogram.date=release_channel&_histogram_interval=1d", function(data) {
-                if (!data) return new Error("Unable to load JSON data!");
-                var histogram_date = data.facets.histogram_date;
-                for (var d=0; d<histogram_date.length; d++) {
-                    var term = histogram_date[d].term.substring(0,10);
-                    var count = histogram_date[d].count;
-                    chartData.push({"date":term,"gfx":count});
-                    console.log(chartData.length, histogram_date.length);
-                }
-                if (chartData.length >= histogram_date.length) {
-                    processAllData(start, end);    
-                }
-        });
-    }
-    
-    function processAllData(start, end) {
-        d3.json("https://crash-stats.mozilla.com/api/SuperSearch/?"
-            + "product=Firefox"
-            + "&graphics_startup_test=%21__null__" 
-            + "&date=%3E%3D" + start
-            + "&date=%3C%3D" + end
-            + "&_histogram.date=release_channel&_histogram_interval=1d", function(data) {
-                if (!data) return new Error("Unable to load JSON data!");
-                var processed = 0;
-                var histogram_date = data.facets.histogram_date;
-                for (var d=0; d<histogram_date.length; d++) {
-                    var term = histogram_date[d].term.substring(0,10);
-                    var count = histogram_date[d].count;
-                    for (var i=0; i<chartData.length; i++) {
-                        if (chartData[i].date == term) {
-                            chartData[i]['all'] = count;
-                            chartData[i]['percent'] = chartData[i].gfx / count * 100;
-                            processed = processed + 1;
-                        }
-                    }                    
-                }
-                if (processed >= chartData.length) {
-                    draw();    
-                }
-        });
-    }
     
     function initialize(days) {
         var result = [];
         for (var i=days; i>0; i--) {
-            result.push({"date":convertDate(new Date((new Date()).valueOf()-i*24*60*60*1000)),"resolved":0,"unresolved":0});
+            result.push({"date":convertDate(new Date((new Date()).valueOf()-i*24*60*60*1000)),"resolved":0,"unresolved":0,"unresolved_pct":0});
         }
         return result;
     }
     
-    function process(data) {
-        var result = [];
-        
+    function process(data) {        
         $.each(chart_data, function(index_chart,object_chart) {
             var chart_date = new Date(object_chart.date);
             $.each(data, function(index_data, object_data) {
@@ -138,11 +123,9 @@
         });
     }
         
-    var endDate = convertDate(new Date((new Date()).valueOf()-1*24*60*60*1000));
-    var date_start = convertDate(new Date((new Date()).valueOf()-730*24*60*60*1000));
+    var date_start = convertDate(new Date((new Date()).valueOf()-1825*24*60*60*1000));
     var query = "https://bugzilla.mozilla.org/rest/bug?product=Core&component=Canvas%3A 2D&component=Canvas%3A WebGL&component=GFX%3A Color Management&component=Graphics&component=Graphics%3A Layers&component=Graphics%3A Text&component=ImageLib&component=Panning and Zooming&keywords=regression&creation_time=" + date_start + "&include_fields=id,resolution,creation_time,cf_last_resolved";
-    var chart_data = initialize(730);
-    var bz_data = [];
+    var chart_data = initialize(1825);
     d3.json(query, function(data) {
         if (!data) return new Error("Unable to load JSON data!");
         if (Object.keys(data) == "bugs") {
