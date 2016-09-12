@@ -1,6 +1,5 @@
 <div class='row trunk-section'>
   <div class='col-lg-12 text-center' id='chart'>LOADING DATA...</div>
-  <div class='col-lg-12 text-center' id='chart_pct'>LOADING DATA...</div>
 </div>
 
 <script>
@@ -35,7 +34,8 @@
     function draw(chart_data) {
         chart_data = MG.convert.date(chart_data, 'date');
         $.each(chart_data, function(i) {
-           chart_data[i].unresolved_pct = (chart_data[i].unresolved/(chart_data[i].resolved + chart_data[i].unresolved)*100).toFixed(2);
+           chart_data[i].crash_pct = (chart_data[i].unresolved_crash/(chart_data[i].resolved_crash + chart_data[i].unresolved_crash)*100).toFixed(2);
+           chart_data[i].regression_pct = (chart_data[i].unresolved_regression/(chart_data[i].resolved_regression + chart_data[i].unresolved_regression)*100).toFixed(2);
         });
         
         var data = [];
@@ -46,7 +46,7 @@
         document.getElementById('chart').innerHTML = "";
         MG.data_graphic({
             data: data,
-            title: "Graphics Regressions",
+            title: "Graphics Crash Bugs",
             description: "Only bugs filed in the last 5 years",
             width: 800,
             height: 300,
@@ -54,29 +54,11 @@
             right:90,
             target: document.getElementById('chart'),
             x_accessor: "date",
-            y_accessor: ["resolved","unresolved"],
-            legend: ["Resolved","Unresolved"],
-            y_label: "Number of Regressions",
-            chart_type: "line",
-            linked:true,
-            mouseover: globals.mouseover,
-            markers:globals.markers.events
-        });
-        document.getElementById('chart_pct').innerHTML = "";
-        MG.data_graphic({
-            data: data,
-            title: "Graphics Regressions",
-            description: "Only bugs filed in the last 5 years",
-            width: 800,
-            height: 300,
-            left:90,
-            right:90,
-            target: document.getElementById('chart_pct'),
-            x_accessor: "date",
-            y_accessor: "unresolved_pct",
+            y_accessor: ["crash_pct","regression_pct"],
+            legend:["Crash Bugs","Regression Bugs"],
             y_label: "Percent Unresolved",
             chart_type: "line",
-            max_y:30,
+            max_y:40,
             min_y:0,
             linked:true,
             mouseover: globals.mouseover,
@@ -94,7 +76,7 @@
     function initialize(days) {
         var result = [];
         for (var i=days; i>0; i--) {
-            result.push({"date":convertDate(new Date((new Date()).valueOf()-i*24*60*60*1000)),"resolved":0,"unresolved":0,"unresolved_pct":0});
+            result.push({"date":convertDate(new Date((new Date()).valueOf()-i*24*60*60*1000)),"unresolved_crash":0,"unresolved_regression":0,"resolved_crash":0,"resolved_regression":0,"crash_pct":0,"regression_pct":0});
         }
         return result;
     }
@@ -109,22 +91,21 @@
                 if ((chart_date - creation_date) >= 0) {
                     // Bug was resolved on or before the day
                     if (resolved_date && (resolved_date - chart_date) <= 0) {
-                        chart_data[index_chart].resolved += 1;
+                        if (object_data.keywords.indexOf("crash") !== -1) chart_data[index_chart].resolved_crash += 1;
+                        if (object_data.keywords.indexOf("regression") !== -1) chart_data[index_chart].resolved_regression += 1;
                     // Bug was unresolved on or before the day
                     } else {
-                        chart_data[index_chart].unresolved += 1;
+                        if (object_data.keywords.indexOf("crash") !== -1) chart_data[index_chart].unresolved_crash += 1;
+                        if (object_data.keywords.indexOf("regression") !== -1) chart_data[index_chart].unresolved_regression += 1;
                     }
                 }
-                if (index_data >= data.length-1 && index_chart >= chart_data.length-1) {
-                    draw(chart_data);
-                }
+                if (index_data >= data.length-1 && index_chart >= chart_data.length-1) draw(chart_data);
             });
-            
         });
     }
         
     var date_start = convertDate(new Date((new Date()).valueOf()-1825*24*60*60*1000));
-    var query = "https://bugzilla.mozilla.org/rest/bug?product=Core&component=Canvas%3A 2D&component=Canvas%3A WebGL&component=GFX%3A Color Management&component=Graphics&component=Graphics%3A Layers&component=Graphics%3A Text&component=ImageLib&component=Panning and Zooming&keywords=regression&creation_time=" + date_start + "&include_fields=id,resolution,creation_time,cf_last_resolved";
+    var query = "https://bugzilla.mozilla.org/rest/bug?product=Core&component=Canvas%3A 2D&component=Canvas%3A WebGL&component=GFX%3A Color Management&component=Graphics&component=Graphics%3A Layers&component=Graphics%3A Text&component=ImageLib&component=Panning and Zooming&o1=anywordssubstr&v1=crash%2C regression&f1=keywords&creation_time=" + date_start + "&include_fields=id,resolution,creation_time,cf_last_resolved,keywords";
     var chart_data = initialize(1825);
     d3.json(query, function(data) {
         if (!data) return new Error("Unable to load JSON data!");
