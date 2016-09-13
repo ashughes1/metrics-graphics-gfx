@@ -1,0 +1,120 @@
+<div class='row trunk-section'> 
+  <div class='col-lg-12 text-center' id='chart'>LOADING DATA...<br /><i>(May take 30 or more seconds to load)</i></div>
+  <div class='col-lg-12 text-center' id='chart_rate'></div>
+</div>
+
+<script>
+    var globals = {
+        "url":"https://crash-stats.mozilla.com/search/",
+        "mouseover":function(d,i) {
+            d3.select('svg .mg-active-datapoint')
+                .text();
+            globals.url = "https://crash-stats.mozilla.com/search/?app_notes=~WGL+&date=%3E%3D" + convertDate(d.key);
+        },
+        "markers": [{'date': new Date('2016-08-15T00:00:00.000Z'),'label': 'SKIA'}]
+    };
+    
+    function convertDate(d) {
+        var day = (d.getDate() < 10) ? '0' + d.getDate().toString() : d.getDate().toString();
+        var month = ((d.getMonth()+1) < 10) ? '0' + (d.getMonth()+1).toString() : (d.getMonth()+1).toString();
+        var year = d.getFullYear().toString();
+        return year + '-' + month + '-' + day;
+    }
+    
+    function draw(data) {
+        document.getElementById('chart').innerHTML = "";
+        data = MG.convert.date(data, 'date');
+        globals.data = data;
+
+        document.getElementById('chart').innerHTML = "";
+        MG.data_graphic({
+            data: data,
+            title: "Crashes in Nightly 51.0a1",
+            width: 800,
+            height: 300,
+            left:90,
+            right:90,
+            target: document.getElementById('chart'),
+            x_accessor: "date",
+            y_accessor: ["crashes","installs"],
+            legend:["Crashes","Installs"],
+            y_label: "Crashes or Installs",
+            x_label: "Build Date",
+            chart_type: "line",
+            linked:true,
+            mouseover: globals.mouseover,
+            markers:globals.markers
+        });
+        
+        document.getElementById('chart_rate').innerHTML = "";
+        $.each(data, function(i, d) {
+           d["rate"] = (d.crashes / d.installs).toFixed(2);
+        });
+        MG.data_graphic({
+            data: data,
+            title: "Crash Rate in Nightly 51.0a1",
+            width: 800,
+            height: 300,
+            left:90,
+            right:90,
+            target: document.getElementById('chart_rate'),
+            x_accessor: "date",
+            y_accessor: "rate",
+            y_label: "Crashes per Installation",
+            x_label: "Build Date",
+            chart_type: "line",
+            mouseover: globals.mouseover,
+            markers:globals.markers
+        });
+
+        var mouseouts = d3.selectAll('.mg-rollover-rect rect').on('mouseout');
+        d3.selectAll('.mg-rollover-rect rect')
+            .on('click', function(d) {
+                window.open(globals.url, '_blank');
+            });
+    }
+    
+   
+    var date_start = convertDate(new Date((new Date()).valueOf()-180*24*60*60*1000));
+    
+    d3.json("https://crash-stats.mozilla.com/api/SuperSearch/?product=Firefox&version=51.0a1&date=%3E%3D" + date_start + "&_histogram.build_id=_cardinality.install_time", function(data) {
+        if (!data) return callback(new Error("Unable to load JSON data!"));
+        var chart_data = [];
+        var histogram_data = data.facets.histogram_build_id;
+        $.each(histogram_data, function(i,d) {
+            var item_date = ('term' in d) ? d.term.toString().substring(0,4) + '-' + d.term.toString().substring(4,6) + '-' + d.term.toString().substring(6,8) : null;
+            var item_crashes = ('count' in d) ? d.count : null;
+            var item_installs = null;
+            if ('facets' in d) {
+                if ('cardinality_install_time' in d.facets) {
+                    if ('value' in d.facets.cardinality_install_time) {
+                        item_installs = d.facets.cardinality_install_time.value;
+                    }
+                }
+            }
+
+            var found = -1;
+            if (chart_data.length > 0) {
+                $.each(chart_data, function(j) {
+                    if ('date' in chart_data[j]) {
+                        if (chart_data[j].date.indexOf(item_date) !== -1) {
+                            chart_data[j].crashes += item_crashes;
+                            chart_data[j].installs += item_installs;
+                            found = j;
+                        }
+                    }
+                    if (j == chart_data.length-1 && found == -1) {
+                        chart_data.push({'date':item_date,'crashes':item_crashes,'installs':item_installs});
+                    }
+                });
+                if (i == histogram_data.length-1) {
+                    console.log(i, histogram_data.length-1, chart_data);
+                    draw(chart_data);
+                }
+            } else {
+                chart_data.push({'date':item_date,'crashes':item_crashes,'installs':item_installs});
+            }
+        });
+    });
+
+</script>
