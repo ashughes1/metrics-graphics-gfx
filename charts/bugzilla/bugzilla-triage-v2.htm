@@ -1,5 +1,5 @@
 <div class='row trunk-section'>
-  <div class='col-lg-12 text-center' id='chart'>LOADING DATA...</div>
+  <div class='col-lg-12 text-center' id='chart'>LOADING DATA...<br /><i>(May take 30 or more seconds to load)</i></div>
 </div>
 
 <script>
@@ -46,8 +46,8 @@
         document.getElementById('chart').innerHTML = "";
         MG.data_graphic({
             data: data,
-            title: "Graphics Crash Bugs",
-            description: "Only bugs filed in the last 5 years",
+            title: "Percentage of Graphics Bugs that remain Unresolved",
+            description: "Only includes reports filed in the last 5 years",
             width: 800,
             height: 300,
             left:90,
