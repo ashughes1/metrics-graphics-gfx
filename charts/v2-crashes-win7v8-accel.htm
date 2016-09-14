@@ -1,0 +1,183 @@
+<div class='row trunk-section'> 
+  <div class='col-lg-12 text-center' id='chart'>LOADING DATA...<br /><i>(May take 30 or more seconds to load)</i></div>
+  <div class='col-lg-12 text-center' id='chart_rate'></div>
+</div>
+
+<script>
+    var globals = {
+        "url":"https://crash-stats.mozilla.com/search/",
+        "mouseover":function(d,i) {
+            d3.select('svg .mg-active-datapoint')
+                .text();
+            globals.url = "https://crash-stats.mozilla.com/search/?app_notes=~WGL+&date=%3E%3D" + convertDate(d.key);
+        },
+        "markers": [{'date': new Date('2016-08-26T00:00:00.000Z'),'label': 'SKIA'}]
+    };
+    
+    function convertDate(d) {
+        var day = (d.getDate() < 10) ? '0' + d.getDate().toString() : d.getDate().toString();
+        var month = ((d.getMonth()+1) < 10) ? '0' + (d.getMonth()+1).toString() : (d.getMonth()+1).toString();
+        var year = d.getFullYear().toString();
+        return year + '-' + month + '-' + day;
+    }
+    
+    function draw(data) {
+        document.getElementById('chart').innerHTML = "";
+        data = MG.convert.date(data, 'date');
+        globals.data = data;
+
+        document.getElementById('chart').innerHTML = "";
+        MG.data_graphic({
+            data: data,
+            title: "Windows 7 Crashes",
+            width: 800,
+            height: 300,
+            left:90,
+            right:90,
+            target: document.getElementById('chart'),
+            x_accessor: "date",
+            y_accessor: ["layers_on_crashes","layers_off_crashes","dxva_on_crashes","dxva_off_crashes"],
+            legend:["Layers+", "Layers-", "DXVA+", "DXVA-"],
+            y_label: "Number of Crashes",
+            x_label: "Date Reported",
+            chart_type: "line",
+            linked:true,
+            mouseover: globals.mouseover
+        });
+        
+        document.getElementById('chart_rate').innerHTML = "";
+        $.each(data, function(i, d) {
+           d["layers_on_rate"] = (d.layers_on_installs > 0) ? (d.layers_on_crashes / d.layers_on_installs).toFixed(2) : 0;
+           d["layers_off_rate"] = (d.layers_off_installs > 0) ? (d.layers_off_crashes / d.layers_off_installs).toFixed(2) : 0;
+           d["dxva_on_rate"] = (d.dxva_on_installs > 0) ? (d.dxva_on_crashes / d.dxva_on_installs).toFixed(2) : 0;
+           d["dxva_off_rate"] = (d.dxva_off_installs > 0) ? (d.dxva_off_crashes / d.dxva_off_installs).toFixed(2) : 0;
+        });
+        MG.data_graphic({
+            data: data,
+            title: "Windows 7 Crash Rate",
+            width: 800,
+            height: 300,
+            left:90,
+            right:90,
+            target: document.getElementById('chart_rate'),
+            x_accessor: "date",
+            y_accessor: ["layers_on_rate","layers_off_rate","dxva_on_rate","dxva_off_rate"],
+            legend: ["D3D11 Layers+", "D3D11 Layers-", "DXVA2D3D9+", "DXVA2D3D9-"],
+            y_label: "Crashes per Installation",
+            x_label: "Report Date",
+            chart_type: "line",
+            mouseover: globals.mouseover
+        });
+
+        var mouseouts = d3.selectAll('.mg-rollover-rect rect').on('mouseout');
+        d3.selectAll('.mg-rollover-rect rect')
+            .on('click', function(d) {
+                window.open(globals.url, '_blank');
+            });
+    }
+    
+    function process_data(cat, url) {
+        d3.json(url, function(data) {
+            if (!data) return callback(new Error("Unable to load JSON data!"));
+            console.log(url, data);
+            var histogram_data = data.facets.histogram_date;
+            $.each(histogram_data, function(i,d) {
+                var item_date = ('term' in d) ? d.term.substring(0,10) : null;
+                var item_crashes = ('count' in d) ? d.count : 0;
+                var item_installs = 0;
+                if ('facets' in d) {
+                    if ('cardinality_install_time' in d.facets) {
+                        if ('value' in d.facets.cardinality_install_time) {
+                            item_installs = d.facets.cardinality_install_time.value;
+                        }
+                    }
+                }
+                var found = -1;
+                if (chart_data.length > 0) {
+                    $.each(chart_data, function(j) {
+                        if ('date' in chart_data[j]) {
+                            if (chart_data[j].date.indexOf(item_date) !== -1) {
+                                if (cat == "layers_on") {
+                                    chart_data[j].layers_on_crashes += item_crashes;
+                                    chart_data[j].layers_on_installs += item_installs;
+                                } else if (cat == "layers_off") {
+                                    chart_data[j].layers_off_crashes += item_crashes;
+                                    chart_data[j].layers_off_installs += item_installs;
+                                } else if (cat == "dxva_on") {
+                                    chart_data[j].dxva_on_crashes += item_crashes;
+                                    chart_data[j].dxva_on_installs += item_installs;
+                                } else if (cat == "dxva_off") {
+                                    chart_data[j].dxva_off_crashes += item_crashes;
+                                    chart_data[j].dxva_off_installs += item_installs;
+                                }
+                                found = j;
+                            }
+                        }
+                        if (j == chart_data.length-1 && found == -1) {
+                            if (cat == "layers_on") {
+                                chart_data.push({
+                                    'date':item_date,
+                                    'layers_on_crashes':item_crashes, 'layers_on_installs':item_installs,
+                                    'layers_off_crashes':0, 'layers_off_installs':0,
+                                    'dxva_on_crashes':0,'dxva_on_installs':0,
+                                    'dxva_off_crashes':0,'dxva_off_installs':0});
+                            } else if (cat == 'layers_off') {
+                                chart_data.push({
+                                    'date':item_date,
+                                    'layers_on_crashes':0, 'layers_on_installs':0,
+                                    'layers_off_crashes':item_crashes, 'layers_off_installs':item_installs,
+                                    'dxva_on_crashes':0,'dxva_on_installs':0,
+                                    'dxva_off_crashes':0,'dxva_off_installs':0});
+                            } else if (cat == 'dxva_on') {
+                                chart_data.push({
+                                    'date':item_date,
+                                    'layers_on_crashes':0, 'layers_on_installs':0,
+                                    'layers_off_crashes':0, 'layers_off_installs':0,
+                                    'dxva_on_crashes':item_crashes,'dxva_on_installs':item_installs,
+                                    'dxva_off_crashes':0,'dxva_off_installs':0});
+                            } else if (cat == 'dxva_off') {
+                                chart_data.push({
+                                    'date':item_date,
+                                    'layers_on_crashes':0, 'layers_on_installs':0,
+                                    'layers_off_crashes':0, 'layers_off_installs':0,
+                                    'dxva_on_crashes':0,'dxva_on_installs':0,
+                                    'dxva_off_crashes':item_crashes,'dxva_off_installs':item_installs});
+                            }
+                        }
+                    });
+                    if (i == histogram_data.length-1) {
+                        if (cat == "layers_on") {
+                            process_data("layers_off","https://crash-stats.mozilla.com/api/SuperSearch/?product=Firefox&platform_pretty_version=%3DWindows%207&app_notes=~D3D11%20Layers-&date=%3E%3D" + date_start + "&_histogram.date=_cardinality.install_time");
+                        } else if (cat == "layers_off") {
+                            process_data("dxva_on", "https://crash-stats.mozilla.com/api/SuperSearch/?product=Firefox&platform_pretty_version=%3DWindows%207&app_notes=~DXVA2D3D9%2B&date=%3E%3D" + date_start + "&_histogram.date=_cardinality.install_time");
+                        } else if (cat == "dxva_on") {
+                            process_data("dxva_off", "https://crash-stats.mozilla.com/api/SuperSearch/?product=Firefox&platform_pretty_version=%3DWindows%207&app_notes=~DXVA2D3D9-&date=%3E%3D" + date_start + "&_histogram.date=_cardinality.install_time");
+                        } else {
+                            draw(chart_data);
+                        }
+                    }
+                } else {
+                    if (cat == "layers_on") {
+                        chart_data.push({
+                            'date':item_date,
+                            'layers_on_crashes':item_crashes, 'layers_on_installs':item_installs,
+                            'layers_off_crashes':0, 'layers_off_installs':0,
+                            'dxva_on_crashes':0,'dxva_on_installs':0,
+                            'dxva_off_crashes':0,'dxva_off_installs':0});
+                    } else {
+                        console.log("Error: Layers+ data should be processed first!");
+                    }
+
+                }
+            });
+        });    
+    }
+   
+    var date_start = convertDate(new Date((new Date()).valueOf()-180*24*60*60*1000));
+    var chart_data = [];
+    process_data("layers_on","https://crash-stats.mozilla.com/api/SuperSearch/?product=Firefox&platform_pretty_version=%3DWindows%207&app_notes=~D3D11%20Layers%2B&date=%3E%3D" + date_start + "&_histogram.date=_cardinality.install_time");
+    
+    
+    
+
+</script>
