@@ -25,10 +25,26 @@
         document.getElementById('chart').innerHTML = "";
         data = MG.convert.date(data, 'date');
         globals.data = data;
+        
+        var weekly_data = [];
+        for (var i=6; i<data.length; i++) {
+            var item = {
+              "date": data[i].date,
+              "layers_on_crashes": data[i].layers_on_crashes + data[i-1].layers_on_crashes + data[i-2].layers_on_crashes + data[i-3].layers_on_crashes + data[i-4].layers_on_crashes + data[i-5].layers_on_crashes + data[i-6].layers_on_crashes,
+              "layers_off_crashes": data[i].layers_off_crashes + data[i-1].layers_off_crashes + data[i-2].layers_off_crashes + data[i-3].layers_off_crashes + data[i-4].layers_off_crashes + data[i-5].layers_off_crashes + data[i-6].layers_off_crashes,
+              "dxva_on_crashes": data[i].dxva_on_crashes + data[i-1].dxva_on_crashes + data[i-2].dxva_on_crashes + data[i-3].dxva_on_crashes + data[i-4].dxva_on_crashes + data[i-5].dxva_on_crashes + data[i-6].dxva_on_crashes,
+              "dxva_off_crashes": data[i].dxva_off_crashes + data[i-1].dxva_off_crashes + data[i-2].dxva_off_crashes + data[i-3].dxva_off_crashes + data[i-4].dxva_off_crashes + data[i-5].dxva_off_crashes + data[i-6].dxva_off_crashes,
+              "layers_on_installs": data[i].layers_on_installs + data[i-1].layers_on_installs + data[i-2].layers_on_installs + data[i-3].layers_on_installs + data[i-4].layers_on_installs + data[i-5].layers_on_installs + data[i-6].layers_on_installs,
+              "layers_off_installs": data[i].layers_off_installs + data[i-1].layers_off_installs + data[i-2].layers_off_installs + data[i-3].layers_off_installs + data[i-4].layers_off_installs + data[i-5].layers_off_installs + data[i-6].layers_off_installs,
+              "dxva_on_installs": data[i].dxva_on_installs + data[i-1].dxva_on_installs + data[i-2].dxva_on_installs + data[i-3].dxva_on_installs + data[i-4].dxva_on_installs + data[i-5].dxva_on_installs + data[i-6].dxva_on_installs,
+              "dxva_off_installs": data[i].dxva_off_installs + data[i-1].dxva_off_installs + data[i-2].dxva_off_installs + data[i-3].dxva_off_installs + data[i-4].dxva_off_installs + data[i-5].dxva_off_installs + data[i-6].dxva_off_installs
+            };
+            weekly_data.push(item);
+        }
 
         document.getElementById('chart').innerHTML = "";
         MG.data_graphic({
-            data: data,
+            data: weekly_data,
             title: "Windows 7 Crashes",
             width: 800,
             height: 300,
@@ -46,14 +62,14 @@
         });
         
         document.getElementById('chart_rate').innerHTML = "";
-        $.each(data, function(i, d) {
+        $.each(weekly_data, function(i, d) {
            d["layers_on_rate"] = (d.layers_on_installs > 0) ? (d.layers_on_crashes / d.layers_on_installs).toFixed(2) : 0;
            d["layers_off_rate"] = (d.layers_off_installs > 0) ? (d.layers_off_crashes / d.layers_off_installs).toFixed(2) : 0;
            d["dxva_on_rate"] = (d.dxva_on_installs > 0) ? (d.dxva_on_crashes / d.dxva_on_installs).toFixed(2) : 0;
            d["dxva_off_rate"] = (d.dxva_off_installs > 0) ? (d.dxva_off_crashes / d.dxva_off_installs).toFixed(2) : 0;
         });
         MG.data_graphic({
-            data: data,
+            data: weekly_data,
             title: "Windows 7 Crash Rate",
             width: 800,
             height: 300,

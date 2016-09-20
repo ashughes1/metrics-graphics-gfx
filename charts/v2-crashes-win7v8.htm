@@ -25,10 +25,21 @@
         document.getElementById('chart').innerHTML = "";
         data = MG.convert.date(data, 'date');
         globals.data = data;
-
+        
+        var weekly_data = [];
+        for (var i=6; i<data.length; i++) {
+            var item = {
+              "date": data[i].date,
+              "win7_crashes": data[i].win7_crashes + data[i-1].win7_crashes + data[i-2].win7_crashes + data[i-3].win7_crashes + data[i-4].win7_crashes + data[i-5].win7_crashes + data[i-6].win7_crashes,
+              "win7_installs": data[i].win7_installs + data[i-1].win7_installs + data[i-2].win7_installs + data[i-3].win7_installs + data[i-4].win7_installs + data[i-5].win7_installs + data[i-6].win7_installs,
+              "win8_crashes": data[i].win8_crashes + data[i-1].win8_crashes + data[i-2].win8_crashes + data[i-3].win8_crashes + data[i-4].win8_crashes + data[i-5].win8_crashes + data[i-6].win8_crashes,
+              "win8_installs": data[i].win8_installs + data[i-1].win8_installs + data[i-2].win8_installs + data[i-3].win8_installs + data[i-4].win8_installs + data[i-5].win8_installs + data[i-6].win8_installs,
+            };
+            weekly_data.push(item);
+        }
         document.getElementById('chart').innerHTML = "";
         MG.data_graphic({
-            data: data,
+            data: weekly_data,
             title: "GFX Crashes, Windows 7 vs Windows 8",
             width: 800,
             height: 300,
@@ -46,12 +57,12 @@
         });
         
         document.getElementById('chart_rate').innerHTML = "";
-        $.each(data, function(i, d) {
+        $.each(weekly_data, function(i, d) {
            d["win7_rate"] = (d.win7_crashes / d.win7_installs).toFixed(2);
            d["win8_rate"] = (d.win8_crashes / d.win8_installs).toFixed(2);
         });
         MG.data_graphic({
-            data: data,
+            data: weekly_data,
             title: "GFX Crash Rate, Windows 7 vs Windows 8",
             width: 800,
             height: 300,
