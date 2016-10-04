@@ -162,13 +162,59 @@ function setMarkers(channel) {
   return markers;
 }
 
+function convertDate(d) {
+    var day = (d.getDate() < 10) ? '0' + d.getDate().toString() : d.getDate().toString();
+    var month = ((d.getMonth()+1) < 10) ? '0' + (d.getMonth()+1).toString() : (d.getMonth()+1).toString();
+    var year = d.getFullYear().toString();
+    return year + '-' + month + '-' + day;
+}
+
+function graph() {
+    console.log(chart_data);
+    var data = MG.convert.date(chart_data, 'date');
+    globals.data = data;
+    split_by_params.data = data;
+    split_by_params.y_accessor = ['release','beta','aurora','nightly'];
+    split_by_params.legend = ['Release','Beta','Aurora','Nightly'];
+    MG.data_graphic(split_by_params);
+}
+
+function loadRemoteData() {
+    var start = convertDate(new Date((new Date()).valueOf()-180*24*60*60*1000));
+    var url = "https://crash-stats.mozilla.com/api/SuperSearch/?"
+         + "product=Firefox"
+         + "&signature=^igd"
+         + "&date=%3E%3D" + start
+         + "&_histogram.date=release_channel&_histogram_interval=1d";
+    d3.json(url, function(data) {
+         if (!data) return new Error("Unable to load JSON data!");
+         var histogram_date = data.facets.histogram_date;
+         for (var i in histogram_date) {
+            var item = {
+                "date":histogram_date[i].term.substring(0,10),
+                "release":0, "beta":0, "aurora":0, "nightly":0
+            }
+            var facet_channel = histogram_date[i].facets.release_channel;
+            for (var j in facet_channel) {
+                if (facet_channel[j].term == "release") item.release = facet_channel[j].count;
+                if (facet_channel[j].term == "aurora") item.aurora = facet_channel[j].count;
+                if (facet_channel[j].term == "beta") item.beta = facet_channel[j].count;
+                if (facet_channel[j].term == "nightly") item.nightly = facet_channel[j].count;
+            }
+            chart_data.push(item);
+            if (i >= histogram_date.length-1) graph();
+         }
+    });
+}
+
+
+
+var chart_data = [];
 d3.json('data/intel-driver.json', function(data) {
-  data = MG.convert.date(data, 'date');
-  globals.data = data;
-  split_by_params.data = data;
-  split_by_params.legend = setLegend();
-  split_by_params.y_accessor = setY();
-  split_by_params.markers = setMarkers();
-  MG.data_graphic(split_by_params);
+    if (!data) return new Error("Unable to load JSON data!");
+    for (var i=0; i<data.length; i++) {
+        chart_data.push(data[i]);
+        if (chart_data.length >= data.length) loadRemoteData();
+    }
 });
 </script>
