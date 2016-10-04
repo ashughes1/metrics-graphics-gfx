@@ -41,7 +41,7 @@
           'label': '45.0'
         }]
     };
-  
+
     $('.split-by-controls button').click(function() {
       var new_y_accessor = $(this).data('y_accessor');
       if (new_y_accessor == "All") {
@@ -49,7 +49,7 @@
         split_by_params.legend = ['AMD','Intel','Nvidia'];
       } else {
         split_by_params.y_accessor = new_y_accessor;
-        split_by_params.legend = new_y_accessor;  
+        split_by_params.legend = new_y_accessor;
       }
       // change button state
       $(this).addClass('active').siblings().removeClass('active');
@@ -57,14 +57,92 @@
       delete split_by_params.yay_format;
       MG.data_graphic(split_by_params);
     });
+
+    function convertDate(d) {
+        var day = (d.getDate() < 10) ? '0' + d.getDate().toString() : d.getDate().toString();
+        var month = ((d.getMonth()+1) < 10) ? '0' + (d.getMonth()+1).toString() : (d.getMonth()+1).toString();
+        var year = d.getFullYear().toString();
+        return year + '-' + month + '-' + day;
+    }
     
-    MG._hooks = {};
-    d3.json('data/crashes-by-vendor.json', function(data) {
-        data = MG.convert.date(data, 'date');
+    function findChartIndex(datestamp) {
+        var result = -1;
+        for (var i=0; i<chart_data.length; i++) {
+            if (chart_data[i].date == datestamp) result = i;
+        }
+        return result;
+    }
+
+    function loadRemoteData(vendor_id) {
+       var start = convertDate(new Date((new Date()).valueOf()-180*24*60*60*1000));
+       var url = "https://crash-stats.mozilla.com/api/SuperSearch/?"
+            + "product=Firefox"
+            + "&signature=~gfx&signature=~layers&signature=~canvas"
+            + "&signature=~glcontext&signature=~d3d&signature=~d2d"
+            + "&signature=~dwrite&signature=~skia&signature=~mesa"
+            + "&signature=~cairo&signature=^amd&signature=^ati"
+            + "&signature=^igd&signature=^nv"
+            + "&adapter_vendor_id=" + vendor_id
+            + "&date=%3E%3D" + start
+            + "&_histogram.date=_cardinality.install_time&_histogram_interval=1d";
+       d3.json(url, function(data) {
+            if (!data) return new Error("Unable to load JSON data!");
+            var histogram_date = data.facets.histogram_date;
+            for (var i in histogram_date) {
+                var item = {
+                    "date":histogram_date[i].term.substring(0,10),
+                    "reports":histogram_date[i].count,
+                    "installs":histogram_date[i].facets.cardinality_install_time.value
+                };
+       
+                var index = findChartIndex(item.date);
+                if (index == -1) {
+                    chart_data.push({"date":item.date, "amd":0, "intel":0, "nvidia":0});
+                    index = chart_data.length-1;
+                }
+                if (vendor_id == "0x1002") chart_data[index].amd = (item.reports/item.installs).toFixed(2);
+                if (vendor_id == "0x8086") chart_data[index].intel = (item.reports/item.installs).toFixed(2);
+                if (vendor_id == "0x10de") chart_data[index].nvidia = (item.reports/item.installs).toFixed(2);
+               
+                if (i == histogram_date.length-1) {
+                    if (vendor_id == "0x8086") {
+                        loadRemoteData("0x1002");
+                    } else if (vendor_id == "0x1002") {
+                        loadRemoteData("0x10de");
+                    } else {
+                        graph();
+                    }
+                }
+           }
+       });
+    }
+
+    function graph() {
+        var data = MG.convert.date(chart_data, 'date');
         globals.data = data;
         split_by_params.data = data;
         split_by_params.y_accessor = ['amd','intel','nvidia'];
         split_by_params.legend = ['AMD','Intel','Nvidia'];
         MG.data_graphic(split_by_params);
+    }
+
+    MG._hooks = {};
+
+    var chart_data = [];
+    d3.json('data/crashes-by-vendor.json', function(data) {
+       if (!data) return new Error("Unable to load JSON data!");
+       for (var i=0; i<data.length; i++) {
+          chart_data.push(data[i]);
+          if (chart_data.length >= data.length) loadRemoteData("0x8086");
+       }
     });
+
+    //d3.json('data/crashes-by-vendor.json', function(data) {
+    //    data = MG.convert.date(data, 'date');
+    //    globals.data = data;
+    //    split_by_params.data = data;
+    //    split_by_params.y_accessor = ['amd','intel','nvidia'];
+    //    split_by_params.legend = ['AMD','Intel','Nvidia'];
+    //   MG.data_graphic(split_by_params);
+    //});
 </script>
