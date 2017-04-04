@@ -1,0 +1,600 @@
+<div class='row trunk-section'>
+  <center>
+  <button onclick="load_page('v2-crashes-gpup-beta53-daily-driver')" style="border: 2px solid grey;">Driver</button>
+  <button onclick="load_page('v2-crashes-gpup-beta53-daily-amd')" style="border: 2px solid grey;">AMD</button>
+  <button onclick="load_page('v2-crashes-gpup-beta53-daily-intel')" style="border: 2px solid grey;">Intel</button>
+  <button onclick="load_page('v2-crashes-gpup-beta53-daily-nvidia')" style="border: 2px solid grey;">NVIDIA</button>
+  <button onclick="load_page('v2-crashes-gpup-beta53-daily-d3d')" style="border: 2px solid grey;">D3D</button>
+  <button onclick="load_page('v2-crashes-gpup-beta53-daily-dxva')" style="border: 2px solid grey;">DXVA</button>
+  <button onclick="load_page('v2-crashes-gpup-beta53-daily-gfx')" style="border: 2px solid grey;">GFX</button>
+  <button onclick="load_page('v2-crashes-gpup-beta53-daily-layers')" style="border: 2px solid grey;">Layers</button>
+  <button onclick="load_page('v2-crashes-gpup-beta53-daily')" style="border: 2px solid grey;">All (Daily)</button>
+  <button onclick="load_page('v2-crashes-gpup-beta53')" style="border: 2px solid grey;">All (Count)</button>
+  <button onclick="load_page('v2-crashes-gpup-beta53-rate')" style="border: 2px solid blue;">All (Rate)</button>
+  <button onclick="load_page('v2-crashes-gpup-beta53-daily-browser')" style="border: 2px solid grey;">Browser</button>
+  <button onclick="load_page('v2-crashes-gpup-beta53-daily-content')" style="border: 2px solid grey;">Content</button>
+  <button onclick="load_page('v2-crashes-gpup-beta53-daily-plugin')" style="border: 2px solid grey;">Plugin</button>
+  <button onclick="load_page('v2-crashes-gpup-beta53-top')" style="border: 2px solid grey;">Topcrashes</button>
+  </center>
+
+  <h3>Crashes per 1,000 Users</h3>
+
+  <div class='col-lg-12 text-center'>
+    <h4 style="text-align:center">Percent Difference between Firefox 52 to Firefox 53</h4>
+    <table border="1" width="100%">
+      <tr>
+        <th>Type</th>
+        <th>Browser</th>
+        <th>Content</th>
+        <th>GPU</th>
+        <th>Plugin</th>
+        <th>Total</th>
+        <th>Browser %</th>
+        <th>Content %</th>
+        <th>Plugin %</th>
+        <th>GPU %</th>
+      </tr>
+      <tr>
+        <td>ALL</td>
+        <td id="table_diff_ver_all_browser">---</td>
+        <td id="table_diff_ver_all_content">---</td>
+        <td id="table_diff_ver_all_gpu">---</td>
+        <td id="table_diff_ver_all_plugin">---</td>
+        <td id="table_diff_ver_all_total">---</td>
+        <td id="table_diff_ver_all_percent_browser">---</td>
+        <td id="table_diff_ver_all_percent_content">---</td>
+        <td id="table_diff_ver_all_percent_plugin">---</td>
+        <td id="table_diff_ver_all_percent_gpu">---</td>
+      </tr>
+      <tr>
+        <td>GFX</td>
+        <td id="table_diff_ver_gfx_browser">---</td>
+        <td id="table_diff_ver_gfx_content">---</td>
+        <td id="table_diff_ver_gfx_gpu">---</td>
+        <td id="table_diff_ver_gfx_plugin">---</td>
+        <td id="table_diff_ver_gfx_total">---</td>
+        <td id="table_diff_ver_gfx_percent_browser">---</td>
+        <td id="table_diff_ver_gfx_percent_content">---</td>
+        <td id="table_diff_ver_gfx_percent_plugin">---</td>
+        <td id="table_diff_ver_gfx_percent_gpu">---</td>
+      </tr>
+      <tr>
+        <td>INTEL</td>
+        <td id="table_diff_ver_intel_browser">---</td>
+        <td id="table_diff_ver_intel_content">---</td>
+        <td id="table_diff_ver_intel_gpu">---</td>
+        <td id="table_diff_ver_intel_plugin">---</td>
+        <td id="table_diff_ver_intel_total">---</td>
+        <td id="table_diff_ver_intel_percent_browser">---</td>
+        <td id="table_diff_ver_intel_percent_content">---</td>
+        <td id="table_diff_ver_intel_percent_plugin">---</td>
+        <td id="table_diff_ver_intel_percent_gpu">---</td>
+      </tr>
+      <tr>
+        <td>NVIDIA</td>
+        <td id="table_diff_ver_nvidia_browser">---</td>
+        <td id="table_diff_ver_nvidia_content">---</td>
+        <td id="table_diff_ver_nvidia_gpu">---</td>
+        <td id="table_diff_ver_nvidia_plugin">---</td>
+        <td id="table_diff_ver_nvidia_total">---</td>
+        <td id="table_diff_ver_nvidia_percent_browser">---</td>
+        <td id="table_diff_ver_nvidia_percent_content">---</td>
+        <td id="table_diff_ver_nvidia_percent_plugin">---</td>
+        <td id="table_diff_ver_nvidia_percent_gpu">---</td>
+      </tr>
+      <tr>
+        <td>AMD</td>
+        <td id="table_diff_ver_amd_browser">---</td>
+        <td id="table_diff_ver_amd_content">---</td>
+        <td id="table_diff_ver_amd_gpu">---</td>
+        <td id="table_diff_ver_amd_plugin">---</td>
+        <td id="table_diff_ver_amd_total">---</td>
+        <td id="table_diff_ver_amd_percent_browser">---</td>
+        <td id="table_diff_ver_amd_percent_content">---</td>
+        <td id="table_diff_ver_amd_percent_plugin">---</td>
+        <td id="table_diff_ver_amd_percent_gpu">---</td>
+      </tr>
+      <caption><i><small>Lower is Better<small></i></caption>
+    </table>
+
+    <h4 style="text-align:center">Percent Difference between Control and Disabled</h4>
+    <table border="1" width="100%">
+      <tr>
+        <th>Type</th>
+        <th>Browser</th>
+        <th>Content</th>
+        <th>GPU</th>
+        <th>Plugin</th>
+        <th>Total</th>
+        <th>Browser %</th>
+        <th>Content %</th>
+        <th>Plugin %</th>
+        <th>GPU %</th>
+      </tr>
+      <tr>
+        <td>ALL</td>
+        <td id="table_diff_exp_all_browser">---</td>
+        <td id="table_diff_exp_all_content">---</td>
+        <td id="table_diff_exp_all_gpu">---</td>
+        <td id="table_diff_exp_all_plugin">---</td>
+        <td id="table_diff_exp_all_total">---</td>
+        <td id="table_diff_exp_all_percent_browser">---</td>
+        <td id="table_diff_exp_all_percent_content">---</td>
+        <td id="table_diff_exp_all_percent_plugin">---</td>
+        <td id="table_diff_exp_all_percent_gpu">---</td>
+      </tr>
+      <tr>
+        <td>GFX</td>
+        <td id="table_diff_exp_gfx_browser">---</td>
+        <td id="table_diff_exp_gfx_content">---</td>
+        <td id="table_diff_exp_gfx_gpu">---</td>
+        <td id="table_diff_exp_gfx_plugin">---</td>
+        <td id="table_diff_exp_gfx_total">---</td>
+        <td id="table_diff_exp_gfx_percent_browser">---</td>
+        <td id="table_diff_exp_gfx_percent_content">---</td>
+        <td id="table_diff_exp_gfx_percent_plugin">---</td>
+        <td id="table_diff_exp_gfx_percent_gpu">---</td>
+      </tr>
+      <tr>
+        <td>INTEL</td>
+        <td id="table_diff_exp_intel_browser">---</td>
+        <td id="table_diff_exp_intel_content">---</td>
+        <td id="table_diff_exp_intel_gpu">---</td>
+        <td id="table_diff_exp_intel_plugin">---</td>
+        <td id="table_diff_exp_intel_total">---</td>
+        <td id="table_diff_exp_intel_percent_browser">---</td>
+        <td id="table_diff_exp_intel_percent_content">---</td>
+        <td id="table_diff_exp_intel_percent_plugin">---</td>
+        <td id="table_diff_exp_intel_percent_gpu">---</td>
+      </tr>
+      <tr>
+        <td>NVIDIA</td>
+        <td id="table_diff_exp_nvidia_browser">---</td>
+        <td id="table_diff_exp_nvidia_content">---</td>
+        <td id="table_diff_exp_nvidia_gpu">---</td>
+        <td id="table_diff_exp_nvidia_plugin">---</td>
+        <td id="table_diff_exp_nvidia_total">---</td>
+        <td id="table_diff_exp_nvidia_percent_browser">---</td>
+        <td id="table_diff_exp_nvidia_percent_content">---</td>
+        <td id="table_diff_exp_nvidia_percent_plugin">---</td>
+        <td id="table_diff_exp_nvidia_percent_gpu">---</td>
+      </tr>
+      <tr>
+        <td>AMD</td>
+        <td id="table_diff_exp_amd_browser">---</td>
+        <td id="table_diff_exp_amd_content">---</td>
+        <td id="table_diff_exp_amd_gpu">---</td>
+        <td id="table_diff_exp_amd_plugin">---</td>
+        <td id="table_diff_exp_amd_total">---</td>
+        <td id="table_diff_exp_amd_percent_browser">---</td>
+        <td id="table_diff_exp_amd_percent_content">---</td>
+        <td id="table_diff_exp_amd_percent_plugin">---</td>
+        <td id="table_diff_exp_amd_percent_gpu">---</td>
+      </tr>
+      <caption><i><small>Lower is Better<small></i></caption>
+    </table>
+
+    <h4 style="text-align:center">All Crashes</h4>
+    <table border="1" width="100%">
+      <tr>
+        <th>Cohort</th>
+        <th>Browser</th>
+        <th>Content</th>
+        <th>GPU</th>
+        <th>Plugin</th>
+        <th>Total</th>
+        <th>Browser %</th>
+        <th>Content %</th>
+        <th>Plugin %</th>
+        <th>GPU %</th>
+      </tr>
+      <tr id="table_all_52.0b">
+        <td>52.0b</td>
+        <td id="table_all_52.0b_browser">---</td>
+        <td id="table_all_52.0b_content">---</td>
+        <td id="table_all_52.0b_gpu">---</td>
+        <td id="table_all_52.0b_plugin">---</td>
+        <td id="table_all_52.0b_total">---</td>
+        <td id="table_all_52.0b_percent_browser">---</td>
+        <td id="table_all_52.0b_percent_content">---</td>
+        <td id="table_all_52.0b_percent_plugin">---</td>
+        <td id="table_all_52.0b_percent_gpu">---</td>
+      </tr>
+      <tr id="table_all_53.0b">
+        <td>53.0b</td>
+        <td id="table_all_53.0b_browser">---</td>
+        <td id="table_all_53.0b_content">---</td>
+        <td id="table_all_53.0b_gpu">---</td>
+        <td id="table_all_53.0b_plugin">---</td>
+        <td id="table_all_53.0b_total">---</td>
+        <td id="table_all_53.0b_percent_browser">---</td>
+        <td id="table_all_53.0b_percent_content">---</td>
+        <td id="table_all_53.0b_percent_plugin">---</td>
+        <td id="table_all_53.0b_percent_gpu">---</td>
+      </tr>
+      <tr id="chart_all_control">
+        <td>Control</td>
+        <td id="table_all_control_browser">---</td>
+        <td id="table_all_control_content">---</td>
+        <td id="table_all_control_gpu">---</td>
+        <td id="table_all_control_plugin">---</td>
+        <td id="table_all_control_total">---</td>
+        <td id="table_all_control_percent_browser">---</td>
+        <td id="table_all_control_percent_content">---</td>
+        <td id="table_all_control_percent_plugin">---</td>
+        <td id="table_all_control_percent_gpu">---</td>
+      </tr>
+      <tr id="chart_all_disabled">
+        <td>Disabled</td>
+        <td id="table_all_disabled_browser">---</td>
+        <td id="table_all_disabled_content">---</td>
+        <td id="table_all_disabled_gpu">---</td>
+        <td id="table_all_disabled_plugin">---</td>
+        <td id="table_all_disabled_total">---</td>
+        <td id="table_all_disabled_percent_browser">---</td>
+        <td id="table_all_disabled_percent_content">---</td>
+        <td id="table_all_disabled_percent_plugin">---</td>
+        <td id="table_all_disabled_percent_gpu">---</td>
+      </tr>
+    </table>
+
+    <h4 style="text-align:center">GFX Crashes</h4>
+    <table border="1" width="100%">
+      <tr>
+        <th>Cohort</th>
+        <th>Browser</th>
+        <th>Content</th>
+        <th>GPU</th>
+        <th>Plugin</th>
+        <th>Total</th>
+        <th>Browser %</th>
+        <th>Content %</th>
+        <th>Plugin %</th>
+        <th>GPU %</th>
+      </tr>
+      <tr id="table_gfx_52.0b">
+        <td>52.0b</td>
+        <td id="table_gfx_52.0b_browser">---</td>
+        <td id="table_gfx_52.0b_content">---</td>
+        <td id="table_gfx_52.0b_gpu">---</td>
+        <td id="table_gfx_52.0b_plugin">---</td>
+        <td id="table_gfx_52.0b_total">---</td>
+        <td id="table_gfx_52.0b_percent_browser">---</td>
+        <td id="table_gfx_52.0b_percent_content">---</td>
+        <td id="table_gfx_52.0b_percent_plugin">---</td>
+        <td id="table_gfx_52.0b_percent_gpu">---</td>
+      </tr>
+      <tr id="table_gfx_52.0b">
+        <td>53.0b</td>
+        <td id="table_gfx_53.0b_browser">---</td>
+        <td id="table_gfx_53.0b_content">---</td>
+        <td id="table_gfx_53.0b_gpu">---</td>
+        <td id="table_gfx_53.0b_plugin">---</td>
+        <td id="table_gfx_53.0b_total">---</td>
+        <td id="table_gfx_53.0b_percent_browser">---</td>
+        <td id="table_gfx_53.0b_percent_content">---</td>
+        <td id="table_gfx_53.0b_percent_plugin">---</td>
+        <td id="table_gfx_53.0b_percent_gpu">---</td>
+      </tr>
+      <tr id="chart_gfx_control">
+        <td>Control</td>
+        <td id="table_gfx_control_browser">---</td>
+        <td id="table_gfx_control_content">---</td>
+        <td id="table_gfx_control_gpu">---</td>
+        <td id="table_gfx_control_plugin">---</td>
+        <td id="table_gfx_control_total">---</td>
+        <td id="table_gfx_control_percent_browser">---</td>
+        <td id="table_gfx_control_percent_content">---</td>
+        <td id="table_gfx_control_percent_plugin">---</td>
+        <td id="table_gfx_control_percent_gpu">---</td>
+      </tr>
+      <tr id="chart_gfx_disabled">
+        <td>Disabled</td>
+        <td id="table_gfx_disabled_browser">---</td>
+        <td id="table_gfx_disabled_content">---</td>
+        <td id="table_gfx_disabled_gpu">---</td>
+        <td id="table_gfx_disabled_plugin">---</td>
+        <td id="table_gfx_disabled_total">---</td>
+        <td id="table_gfx_disabled_percent_browser">---</td>
+        <td id="table_gfx_disabled_percent_content">---</td>
+        <td id="table_gfx_disabled_percent_plugin">---</td>
+        <td id="table_gfx_disabled_percent_gpu">---</td>
+      </tr>
+    </table>
+
+    <h4 style="text-align:center">Intel Crashes</h4>
+    <table border="1" width="100%">
+      <tr>
+        <th>Cohort</th>
+        <th>Browser</th>
+        <th>Content</th>
+        <th>GPU</th>
+        <th>Plugin</th>
+        <th>Total</th>
+        <th>Browser %</th>
+        <th>Content %</th>
+        <th>Plugin %</th>
+        <th>GPU %</th>
+      </tr>
+      <tr id="table_intel_52.0b">
+        <td>52.0b</td>
+        <td id="table_intel_52.0b_browser">---</td>
+        <td id="table_intel_52.0b_content">---</td>
+        <td id="table_intel_52.0b_gpu">---</td>
+        <td id="table_intel_52.0b_plugin">---</td>
+        <td id="table_intel_52.0b_total">---</td>
+        <td id="table_intel_52.0b_percent_browser">---</td>
+        <td id="table_intel_52.0b_percent_content">---</td>
+        <td id="table_intel_52.0b_percent_plugin">---</td>
+        <td id="table_intel_52.0b_percent_gpu">---</td>
+      </tr>
+      <tr id="table_intel_52.0b">
+        <td>53.0b</td>
+        <td id="table_intel_53.0b_browser">---</td>
+        <td id="table_intel_53.0b_content">---</td>
+        <td id="table_intel_53.0b_gpu">---</td>
+        <td id="table_intel_53.0b_plugin">---</td>
+        <td id="table_intel_53.0b_total">---</td>
+        <td id="table_intel_53.0b_percent_browser">---</td>
+        <td id="table_intel_53.0b_percent_content">---</td>
+        <td id="table_intel_53.0b_percent_plugin">---</td>
+        <td id="table_intel_53.0b_percent_gpu">---</td>
+      </tr>
+      <tr id="chart_intel_control">
+        <td>Control</td>
+        <td id="table_intel_control_browser">---</td>
+        <td id="table_intel_control_content">---</td>
+        <td id="table_intel_control_gpu">---</td>
+        <td id="table_intel_control_plugin">---</td>
+        <td id="table_intel_control_total">---</td>
+        <td id="table_intel_control_percent_browser">---</td>
+        <td id="table_intel_control_percent_content">---</td>
+        <td id="table_intel_control_percent_plugin">---</td>
+        <td id="table_intel_control_percent_gpu">---</td>
+      </tr>
+      <tr id="chart_intel_disabled">
+        <td>Disabled</td>
+        <td id="table_intel_disabled_browser">---</td>
+        <td id="table_intel_disabled_content">---</td>
+        <td id="table_intel_disabled_gpu">---</td>
+        <td id="table_intel_disabled_plugin">---</td>
+        <td id="table_intel_disabled_total">---</td>
+        <td id="table_intel_disabled_percent_browser">---</td>
+        <td id="table_intel_disabled_percent_content">---</td>
+        <td id="table_intel_disabled_percent_plugin">---</td>
+        <td id="table_intel_disabled_percent_gpu">---</td>
+      </tr>
+    </table>
+
+    <h4 style="text-align:center">AMD Crashes</h4>
+    <table border="1" width="100%">
+      <tr>
+        <th>Cohort</th>
+        <th>Browser</th>
+        <th>Content</th>
+        <th>GPU</th>
+        <th>Plugin</th>
+        <th>Total</th>
+        <th>Browser %</th>
+        <th>Content %</th>
+        <th>Plugin %</th>
+        <th>GPU %</th>
+      </tr>
+      <tr id="table_amd_52.0b">
+        <td>52.0b</td>
+        <td id="table_amd_52.0b_browser">---</td>
+        <td id="table_amd_52.0b_content">---</td>
+        <td id="table_amd_52.0b_gpu">---</td>
+        <td id="table_amd_52.0b_plugin">---</td>
+        <td id="table_amd_52.0b_total">---</td>
+        <td id="table_amd_52.0b_percent_browser">---</td>
+        <td id="table_amd_52.0b_percent_content">---</td>
+        <td id="table_amd_52.0b_percent_plugin">---</td>
+        <td id="table_amd_52.0b_percent_gpu">---</td>
+      </tr>
+      <tr id="table_amd_52.0b">
+        <td>53.0b</td>
+        <td id="table_amd_53.0b_browser">---</td>
+        <td id="table_amd_53.0b_content">---</td>
+        <td id="table_amd_53.0b_gpu">---</td>
+        <td id="table_amd_53.0b_plugin">---</td>
+        <td id="table_amd_53.0b_total">---</td>
+        <td id="table_amd_53.0b_percent_browser">---</td>
+        <td id="table_amd_53.0b_percent_content">---</td>
+        <td id="table_amd_53.0b_percent_plugin">---</td>
+        <td id="table_amd_53.0b_percent_gpu">---</td>
+      </tr>
+      <tr id="chart_amd_control">
+        <td>Control</td>
+        <td id="table_amd_control_browser">---</td>
+        <td id="table_amd_control_content">---</td>
+        <td id="table_amd_control_gpu">---</td>
+        <td id="table_amd_control_plugin">---</td>
+        <td id="table_amd_control_total">---</td>
+        <td id="table_amd_control_percent_browser">---</td>
+        <td id="table_amd_control_percent_content">---</td>
+        <td id="table_amd_control_percent_plugin">---</td>
+        <td id="table_amd_control_percent_gpu">---</td>
+      </tr>
+      <tr id="chart_amd_disabled">
+        <td>Disabled</td>
+        <td id="table_amd_disabled_browser">---</td>
+        <td id="table_amd_disabled_content">---</td>
+        <td id="table_amd_disabled_gpu">---</td>
+        <td id="table_amd_disabled_plugin">---</td>
+        <td id="table_amd_disabled_total">---</td>
+        <td id="table_amd_disabled_percent_browser">---</td>
+        <td id="table_amd_disabled_percent_content">---</td>
+        <td id="table_amd_disabled_percent_plugin">---</td>
+        <td id="table_amd_disabled_percent_gpu">---</td>
+      </tr>
+    </table>
+
+    <h4 style="text-align:center">NVIDIA Crashes</h4>
+    <table border="1" width="100%">
+      <tr>
+        <th>Cohort</th>
+        <th>Browser</th>
+        <th>Content</th>
+        <th>GPU</th>
+        <th>Plugin</th>
+        <th>Total</th>
+        <th>Browser %</th>
+        <th>Content %</th>
+        <th>Plugin %</th>
+        <th>GPU %</th>
+      </tr>
+      <tr id="table_nvidia_52.0b">
+        <td>52.0b</td>
+        <td id="table_nvidia_52.0b_browser">---</td>
+        <td id="table_nvidia_52.0b_content">---</td>
+        <td id="table_nvidia_52.0b_gpu">---</td>
+        <td id="table_nvidia_52.0b_plugin">---</td>
+        <td id="table_nvidia_52.0b_total">---</td>
+        <td id="table_nvidia_52.0b_percent_browser">---</td>
+        <td id="table_nvidia_52.0b_percent_content">---</td>
+        <td id="table_nvidia_52.0b_percent_plugin">---</td>
+        <td id="table_nvidia_52.0b_percent_gpu">---</td>
+
+      </tr>
+      <tr id="table_nvidia_52.0b">
+        <td>53.0b</td>
+        <td id="table_nvidia_53.0b_browser">---</td>
+        <td id="table_nvidia_53.0b_content">---</td>
+        <td id="table_nvidia_53.0b_gpu">---</td>
+        <td id="table_nvidia_53.0b_plugin">---</td>
+        <td id="table_nvidia_53.0b_total">---</td>
+        <td id="table_nvidia_53.0b_percent_browser">---</td>
+        <td id="table_nvidia_53.0b_percent_content">---</td>
+        <td id="table_nvidia_53.0b_percent_plugin">---</td>
+        <td id="table_nvidia_53.0b_percent_gpu">---</td>
+      </tr>
+      <tr id="chart_nvidia_control">
+        <td>Control</td>
+        <td id="table_nvidia_control_browser">---</td>
+        <td id="table_nvidia_control_content">---</td>
+        <td id="table_nvidia_control_gpu">---</td>
+        <td id="table_nvidia_control_plugin">---</td>
+        <td id="table_nvidia_control_total">---</td>
+        <td id="table_nvidia_control_percent_browser">---</td>
+        <td id="table_nvidia_control_percent_content">---</td>
+        <td id="table_nvidia_control_percent_plugin">---</td>
+        <td id="table_nvidia_control_percent_gpu">---</td>
+      </tr>
+      <tr id="chart_nvidia_disabled">
+        <td>Disabled</td>
+        <td id="table_nvidia_disabled_browser">---</td>
+        <td id="table_nvidia_disabled_content">---</td>
+        <td id="table_nvidia_disabled_gpu">---</td>
+        <td id="table_nvidia_disabled_plugin">---</td>
+        <td id="table_nvidia_disabled_total">---</td>
+        <td id="table_nvidia_disabled_percent_browser">---</td>
+        <td id="table_nvidia_disabled_percent_content">---</td>
+        <td id="table_nvidia_disabled_percent_plugin">---</td>
+        <td id="table_nvidia_disabled_percent_gpu">---</td>
+      </tr>
+    </table>
+
+  </div>
+
+</div>
+
+<script>
+  MG._hooks = {};
+
+  var globals = {
+    "data":{"all":{},"gfx":{},"intel":{},"nvidia":{},"amd":{}},
+    "date":convertDate(new Date((new Date()).valueOf()-180*24*60*60*1000)),
+     "adi":{"52.0b":1977.608,"53.0b":1030.882,"control":171.81,"disabled":171.81}
+  };
+
+  $.each(Object.keys(globals.data), function(i,k) {
+    get_crashes(k);
+  });
+
+  function load_page(page) {
+    window.location.replace("index.htm#" + page);
+    window.location.reload(true);
+  }
+
+  function convertDate(d) {
+      var day = (d.getDate() < 10) ? '0' + d.getDate().toString() : d.getDate().toString();
+      var month = ((d.getMonth()+1) < 10) ? '0' + (d.getMonth()+1).toString() : (d.getMonth()+1).toString();
+      var year = d.getFullYear().toString();
+      return year + '-' + month + '-' + day;
+  }
+
+  function get_crashes(category) {
+    globals.data[category] = {
+        "52.0b": {"browser":0,"content":0,"gpu":0,"plugin":0,"total":0,"percent_browser":0,"percent_content":0,"percent_plugin":0,"percent_gpu":0},
+        "53.0b": {"browser":0,"content":0,"gpu":0,"plugin":0,"total":0,"percent_browser":0,"percent_content":0,"percent_plugin":0,"percent_gpu":0},
+      "control": {"browser":0,"content":0,"gpu":0,"plugin":0,"total":0,"percent_browser":0,"percent_content":0,"percent_plugin":0,"percent_gpu":0},
+     "disabled": {"browser":0,"content":0,"gpu":0,"plugin":0,"total":0,"percent_browser":0,"percent_content":0,"percent_plugin":0,"percent_gpu":0}
+    };
+
+    $.each(Object.keys(globals.data[category]), function(i,k) {
+        var query_string = "https://crash-stats.mozilla.com/api/SuperSearch/?product=Firefox&version=";
+        query_string += (k === "52.0b") ? "52.0b" : "53.0b";
+        query_string += (k === "control") ? "&ActiveExperiment=%3Dgpu-process-beta53%40experiments.mozilla.org&ActiveExperimentBranch=control" : "";
+        query_string += (k === "disabled") ? "&ActiveExperiment=%3Dgpu-process-beta53%40experiments.mozilla.org&ActiveExperimentBranch=disabled" : "";
+        query_string += (category === "gfx") ? "&proto_signature=~gfx" : "";
+        query_string += (category === "intel") ? "&proto_signature=~igd10&proto_signature=~igdiumd&proto_signature=~igdumd" : "";
+        query_string += (category === "nvidia") ? "&proto_signature=~nvd&proto_signature=~nvw&proto_signature=~nvf" : "";
+        query_string += (category === "amd") ? "&proto_signature=~atiu&proto_signature=~atid" : "";
+        query_string += "&date=%3E%3D" + globals.date;
+        query_string += "&_facets=process_type";
+
+        d3.json(query_string, function(data) {
+          var init = 0;
+          if (!data) return callback(new Error("Unable to load JSON data!"));
+
+          globals.data[category][k].total = ('total' in data) ? (data.total/globals.adi[k]).toFixed(2) : 0;
+          write_cell(category, k, "total");
+
+          var eval = 0;
+          $.each(data.facets.process_type, function(j,c) {
+            globals.data[category][k][c.term] = (c.count/globals.adi[k]).toFixed(2);
+            write_cell(category, k, c.term);
+            eval += c.count;
+          });
+
+          globals.data[category][k].browser = ((data.total - eval)/globals.adi[k]).toFixed(2);
+          write_cell(category, k, "browser");
+
+          globals.data[category][k].percent_browser = (globals.data[category][k].browser/globals.data[category][k].total*100).toFixed(2);
+          write_cell(category, k, "percent_browser");
+          globals.data[category][k].percent_content = (globals.data[category][k].content/globals.data[category][k].total*100).toFixed(2);
+          write_cell(category, k, "percent_content");
+          globals.data[category][k].percent_plugin = (globals.data[category][k].plugin/globals.data[category][k].total*100).toFixed(2);
+          write_cell(category, k, "percent_plugin");
+          globals.data[category][k].percent_gpu = (globals.data[category][k].gpu/globals.data[category][k].total*100).toFixed(2);
+          write_cell(category, k, "percent_gpu");
+
+          $.each(["browser","content","plugin","total","percent_browser","percent_content","percent_plugin","percent_gpu"], function(l, t) {
+            if (globals.data[category]["52.0b"][t] != 0 && globals.data[category]["53.0b"][t] != 0) {
+              var e = document.getElementById("table_diff_ver_" + category + "_" + t);
+              var pct = (((globals.data[category]["53.0b"][t] - globals.data[category]["52.0b"][t])/globals.data[category]["52.0b"][t])*100).toFixed(2);
+              if (pct < 0) e.style = "color:green";
+              if (pct > 0) e.style = "color:red";
+              e.innerHTML = pct + " %";
+            }
+            if (globals.data[category]["control"][t] != 0 && globals.data[category]["disabled"][t] != 0) {
+              var e = document.getElementById("table_diff_exp_" + category + "_" + t);
+              var pct = (((globals.data[category]["control"][t]-globals.data[category]["disabled"][t])/globals.data[category]["disabled"][t])*100).toFixed(2);
+              if (pct < 0) e.style = "color:green";
+              if (pct > 0) e.style = "color:red";
+              e.innerHTML = pct + " %";
+            }
+          });
+
+        });
+    });
+  }
+
+  function write_cell(category, cohort, type) {
+    var e = document.getElementById("table_" + category + "_" + cohort + "_" + type);
+    e.innerHTML = globals.data[category][cohort][type];
+  }
+
+
+</script>

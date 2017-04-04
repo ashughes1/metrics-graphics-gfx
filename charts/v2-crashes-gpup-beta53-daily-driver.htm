@@ -1,0 +1,135 @@
+<div class='row trunk-section'>
+
+  <center>
+  <button onclick="load_page('v2-crashes-gpup-beta53-daily-driver')" style="border: 2px solid blue;">Driver</button>
+  <button onclick="load_page('v2-crashes-gpup-beta53-daily-amd')" style="border: 2px solid grey;">AMD</button>
+  <button onclick="load_page('v2-crashes-gpup-beta53-daily-intel')" style="border: 2px solid grey;">Intel</button>
+  <button onclick="load_page('v2-crashes-gpup-beta53-daily-nvidia')" style="border: 2px solid grey;">NVIDIA</button>
+  <button onclick="load_page('v2-crashes-gpup-beta53-daily-d3d')" style="border: 2px solid grey;">D3D</button>
+  <button onclick="load_page('v2-crashes-gpup-beta53-daily-dxva')" style="border: 2px solid grey;">DXVA</button>
+  <button onclick="load_page('v2-crashes-gpup-beta53-daily-gfx')" style="border: 2px solid grey;">GFX</button>
+  <button onclick="load_page('v2-crashes-gpup-beta53-daily-layers')" style="border: 2px solid grey;">Layers</button>
+  <button onclick="load_page('v2-crashes-gpup-beta53-daily')" style="border: 2px solid grey;">All (Daily)</button>
+  <button onclick="load_page('v2-crashes-gpup-beta53')" style="border: 2px solid grey;">All (Count)</button>
+  <button onclick="load_page('v2-crashes-gpup-beta53-rate')" style="border: 2px solid grey;">All (Rate)</button>
+  <button onclick="load_page('v2-crashes-gpup-beta53-daily-browser')" style="border: 2px solid grey;">Browser</button>
+  <button onclick="load_page('v2-crashes-gpup-beta53-daily-content')" style="border: 2px solid grey;">Content</button>
+  <button onclick="load_page('v2-crashes-gpup-beta53-daily-plugin')" style="border: 2px solid grey;">Plugin</button>
+  <button onclick="load_page('v2-crashes-gpup-beta53-top')" style="border: 2px solid grey;">Topcrashes</button>
+  </center>
+
+  <div class='col-lg-6 text-left' id="graph"></div>
+  <div class='col-lg-6 text-right' id="graph_delta"></div>
+
+
+</div>
+
+<script>
+  MG._hooks = {};
+
+  var globals = {
+    "data":{"sum":[],"enabled":[],"disabled":[]},
+    "date":convertDate(new Date((new Date()).valueOf()-180*24*60*60*1000)),
+     "query":{"enabled":"https://crash-stats.mozilla.com/api/SuperSearch/?proto_signature=~igd10&proto_signature=~igdiumd&proto_signature=~igdumd&proto_signature=~nvd&proto_signature=~nvw&proto_signature=~nvf&proto_signature=~atiu&proto_signature=~atid&ActiveExperiment=~gpu-process-beta53&ActiveExperimentBranch=control&date=%3E2016-12-01&_histogram.date=_cardinality.install_time",
+              "disabled":"https://crash-stats.mozilla.com/api/SuperSearch/?proto_signature=~igd10&proto_signature=~igdiumd&proto_signature=~igdumd&proto_signature=~nvd&proto_signature=~nvw&proto_signature=~nvf&proto_signature=~atiu&proto_signature=~atid&ActiveExperiment=~gpu-process-beta53&ActiveExperimentBranch=disabled&date=%3E2016-12-01&_histogram.date=_cardinality.install_time"}
+  };
+
+  get_crashes("enabled");
+
+  function load_page(page) {
+    window.location.replace("index.htm#" + page);
+    window.location.reload(true);
+  }
+
+  function convertDate(d) {
+      var day = (d.getDate() < 10) ? '0' + d.getDate().toString() : d.getDate().toString();
+      var month = ((d.getMonth()+1) < 10) ? '0' + (d.getMonth()+1).toString() : (d.getMonth()+1).toString();
+      var year = d.getFullYear().toString();
+      return year + '-' + month + '-' + day;
+  }
+
+  function get_crashes(category) {
+    d3.json(globals.query[category], function(data) {
+          if (!data) return callback(new Error("Unable to load JSON data!"));
+          $.each(data.facets.histogram_date, function(i,d) {
+            var term = d.term.substring(0,10);
+            var count = d.count;
+            globals.data[category].push({"date":term,"count":count});
+            if (globals.data[category].length >= data.facets.histogram_date.length) {
+              if (category === "enabled") {
+                get_crashes("disabled");
+              } else {
+                sum();
+              }
+            }
+          });
+    });
+  }
+
+  function add_missing(more,less) {
+    $.each(globals.data[more], function(i,m) {
+      var found = 0;
+      $.each(globals.data[less], function(j,l) {
+          if (m.date == l.date) found = 1;
+          if (j >= globals.data[less].length-1 && found == 0) globals.data[less].push({"date":m.date,"count":0});
+      });
+    });
+  }
+
+  function sum() {
+    if (globals.data.enabled.length > globals.data.disabled.length) add_missing("enabled","disabled");
+    if (globals.data.enabled.length < globals.data.disabled.length) add_missing("disabled","enabled");
+    $.each(globals.data.enabled, function(i,d) {
+      var enabled = 0;
+      var disabled = 0;
+      if (i == 0) {
+        enabled = globals.data.enabled[i].count;
+        disabled = globals.data.disabled[i].count;
+      } else {
+        enabled = globals.data.sum[i-1].enabled + globals.data.enabled[i].count;
+        disabled = globals.data.sum[i-1].disabled + globals.data.disabled[i].count;
+      }
+      var delta = ((enabled-disabled)/disabled*100).toFixed(2);
+      globals.data.sum.push({"date":globals.data.enabled[i].date,"enabled":enabled,"disabled":disabled,"delta":delta,"delta_target":0});
+      if (globals.data.sum.length >= globals.data.enabled.length) draw();
+    });
+  }
+
+  function draw() {
+    var chartData = MG.convert.date(globals.data.sum, 'date');
+    MG.data_graphic({
+        data: chartData,
+        title: "GPU Process Beta 53 Experiment",
+        width: 600,
+        height: 300,
+        left:90,
+        right:90,
+        target: document.getElementById('graph'),
+        x_accessor: "date",
+        y_accessor: ["enabled","disabled"],
+        legend: ["Enabled","Disabled"],
+        y_label: "Number of Crashes (Aggregate)",
+        chart_type: "line",
+        linked:true
+    });
+    MG.data_graphic({
+        data: chartData,
+        title: "GPU Process Beta 53 Experiment (Delta)",
+        width: 600,
+        height: 300,
+        left:90,
+        right:90,
+        target: document.getElementById('graph_delta'),
+        x_accessor: "date",
+        y_accessor: ["delta","delta_target"],
+        colors: ["blue","black"],
+        y_label: "Enabled vs Disabled (%)",
+        chart_type: "line",
+        min_y:-100,
+        max_y:100,
+        linked:true
+    });
+  }
+
+
+</script>

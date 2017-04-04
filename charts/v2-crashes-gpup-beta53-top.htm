@@ -1,0 +1,125 @@
+<div class='row trunk-section'>
+  <center>
+  <button onclick="load_page('v2-crashes-gpup-beta53-daily-driver')" style="border: 2px solid grey;">Driver</button>
+  <button onclick="load_page('v2-crashes-gpup-beta53-daily-amd')" style="border: 2px solid grey;">AMD</button>
+  <button onclick="load_page('v2-crashes-gpup-beta53-daily-intel')" style="border: 2px solid grey;">Intel</button>
+  <button onclick="load_page('v2-crashes-gpup-beta53-daily-nvidia')" style="border: 2px solid grey;">NVIDIA</button>
+  <button onclick="load_page('v2-crashes-gpup-beta53-daily-d3d')" style="border: 2px solid grey;">D3D</button>
+  <button onclick="load_page('v2-crashes-gpup-beta53-daily-dxva')" style="border: 2px solid grey;">DXVA</button>
+  <button onclick="load_page('v2-crashes-gpup-beta53-daily-gfx')" style="border: 2px solid grey;">GFX</button>
+  <button onclick="load_page('v2-crashes-gpup-beta53-daily-layers')" style="border: 2px solid grey;">Layers</button>
+  <button onclick="load_page('v2-crashes-gpup-beta53-daily')" style="border: 2px solid grey;">All (Daily)</button>
+  <button onclick="load_page('v2-crashes-gpup-beta53')" style="border: 2px solid grey;">All (Count)</button>
+  <button onclick="load_page('v2-crashes-gpup-beta53-rate')" style="border: 2px solid grey;">All (Rate)</button>
+  <button onclick="load_page('v2-crashes-gpup-beta53-daily-browser')" style="border: 2px solid grey;">Browser</button>
+  <button onclick="load_page('v2-crashes-gpup-beta53-daily-content')" style="border: 2px solid grey;">Content</button>
+  <button onclick="load_page('v2-crashes-gpup-beta53-daily-plugin')" style="border: 2px solid grey;">Plugin</button>
+  <button onclick="load_page('v2-crashes-gpup-beta53-top')" style="border: 2px solid blue;">Topcrashes</button>
+  </center>
+
+
+  <h3>Top Crashes for GPU Process Beta 53 Experiment</h3>
+  <div class='col-lg-12 text-center'>
+    <table border="1" width="100%" id="table"></table>
+
+  </div>
+
+</div>
+
+<script>
+  MG._hooks = {};
+
+  var globals = {
+      "data":[],
+      "date": convertDate(new Date((new Date()).valueOf()-180*24*60*60*1000)),
+     "query": {
+       "enabled": "https://crash-stats.mozilla.com/api/SuperSearch/?ActiveExperiment=~gpu-process-beta53&ActiveExperimentBranch=control&date=%3E2016-12-01",
+       "disabled": "https://crash-stats.mozilla.com/api/SuperSearch/?ActiveExperiment=~gpu-process-beta53&ActiveExperimentBranch=disabled&date=%3E2016-12-01"
+     }
+  };
+
+  get_crashes("enabled");
+
+  function load_page(page) {
+    window.location.replace("index.htm#" + page);
+    window.location.reload(true);
+  }
+
+  function convertDate(d) {
+      var day = (d.getDate() < 10) ? '0' + d.getDate().toString() : d.getDate().toString();
+      var month = ((d.getMonth()+1) < 10) ? '0' + (d.getMonth()+1).toString() : (d.getMonth()+1).toString();
+      var year = d.getFullYear().toString();
+      return year + '-' + month + '-' + day;
+  }
+
+  function get_crashes(category) {
+    d3.json(globals.query[category], function(data) {
+      if (!data) return callback(new Error("Unable to load JSON data!"));
+
+      $.each(data.facets.signature, function(i,s) {
+        if (category == "enabled") {
+          globals.data.push({"signature":s.term,"enabled":s.count,"disabled":0});
+          if (globals.data.length >= data.facets.signature.length) get_crashes("disabled");
+        } else if (category == "disabled") {
+          var found = 0;
+          $.each(globals.data, function(j,d) {
+            if (d.signature == s.term) {
+              globals.data[j]["disabled"] = s.count;
+              found = 1;
+            }
+            if (j >= globals.data.length-1 && found == 0) {
+              globals.data.push({"signature":s.term,"enabled":0,"disabled":s.count});
+            }
+            if (i >= data.facets.signature.length-1) draw();
+          });
+        }
+      });
+    });
+  }
+
+  function draw() {
+    var e = document.getElementById("table");
+    e.innerHTML = "<tr>" +
+                    "<th>Signature</th>" +
+                    "<th>Enabled Reports</th>" +
+                    "<th>Disabled Reports</th>" +
+                    "<th>Diff (%)</th>" +
+                  "</tr>";
+    $.each(globals.data, function(i,d) {
+      if (d.enabled === 0) {
+        e.innerHTML += "<tr style='background-color:#F08080'>" +
+                         "<td width='40%'><a href='https://crash-stats.mozilla.com/search/?ActiveExperiment=~gpu-process-beta53&signature=" + d.signature + "'>" + d.signature + "</a></td>" +
+                         "<td width='20%'>" + d.enabled + "</td>" +
+                         "<td width='20%'>" + d.disabled + "</td>" +
+                         "<td width='20%'>--- %</td>" +
+                       "</tr>";
+      } else if (d.disabled === 0) {
+        e.innerHTML += "<tr style='background-color:#8FBC8F'>" +
+                         "<td width='40%'><a href='https://crash-stats.mozilla.com/search/?ActiveExperiment=~gpu-process-beta53&signature=" + d.signature + "'>" + d.signature + "</a></td>" +
+                         "<td width='20%'>" + d.enabled + "</td>" +
+                         "<td width='20%'>" + d.disabled + "</td>" +
+                         "<td width='20%'>--- %</td>" +
+                       "</tr>";
+      } else {
+        var pct = (((d.enabled-d.disabled)/d.disabled)*100).toFixed(2);
+        if (pct > 0) {
+          e.innerHTML += "<tr style='background-color:#F08080'>" +
+                           "<td width='40%'><a href='https://crash-stats.mozilla.com/search/?ActiveExperiment=~gpu-process-beta53&signature=" + d.signature + "'>" + d.signature + "</a></td>" +
+                           "<td width='20%'>" + d.enabled + "</td>" +
+                           "<td width='20%'>" + d.disabled + "</td>" +
+                           "<td width='20%'>" + (((d.enabled-d.disabled)/d.disabled)*100).toFixed(2) + " %</td>" +
+                         "</tr>";
+        } else {
+          e.innerHTML += "<tr style='background-color:#8FBC8F'>" +
+                           "<td width='40%'><a href='https://crash-stats.mozilla.com/search/?ActiveExperiment=~gpu-process-beta53&signature=" + d.signature + "'>" + d.signature + "</a></td>" +
+                           "<td width='20%'>" + d.enabled + "</td>" +
+                           "<td width='20%'>" + d.disabled + "</td>" +
+                           "<td width='20%'>" + (((d.enabled-d.disabled)/d.disabled)*100).toFixed(2) + " %</td>" +
+                         "</tr>";
+        }
+      }
+    });
+  }
+
+
+</script>
