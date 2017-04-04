@@ -14,10 +14,10 @@
   <button onclick="load_page('v2-crashes-gpup-beta53-daily-browser')" style="border: 2px solid grey;">Browser</button>
   <button onclick="load_page('v2-crashes-gpup-beta53-daily-content')" style="border: 2px solid grey;">Content</button>
   <button onclick="load_page('v2-crashes-gpup-beta53-daily-plugin')" style="border: 2px solid grey;">Plugin</button>
-  <button onclick="load_page('v2-crashes-gpup-beta53-top')" style="border: 2px solid blue;">Topcrashes</button>
+  <button onclick="load_page('v2-crashes-gpup-beta53-top')" style="border: 2px solid grey;">Topcrashes</button>
   <button onclick="load_page('v2-crashes-gpup-beta53-top-browser')" style="border: 2px solid grey;">Topcrashes (Browser)</button>
   <button onclick="load_page('v2-crashes-gpup-beta53-top-content')" style="border: 2px solid grey;">Topcrashes (Content)</button>
-  <button onclick="load_page('v2-crashes-gpup-beta53-top-plugin')" style="border: 2px solid grey;">Topcrashes (Plugin)</button>
+  <button onclick="load_page('v2-crashes-gpup-beta53-top-plugin')" style="border: 2px solid blue;">Topcrashes (Plugin)</button>
   <button onclick="load_page('v2-crashes-gpup-beta53-top-gpu')" style="border: 2px solid grey;">Topcrashes (GPU)</button>
   </center>
 
@@ -37,8 +37,8 @@
       "data":[],
       "date": convertDate(new Date((new Date()).valueOf()-180*24*60*60*1000)),
      "query": {
-       "enabled": "https://crash-stats.mozilla.com/api/SuperSearch/?ActiveExperiment=~gpu-process-beta53&ActiveExperimentBranch=control&date=%3E2016-12-01",
-       "disabled": "https://crash-stats.mozilla.com/api/SuperSearch/?ActiveExperiment=~gpu-process-beta53&ActiveExperimentBranch=disabled&date=%3E2016-12-01"},
+       "enabled": "https://crash-stats.mozilla.com/api/SuperSearch/?process_type=plugin&ActiveExperiment=~gpu-process-beta53&ActiveExperimentBranch=control&date=%3E2016-12-01",
+       "disabled": "https://crash-stats.mozilla.com/api/SuperSearch/?process_type=plugin&ActiveExperiment=~gpu-process-beta53&ActiveExperimentBranch=disabled&date=%3E2016-12-01"},
      "total":{"enabled":0,"disabled":0}
   };
 
