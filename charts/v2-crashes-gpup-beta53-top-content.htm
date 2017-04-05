@@ -99,14 +99,14 @@
     $.each(globals.data, function(i,d) {
       if (d.enabled === 0) {
         e.innerHTML += "<tr style='background-color:#8FBC8F'>" +
-                         "<td width='40%'><a href='https://crash-stats.mozilla.com/search/?ActiveExperiment=~gpu-process-beta53&signature=" + d.signature + "'>" + d.signature + "</a></td>" +
+                         "<td width='40%'><a href='https://crash-stats.mozilla.com/search/?ActiveExperiment=~gpu-process-beta53&signature=%3D" + d.signature + "'>" + d.signature + "</a></td>" +
                          "<td width='20%'>" + d.enabled + "</td>" +
                          "<td width='20%'>" + d.disabled + "</td>" +
                          "<td width='20%'>--- %</td>" +
                        "</tr>";
       } else if (d.disabled === 0) {
         e.innerHTML += "<tr style='background-color:#F08080'>" +
-                         "<td width='40%'><a href='https://crash-stats.mozilla.com/search/?ActiveExperiment=~gpu-process-beta53&signature=" + d.signature + "'>" + d.signature + "</a></td>" +
+                         "<td width='40%'><a href='https://crash-stats.mozilla.com/search/?ActiveExperiment=~gpu-process-beta53&signature=%3D" + d.signature + "'>" + d.signature + "</a></td>" +
                          "<td width='20%'>" + d.enabled + "</td>" +
                          "<td width='20%'>" + d.disabled + "</td>" +
                          "<td width='20%'>--- %</td>" +
@@ -115,14 +115,14 @@
         var pct = (((d.enabled-d.disabled)/d.disabled)*100).toFixed(2);
         if (pct > 0) {
           e.innerHTML += "<tr style='background-color:#F08080'>" +
-                           "<td width='40%'><a href='https://crash-stats.mozilla.com/search/?ActiveExperiment=~gpu-process-beta53&signature=" + d.signature + "'>" + d.signature + "</a></td>" +
+                           "<td width='40%'><a href='https://crash-stats.mozilla.com/search/?ActiveExperiment=~gpu-process-beta53&signature=%3D" + d.signature + "'>" + d.signature + "</a></td>" +
                            "<td width='20%'>" + d.enabled + "</td>" +
                            "<td width='20%'>" + d.disabled + "</td>" +
                            "<td width='20%'>" + (((d.enabled-d.disabled)/d.disabled)*100).toFixed(2) + " %</td>" +
                          "</tr>";
         } else {
           e.innerHTML += "<tr style='background-color:#8FBC8F'>" +
-                           "<td width='40%'><a href='https://crash-stats.mozilla.com/search/?ActiveExperiment=~gpu-process-beta53&signature=" + d.signature + "'>" + d.signature + "</a></td>" +
+                           "<td width='40%'><a href='https://crash-stats.mozilla.com/search/?ActiveExperiment=~gpu-process-beta53&signature=%3D" + d.signature + "'>" + d.signature + "</a></td>" +
                            "<td width='20%'>" + d.enabled + "</td>" +
                            "<td width='20%'>" + d.disabled + "</td>" +
                            "<td width='20%'>" + (((d.enabled-d.disabled)/d.disabled)*100).toFixed(2) + " %</td>" +
