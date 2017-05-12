@@ -1,0 +1,111 @@
+<div class='row trunk-section'> 
+  <div class='col-lg-12 text-center' id='chart'>LOADING DATA...<br /><i>(May take 30 or more seconds to load)</i></div>
+  <div class='col-lg-12 text-center' id='chart_rate'></div>
+</div>
+
+<script>
+    var globals = {
+        "url":"https://crash-stats.mozilla.com/search/",
+        "mouseover":function(d,i) {
+            d3.select('svg .mg-active-datapoint')
+                .text();
+            globals.url = "https://crash-stats.mozilla.com/search/?app_notes=~WGL+&date=%3E%3D" + convertDate(d.key);
+        },
+        "markers": [{'date': new Date('2016-08-26T00:00:00.000Z'),'label': 'SKIA'}]
+    };
+    
+    function convertDate(d) {
+        var day = (d.getDate() < 10) ? '0' + d.getDate().toString() : d.getDate().toString();
+        var month = ((d.getMonth()+1) < 10) ? '0' + (d.getMonth()+1).toString() : (d.getMonth()+1).toString();
+        var year = d.getFullYear().toString();
+        return year + '-' + month + '-' + day;
+    }
+    
+    function draw(data) {
+        document.getElementById('chart').innerHTML = "";
+        data = MG.convert.date(data, 'date');
+        globals.data = data;
+
+        document.getElementById('chart').innerHTML = "";
+        MG.data_graphic({
+            data: data,
+            title: "Crashes in Nightly 55.0a1",
+            width: 800,
+            height: 300,
+            left:90,
+            right:90,
+            target: document.getElementById('chart'),
+            x_accessor: "date",
+            y_accessor: ["control","disabled"],
+            legend:["AID Enabled","AID Disabled"],
+            y_label: "Crashes Reported",
+            x_label: "Date",
+            chart_type: "line",
+            linked:true,
+            color:["green","red"],
+            mouseover: globals.mouseover,
+            markers:globals.markers
+        });
+
+        var mouseouts = d3.selectAll('.mg-rollover-rect rect').on('mouseout');
+        d3.selectAll('.mg-rollover-rect rect')
+            .on('click', function(d) {
+                window.open(globals.url, '_blank');
+            });
+    }
+    
+   
+    var date_start = convertDate(new Date((new Date()).valueOf()-180*24*60*60*1000));
+    var url = "https://crash-stats.mozilla.com/api/SuperSearch/" +
+              "?product=Firefox" +
+              "&version=55.0a1" +
+              "&cpu_arch=x86" + 
+              "&date=%3E%3D" + date_start + 
+              "&ActiveExperiment=%3Danimated-image-discarding-nightly55%40experiments.mozilla.org" +
+              "&_histogram.date=ActiveExperimentBranch&_histogram_interval.date=1d";
+    var chart_data = [];
+    
+    d3.json(url, function(data) {
+        if (!data) return callback(new Error("Unable to load JSON data!"));
+        var control = 0;
+        var disabled = 0;
+        
+        var histogram_data = data.facets.histogram_date;
+        $.each(histogram_data, function(i,d) {
+            var item_date = ('term' in d) ? d.term.toString().substring(0,4) + '-' + d.term.toString().substring(5,7) + '-' + d.term.toString().substring(8,10) : null;
+            var item_crashes = ('count' in d) ? d.count : 0;
+            if ('facets' in d) {
+                if ('ActiveExperimentBranch' in d.facets) {
+                    $.each(d.facets.ActiveExperimentBranch, function(j,dd) {
+                       if (dd.term == "control") control += dd.count;
+                       if (dd.term == "disabled") disabled += dd.count;
+                    });
+                }
+            }
+
+            console.log(item_date, control, disabled);
+
+            var found = -1;
+            if (chart_data.length > 0) {
+                $.each(chart_data, function(j) {
+                    if ('date' in chart_data[j]) {
+                        if (chart_data[j].date.indexOf(item_date) !== -1) {
+                            chart_data[j].control = control;
+                            chart_data[j].disabled = disabled;
+                            found = j;
+                        }
+                    }
+                    if (j == chart_data.length-1 && found == -1) {
+                        chart_data.push({'date':item_date,'control':control,'disabled':disabled});
+                    }
+                });
+                if (i == histogram_data.length-1) {
+                    draw(chart_data);
+                }
+            } else {
+                chart_data.push({'date':item_date,'control':control,'disabled':disabled});
+            }
+        });
+    });
+
+</script>
